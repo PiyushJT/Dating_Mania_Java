@@ -4,6 +4,8 @@ public class Project {
 
     public static void main(String[] args) {
 
+        Log.S("System Started");
+
         // Database Initialization
         String url = "jdbc:postgresql://localhost:5432/Dating";
         String user = "postgres";
@@ -16,19 +18,23 @@ public class Project {
 
             Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(url, user, password);
-            System.out.println("Connected to PostgreSQL successfully!");
+
+            Log.S("Connected to PostgreSQL successfully!");
 
         }
         catch (ClassNotFoundException e) {
             System.out.println("JDBC Driver not found.");
+            Log.E("JDBC Driver not found.");
             return;
         }
         catch (SQLException e) {
             System.out.println("Connection failed.");
+            Log.E("Connection failed.");
             return;
         }
         catch (Exception e) {
             System.out.println("Database was unable to load! :(");
+            Log.E("Database was unable to load! :(");
             return;
         }
 

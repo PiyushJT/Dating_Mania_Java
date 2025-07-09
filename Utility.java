@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Utility {
 
-    static Scanner sc = new Scanner(System.in);
+    static Scanner scanner = new Scanner(System.in);
 
     static void printLines(int lines) {
 
@@ -37,7 +37,7 @@ public class Utility {
         System.out.println("2. Login");
         System.out.println("3. Exit");
 
-        int choice = sc.nextInt();
+        int choice = scanner.nextInt();
 
     }
 

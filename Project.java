@@ -5,9 +5,10 @@ public class Project {
 
     public static void main(String[] args) throws SQLException {
 
-        ArrayList<User> users;
-
         Log.S("System Started");
+
+        // All users
+        ArrayList<User> users;
 
         // Database Initialization
         String url = "jdbc:postgresql://localhost:5432/Dating";
@@ -24,9 +25,10 @@ public class Project {
 
             Log.S("Connected to PostgreSQL successfully!");
 
+            // Load Current User data if Logged in.
             CurrentUser.initUserData(connection);
-
-            System.out.println(CurrentUser.data);
+            Log.DB("Current User loaded successfully!");
+            Log.S("Current User loaded successfully!");
 
         }
         catch (ClassNotFoundException e) {
@@ -45,19 +47,24 @@ public class Project {
             return;
         }
 
+
+        // Load All Users
         try {
             users = DatabaseIO.getUsers(connection);
-            Log.DB("Users loaded successfully!");
+            Log.DB("All Users loaded successfully!");
         }
         catch (SQLException e) {
             System.out.println("Database was unable to load! :(");
-            Log.E("Database was unable to load! :(");
+            Log.E("Users not loaded");
             return;
         }
 
+
+        // Welcome Screen
         Utility.printWelcome();
 
 
+        // Open Login Menu if not already logged in
         if (CurrentUser.data == null) {
 
             Utility.openLoginMenu();

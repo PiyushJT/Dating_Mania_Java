@@ -4,6 +4,8 @@ public class Utility {
 
     static Scanner scanner = new Scanner(System.in);
 
+
+    // Functions to print lines and tabs
     static void printLines(int lines) {
 
         for (int i = 1; i <= lines; i++)
@@ -18,6 +20,8 @@ public class Utility {
 
     }
 
+
+    // Functions to print welcome screen
     static void printWelcome() {
         printLines(2);
         System.out.println("||======================================||");
@@ -31,6 +35,8 @@ public class Utility {
 
     }
 
+
+    // Function to open login menu
     static void openLoginMenu() {
 
         System.out.println("1. Register");
@@ -39,6 +45,20 @@ public class Utility {
 
         int choice = scanner.nextInt();
 
+    }
+
+
+    // Function to print error message when log file is unaccessible
+    static void printLogInaccessibleError() {
+        printLines(2);
+        System.out.print("||");
+        printTabs(2);
+        System.out.print("Warning");
+        printTabs(2);
+        System.out.print("||");
+        printLines(1);
+        System.out.println("Log file unaccessible.");
+        printLines(2);
     }
 
 }

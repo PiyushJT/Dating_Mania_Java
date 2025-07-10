@@ -3,29 +3,44 @@ import java.sql.*;
 
 public class CurrentUser {
 
+    // current user data
     static User data;
 
+
+    // function to initialize current user data from file
     static void initUserData(Connection connection) throws IOException, SQLException {
 
+        // data file
         File userData = new File("userData.txt");
 
+
+        // if file doesn't exist, not logged in. and return (no need to load data)
         if (!userData.exists())
             return;
 
+        // read data from file
         BufferedReader reader = new BufferedReader(
                 new FileReader(userData)
         );
 
         String line = reader.readLine();
 
+
+        // if file is empty, not logged in. and return (no need to load data)
         if (line == null)
             return;
 
-        int uid = Integer.parseInt(line);
-        reader.close();
+        int uid;
 
-        data = DatabaseIO.getUserFromUid(connection, uid);
+        try {
+            uid = Integer.parseInt(line);
+            reader.close();
 
+            data = DatabaseIO.getUserFromUid(connection, uid);
+        }
+        catch (NumberFormatException e) {
+            Log.E("Current User file is corrupted.");
+        }
 
     }
 }

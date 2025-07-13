@@ -8,7 +8,7 @@ public class CurrentUser {
 
 
     // function to initialize current user data from file
-    static void initUserData(Connection connection) throws IOException, SQLException {
+    static void initUserData() throws IOException, SQLException {
 
         // data file
         File userData = new File("userData.txt");
@@ -30,13 +30,13 @@ public class CurrentUser {
         if (line == null)
             return;
 
-        int uid;
+        int user_id;
 
         try {
-            uid = Integer.parseInt(line);
+            user_id = Integer.parseInt(line);
             reader.close();
 
-            data = DatabaseIO.getUserFromUid(connection, uid);
+            data = DatabaseIO.getUserFromUid(user_id);
         }
         catch (NumberFormatException e) {
             Log.E("Current User file is corrupted.");

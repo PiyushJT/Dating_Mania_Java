@@ -42,6 +42,7 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
+
     // Pretty print
     public String toString() {
         return String.format("%-3d %-20s %-2c %-3d %-11d %s", userId, name, gender, age, phone, email);

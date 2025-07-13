@@ -1,5 +1,4 @@
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.sql.Connection;
 import java.util.*;
 
 public class Utility {
@@ -41,13 +40,115 @@ public class Utility {
     // Function to open login menu
     static void openLoginMenu() {
 
-        System.out.println("1. Register");
-        System.out.println("2. Login");
+        System.out.println("1. Register (Don't have an account");
+        System.out.println("2. Login (Have an account)");
         System.out.println("3. Exit");
+        System.out.print("Enter your choice: ");
 
-        int choice = scanner.nextInt();
+        char choice = scanner.next().charAt(0);
+        scanner.nextLine();
+
+        switch (choice) {
+            case '1':
+                register();
+                break;
+            case '2':
+                login();
+                break;
+            case '3':
+                System.out.println("Exiting...");
+                System.exit(0);
+                break;
+        }
+
 
     }
+
+
+    static boolean register() {
+
+
+        return true;
+    }
+
+
+    static boolean login() {
+
+        String email = "";
+        String password = "";
+
+        while (email.isEmpty() || password.isEmpty()) {
+            System.out.print("Enter email: ");
+            email = scanner.next();
+            scanner.nextLine();
+            System.out.print("Enter password: ");
+            password = scanner.next();
+            scanner.nextLine();
+
+            if (!isEmailValid(email) || !isPasswordValid(password)) {
+                System.out.println("Email or password is invalid.");
+
+                System.out.println("Enter 1. -> Try again");
+                System.out.println("Any other. -> Go back");
+
+                System.out.print("Enter your choice: ");
+                char choice = scanner.next().charAt(0);
+                scanner.nextLine();
+
+                if (choice != '1')
+                    return false;
+
+            }
+
+        }
+
+        Exception exception = null;
+        try {
+
+            CurrentUser.data = DatabaseIO.getUserFromAuth(email, password);
+
+            // Todo: add current user uid to file
+
+        }
+        catch (Exception e) {
+            exception = e;
+
+            System.out.println("Email or password is invalid.");
+
+            System.out.println("Enter 1. -> Try again");
+            System.out.println("Any other. -> Go back");
+
+            System.out.print("Enter your choice: ");
+            char choice = scanner.next().charAt(0);
+            scanner.nextLine();
+
+            if (choice == '1')
+                return login();
+
+            return false;
+        }
+        finally {
+            if (exception != null)
+                exception.printStackTrace();
+        }
+
+        return true;
+    }
+
+
+
+    static boolean isEmailValid(String email) {
+        if (email == null || email.isEmpty())
+            return false;
+        return email.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
+    }
+
+    static boolean isPasswordValid(String password) {
+        if (password == null)
+            return false;
+        return password.length() >= 8;
+    }
+
 
 
     // Function to print error message when log file is unaccessible

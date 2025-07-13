@@ -15,19 +15,17 @@ public class Project {
         String user = "postgres";
         String password = "";
 
-        Connection connection;
-
         // Connect to Database
         Exception exception = null;
         try {
 
             Class.forName("org.postgresql.Driver");
-            connection = DriverManager.getConnection(url, user, password);
+            DatabaseIO.connection = DriverManager.getConnection(url, user, password);
 
             Log.S("Connected to PostgreSQL successfully!");
 
             // Load Current User data if Logged in.
-            CurrentUser.initUserData(connection);
+            CurrentUser.initUserData();
             Log.S("Current User loaded successfully!");
 
         }
@@ -57,7 +55,7 @@ public class Project {
 
         // Load All Users
         try {
-            users = DatabaseIO.getUsers(connection);
+            users = DatabaseIO.getUsers();
             Log.DB("All Users loaded successfully!");
         }
         catch (SQLException e) {

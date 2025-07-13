@@ -1,0 +1,76 @@
+user {
+
+    uid
+    name
+    bio
+    gender
+    age
+    phone
+    email
+    city
+    isActive
+    lastActive
+    isDeleted
+    createdAt
+    updatedAt
+
+}
+
+matches {
+
+    sender_uid
+    receiver_uid
+    isAccepted
+    accepted_at
+    sent_at
+    matched_on (song / hobby / humour)
+    idDeleted
+
+}
+
+user_song {
+
+    uid
+    sid
+
+}
+
+songs {
+
+    sid
+    song_name
+    song_url
+    artist
+    type_id
+
+}
+
+song_types {
+
+    type_id
+    type_name
+
+}
+
+user_hobbies {
+
+    uid
+    hid
+
+}
+
+hobbies {
+
+    hid
+    hobby_name
+
+}
+
+block {
+
+    uid
+    blocked_uid
+    blocked_at
+    isDeleted
+
+}

@@ -40,7 +40,7 @@ public class Log {
             );
         }
         catch (IOException e) {
-            Utility.printLogInaccessibleError();
+            Utility.printLogInaccessibleWarning();
             return;
         }
 
@@ -51,7 +51,7 @@ public class Log {
         );
 
         // format log
-        String log = String.format("%-20s %-9s %-50s", timestamp, type, msg);
+        String log = String.format("%-20s %-9s %s", timestamp, type, msg);
 
         // add log to file
         try {
@@ -60,7 +60,7 @@ public class Log {
             writer.close();
         }
         catch (IOException e) {
-            Utility.printLogInaccessibleError();
+            Utility.printLogInaccessibleWarning();
         }
 
     }

@@ -49,7 +49,7 @@ public class Utility {
 
 
     // Function to print error message when log file is unaccessible
-    static void printLogInaccessibleError() {
+    static void printLogInaccessibleWarning() {
         printLines(2);
         System.out.print("||");
         printTabs(2);

@@ -40,7 +40,7 @@ songs {
     sid
     song_name
     song_url
-    artist
+    artist_name
     type_id
 
 }

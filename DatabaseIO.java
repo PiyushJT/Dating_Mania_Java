@@ -12,7 +12,7 @@ public class DatabaseIO {
 
         // query
         Statement st = connection.createStatement();
-        String query = "SELECT * FROM \"user\"";
+        String query = "SELECT * FROM users";
 
         // result
         ResultSet rs = st.executeQuery(query);
@@ -28,12 +28,12 @@ public class DatabaseIO {
 
 
     // function to get user from uid
-    static User getUserFromUid(Connection connection, int uid) throws SQLException {
+    static User getUserFromUid(Connection connection, int user_id) throws SQLException {
 
 
         // query
         Statement st = connection.createStatement();
-        String query = "SELECT * FROM \"user\" WHERE uid = " + uid + ";";
+        String query = "SELECT * FROM users WHERE user_id = " + user_id + ";";
 
         // result
         ResultSet rs = st.executeQuery(query);

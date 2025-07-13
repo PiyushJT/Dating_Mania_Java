@@ -3,33 +3,77 @@ import java.sql.*;
 public class User {
 
     // User data
-    int uid;
+    int userId;
     String name;
+    String bio;
     char gender;
+    int age;
+    long phone;
+    String email;
+    String city;
+    boolean isActive;
+    long lastActive;
+    boolean isDeleted;
+    long createdAt;
+    long updatedAt;
+
 
 
     // Constructor
-    public User(int uid, String name, char gender) {
-        this.uid = uid;
+    public User(
+            int userId, String name, String bio,
+            char gender, int age, long phone,
+            String email, String city, boolean isActive,
+            long lastActive, boolean isDeleted,
+            long createdAt, long updatedAt
+    ) {
+        this.userId = userId;
         this.name = name;
+        this.bio = bio;
         this.gender = gender;
+        this.age = age;
+        this.phone = phone;
+        this.email = email;
+        this.city = city;
+        this.isActive = isActive;
+        this.lastActive = lastActive;
+        this.isDeleted = isDeleted;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
-
 
     // Pretty print
     public String toString() {
-        return String.format("%-4d %-20s %-2c", uid, name, gender);
+        return String.format("%-3d %-20s %-2c %-3d %-11d %s", userId, name, gender, age, phone, email);
     }
 
 
     // Function to load user from "database result set"
     static User fromDB(ResultSet rs) throws SQLException {
 
-        int id = rs.getInt("uid");
+        int id = rs.getInt("user_id");
         String name = rs.getString("name");
+        String bio = rs.getString("bio");
         char gender = rs.getString("gender").charAt(0);
+        int age = rs.getInt("age");
+        long phone = rs.getLong("phone");
+        String email = rs.getString("email");
+        String city = rs.getString("city");
+        boolean isActive = rs.getBoolean("is_active");
+        boolean isDeleted = rs.getBoolean("is_deleted");
 
-        return new User(id, name, gender);
+
+        long lastActive = Utility.getDateFromSQLDate(
+                rs.getString("last_active")
+        );
+        long createdAt = Utility.getDateFromSQLDate(
+                rs.getString("created_at")
+        );
+        long updatedAt = Utility.getDateFromSQLDate(
+                rs.getString("updated_at")
+        );
+
+        return new User(id, name, bio, gender, age, phone, email, city, isActive, lastActive, isDeleted, createdAt, updatedAt);
 
     }
 

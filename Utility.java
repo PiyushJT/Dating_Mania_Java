@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Utility {
@@ -59,6 +61,18 @@ public class Utility {
         printLines(1);
         System.out.println("Log file unaccessible.");
         printLines(2);
+    }
+
+
+    static long getDateFromSQLDate(String dateStr) {
+
+        return Long.parseLong(
+                dateStr
+                        .replace("-", "")
+                        .replace(":", "")
+                        .replace(" ", "")
+        );
+
     }
 
 }

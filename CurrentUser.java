@@ -32,16 +32,40 @@ public class CurrentUser {
 
         int user_id;
 
+        // parse uid from file and get User data from it
         try {
             user_id = Integer.parseInt(line);
             reader.close();
 
             data = DatabaseIO.getUserFromUid(user_id);
+            Log.S("Current User loaded successfully!");
         }
         catch (NumberFormatException e) {
             Log.E("Current User file is corrupted.");
         }
 
     }
+
+
+    // function to add current user data to file
+    public static void addCurrentUserToFile() {
+
+        try {
+            BufferedWriter writer = new BufferedWriter(
+                    new FileWriter("userData.txt")
+            );
+
+            writer.write(data.getId() + "");
+            writer.close();
+
+            Log.S("Current User's user_id saved to file!");
+
+        }
+        catch (IOException e) {
+            Log.E("Login was unable to store in file.");
+        }
+
+    }
+
 
 }

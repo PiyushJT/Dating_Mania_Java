@@ -78,4 +78,15 @@ public class User {
 
     }
 
+
+    // Getters
+    public String getName() {
+        return name;
+    }
+
+    public int getId() {
+        return userId;
+    }
+
+
 }

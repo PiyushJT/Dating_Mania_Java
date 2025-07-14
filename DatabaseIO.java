@@ -48,23 +48,28 @@ public class DatabaseIO {
 
     }
 
+
+    // function to get user from auth (email and password)
     static User getUserFromAuth(String email, String password) throws SQLException {
 
-
         // query
-        Statement st = connection.createStatement();
         String query = """
-SELECT *
-FROM users
-WHERE user_id = (
-    SELECT user_id
-    FROM auth
-    WHERE email = '%s' AND password = '%s'
-);
-    """.formatted(email, password);
+            SELECT *
+            FROM users
+            WHERE user_id = (
+                SELECT user_id
+                FROM auth
+                WHERE email = ? AND password = ?
+            );
+            """;
+
+        // run query
+        PreparedStatement pst = connection.prepareStatement(query);
+        pst.setString(1, email);
+        pst.setString(2, password);
 
         // result
-        ResultSet rs = st.executeQuery(query);
+        ResultSet rs = pst.executeQuery();
 
         // return the user if exists
         if (!rs.next())

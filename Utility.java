@@ -1,4 +1,3 @@
-import java.sql.Connection;
 import java.util.*;
 
 public class Utility {
@@ -40,31 +39,54 @@ public class Utility {
     // Function to open login menu
     static void openLoginMenu() {
 
-        System.out.println("1. Register (Don't have an account");
-        System.out.println("2. Login (Have an account)");
+        System.out.println("1. Login");
+        System.out.println("2. Register (Don't have an account");
         System.out.println("3. Exit");
         System.out.print("Enter your choice: ");
 
         char choice = scanner.next().charAt(0);
         scanner.nextLine();
 
+
+        // Switch statement to handle user input
         switch (choice) {
+
             case '1':
-                register();
+                if (login()) {
+                    System.out.println("Welcome back " + CurrentUser.data.getName() + ".");
+                    Log.S("User logged in successfully");
+                }
+                else {
+                    System.out.println("Login aborted.");
+                    Log.S("User login aborted");
+                    openLoginMenu();
+                }
+
                 break;
+
             case '2':
-                login();
+                register();
+
                 break;
+
             case '3':
                 System.out.println("Exiting...");
+                Log.S("User exited manually");
                 System.exit(0);
+
+                break;
+
+            default:
+                System.out.println("Invalid choice.");
+                openLoginMenu();
+
                 break;
         }
-
 
     }
 
 
+    // Function to open registration menu
     static boolean register() {
 
 
@@ -72,12 +94,18 @@ public class Utility {
     }
 
 
+    // Function to open login menu
     static boolean login() {
 
+        // Initialize variables
         String email = "";
         String password = "";
 
+
+        // Loop until valid email and password are valid
         while (email.isEmpty() || password.isEmpty()) {
+
+            // Getting user input
             System.out.print("Enter email: ");
             email = scanner.next();
             scanner.nextLine();
@@ -85,44 +113,54 @@ public class Utility {
             password = scanner.next();
             scanner.nextLine();
 
+
+            // validating email and password
             if (!isEmailValid(email) || !isPasswordValid(password)) {
                 System.out.println("Email or password is invalid.");
 
-                System.out.println("Enter 1. -> Try again");
-                System.out.println("Any other. -> Go back");
 
-                System.out.print("Enter your choice: ");
-                char choice = scanner.next().charAt(0);
-                scanner.nextLine();
-
-                if (choice != '1')
+                // if user chooses to try again, loop continues
+                if (tryAgain())
                     return false;
 
             }
 
         }
 
+
+        // Exception for debugging
         Exception exception = null;
         try {
 
+            // Getting user data from database
             CurrentUser.data = DatabaseIO.getUserFromAuth(email, password);
 
-            // Todo: add current user uid to file
+
+            // If user data is null, user is not registered
+            if (CurrentUser.data == null) {
+
+                System.out.println("Wrong email or password.");
+
+                // if user chooses to try again, function is called again
+                if (tryAgain())
+                    return login();
+
+                return false;
+
+            }
+
+
+            // Method to add user_id to current user file
+            CurrentUser.addCurrentUserToFile();
 
         }
+        // Invalid email or password
         catch (Exception e) {
             exception = e;
 
             System.out.println("Email or password is invalid.");
 
-            System.out.println("Enter 1. -> Try again");
-            System.out.println("Any other. -> Go back");
-
-            System.out.print("Enter your choice: ");
-            char choice = scanner.next().charAt(0);
-            scanner.nextLine();
-
-            if (choice == '1')
+            if (tryAgain())
                 return login();
 
             return false;
@@ -137,6 +175,7 @@ public class Utility {
 
 
 
+    // Functions to validate email and password
     static boolean isEmailValid(String email) {
         if (email == null || email.isEmpty())
             return false;
@@ -174,6 +213,18 @@ public class Utility {
                         .replace(" ", "")
         );
 
+    }
+
+
+    // Function to get user input for try again (multiple uses)
+    static boolean tryAgain() {
+        System.out.println("Enter 1. -> Try again");
+        System.out.println("Any other. -> Go back");
+
+        System.out.print("Enter your choice: ");
+        char choice = scanner.next().charAt(0);
+        scanner.nextLine();
+        return choice == '1';
     }
 
 }

@@ -26,7 +26,6 @@ public class Project {
 
             // Load Current User data if Logged in.
             CurrentUser.initUserData();
-            Log.S("Current User loaded successfully!");
 
         }
         catch (ClassNotFoundException e) {

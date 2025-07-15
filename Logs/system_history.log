@@ -1,218 +1,26 @@
-2025-07-13 16:38:37  System    System Started
-2025-07-13 16:38:37  System    Connected to PostgreSQL successfully!
-2025-07-13 16:38:37  Database  Current User loaded successfully!
-2025-07-13 16:38:37  System    Current User loaded successfully!
-2025-07-13 16:38:37  Database  All Users loaded successfully!
-2025-07-13 22:22:46  System    System Started
-2025-07-13 22:22:46  System    Connected to PostgreSQL successfully!
-2025-07-13 22:22:46  System    Current User loaded successfully!
-2025-07-13 22:22:46  Database  All Users loaded successfully!
-2025-07-13 22:23:33  System    System Started
-2025-07-13 22:23:33  System    Connected to PostgreSQL successfully!
-2025-07-13 22:23:33  System    Current User loaded successfully!
-2025-07-13 22:23:33  Database  All Users loaded successfully!
-2025-07-13 22:29:15  System    System Started
-2025-07-13 22:29:15  System    Connected to PostgreSQL successfully!
-2025-07-13 22:29:15  System    Current User loaded successfully!
-2025-07-13 22:29:15  Database  All Users loaded successfully!
-2025-07-13 22:37:09  System    System Started
-2025-07-13 22:37:09  System    Connected to PostgreSQL successfully!
-2025-07-13 22:37:09  System    Current User loaded successfully!
-2025-07-13 22:37:09  Database  All Users loaded successfully!
-2025-07-13 22:39:08  System    System Started
-2025-07-13 22:39:08  System    Connected to PostgreSQL successfully!
-2025-07-13 22:39:08  System    Current User loaded successfully!
-2025-07-13 22:39:08  Database  All Users loaded successfully!
-2025-07-13 22:51:57  System    System Started
-2025-07-13 22:51:57  System    Connected to PostgreSQL successfully!
-2025-07-13 22:51:57  System    Current User loaded successfully!
-2025-07-13 22:51:57  Database  All Users loaded successfully!
-2025-07-13 22:52:41  System    System Started
-2025-07-13 22:52:41  System    Connected to PostgreSQL successfully!
-2025-07-13 22:52:41  System    Current User loaded successfully!
-2025-07-13 22:52:41  Database  All Users loaded successfully!
-2025-07-13 22:54:28  System    System Started
-2025-07-13 22:54:28  System    Connected to PostgreSQL successfully!
-2025-07-13 22:54:28  System    Current User loaded successfully!
-2025-07-13 22:54:28  Database  All Users loaded successfully!
-2025-07-13 22:54:55  System    System Started
-2025-07-13 22:54:55  System    Connected to PostgreSQL successfully!
-2025-07-13 22:54:55  System    Current User loaded successfully!
-2025-07-13 22:54:55  Database  All Users loaded successfully!
-2025-07-13 23:03:01  System    System Started
-2025-07-13 23:03:01  System    Connected to PostgreSQL successfully!
-2025-07-13 23:03:01  System    Current User loaded successfully!
-2025-07-13 23:03:01  Database  All Users loaded successfully!
-2025-07-13 23:18:52  System    System Started
-2025-07-13 23:18:52  System    Connected to PostgreSQL successfully!
-2025-07-13 23:18:52  System    Current User loaded successfully!
-2025-07-13 23:18:52  Database  All Users loaded successfully!
-2025-07-13 23:18:58  System    System Started
-2025-07-13 23:18:58  System    Connected to PostgreSQL successfully!
-2025-07-13 23:18:58  System    Current User loaded successfully!
-2025-07-13 23:18:58  Database  All Users loaded successfully!
-2025-07-13 23:19:07  System    System Started
-2025-07-13 23:19:07  System    Connected to PostgreSQL successfully!
-2025-07-13 23:19:07  System    Current User loaded successfully!
-2025-07-13 23:19:07  Database  All Users loaded successfully!
-2025-07-13 23:19:15  System    System Started
-2025-07-13 23:19:15  System    Connected to PostgreSQL successfully!
-2025-07-13 23:19:15  System    Current User loaded successfully!
-2025-07-13 23:19:15  Database  All Users loaded successfully!
-2025-07-14 00:03:00  System    System Started
-2025-07-14 00:03:00  System    Connected to PostgreSQL successfully!
-2025-07-14 00:03:00  System    Current User loaded successfully!
-2025-07-14 00:03:00  Database  All Users loaded successfully!
-2025-07-14 00:03:16  System    System Started
-2025-07-14 00:03:16  System    Connected to PostgreSQL successfully!
-2025-07-14 00:03:16  System    Current User loaded successfully!
-2025-07-14 00:03:16  Database  All Users loaded successfully!
-2025-07-14 00:35:39  System    System Started
-2025-07-14 00:35:39  System    Connected to PostgreSQL successfully!
-2025-07-14 00:35:39  System    Current User loaded successfully!
-2025-07-14 00:35:39  Database  All Users loaded successfully!
-2025-07-14 00:37:27  System    System Started
-2025-07-14 00:37:27  System    Connected to PostgreSQL successfully!
-2025-07-14 00:37:27  System    Current User loaded successfully!
-2025-07-14 00:37:27  Database  All Users loaded successfully!
-2025-07-14 00:38:47  System    System Started
-2025-07-14 00:38:47  System    Connected to PostgreSQL successfully!
-2025-07-14 00:38:47  System    Current User loaded successfully!
-2025-07-14 00:38:47  Database  All Users loaded successfully!
-2025-07-14 00:39:25  System    System Started
-2025-07-14 00:39:25  System    Connected to PostgreSQL successfully!
-2025-07-14 00:39:25  System    Current User loaded successfully!
-2025-07-14 00:39:25  Database  All Users loaded successfully!
-2025-07-14 00:39:59  System    System Started
-2025-07-14 00:39:59  System    Connected to PostgreSQL successfully!
-2025-07-14 00:39:59  System    Current User loaded successfully!
-2025-07-14 00:39:59  Database  All Users loaded successfully!
-2025-07-14 00:41:21  System    System Started
-2025-07-14 00:41:21  System    Connected to PostgreSQL successfully!
-2025-07-14 00:41:21  System    Current User loaded successfully!
-2025-07-14 00:41:21  Database  All Users loaded successfully!
-2025-07-14 00:42:55  System    System Started
-2025-07-14 00:42:55  System    Connected to PostgreSQL successfully!
-2025-07-14 00:42:55  System    Current User loaded successfully!
-2025-07-14 00:42:55  Database  All Users loaded successfully!
-2025-07-14 00:43:25  System    System Started
-2025-07-14 00:43:25  System    Connected to PostgreSQL successfully!
-2025-07-14 00:43:25  System    Current User loaded successfully!
-2025-07-14 00:43:25  Database  All Users loaded successfully!
-2025-07-14 00:46:11  System    System Started
-2025-07-14 00:46:11  System    Connected to PostgreSQL successfully!
-2025-07-14 00:46:11  System    Current User loaded successfully!
-2025-07-14 00:46:11  Database  All Users loaded successfully!
-2025-07-14 00:48:47  System    System Started
-2025-07-14 00:48:47  System    Connected to PostgreSQL successfully!
-2025-07-14 00:48:47  System    Current User loaded successfully!
-2025-07-14 00:48:47  Database  All Users loaded successfully!
-2025-07-14 00:49:59  System    System Started
-2025-07-14 00:49:59  System    Connected to PostgreSQL successfully!
-2025-07-14 00:49:59  System    Current User loaded successfully!
-2025-07-14 00:49:59  Database  All Users loaded successfully!
-2025-07-14 00:51:32  System    System Started
-2025-07-14 00:51:32  System    Connected to PostgreSQL successfully!
-2025-07-14 00:51:32  System    Current User loaded successfully!
-2025-07-14 00:51:32  Database  All Users loaded successfully!
-2025-07-14 22:22:59  System    System Started
-2025-07-14 22:22:59  System    Connected to PostgreSQL successfully!
-2025-07-14 22:22:59  System    Current User loaded successfully!
-2025-07-14 22:22:59  Database  All Users loaded successfully!
-2025-07-14 22:26:55  System    System Started
-2025-07-14 22:26:55  System    Connected to PostgreSQL successfully!
-2025-07-14 22:26:55  System    Current User loaded successfully!
-2025-07-14 22:26:55  Database  All Users loaded successfully!
-2025-07-14 22:34:27  System    System Started
-2025-07-14 22:34:27  System    Connected to PostgreSQL successfully!
-2025-07-14 22:34:27  System    Current User loaded successfully!
-2025-07-14 22:34:27  Database  All Users loaded successfully!
-2025-07-14 22:35:42  System    System Started
-2025-07-14 22:35:42  System    Connected to PostgreSQL successfully!
-2025-07-14 22:35:42  System    Current User loaded successfully!
-2025-07-14 22:35:42  Database  All Users loaded successfully!
-2025-07-14 22:36:11  System    System Started
-2025-07-14 22:36:11  System    Connected to PostgreSQL successfully!
-2025-07-14 22:36:11  System    Current User loaded successfully!
-2025-07-14 22:36:11  Database  All Users loaded successfully!
-2025-07-14 22:37:43  System    System Started
-2025-07-14 22:37:43  System    Connected to PostgreSQL successfully!
-2025-07-14 22:37:43  System    Current User loaded successfully!
-2025-07-14 22:37:43  Database  All Users loaded successfully!
-2025-07-14 22:37:59  System    System Started
-2025-07-14 22:37:59  System    Connected to PostgreSQL successfully!
-2025-07-14 22:37:59  System    Current User loaded successfully!
-2025-07-14 22:37:59  Database  All Users loaded successfully!
-2025-07-14 22:41:44  System    System Started
-2025-07-14 22:41:44  System    Connected to PostgreSQL successfully!
-2025-07-14 22:41:44  System    Current User loaded successfully!
-2025-07-14 22:41:44  Database  All Users loaded successfully!
-2025-07-14 22:46:07  System    System Started
-2025-07-14 22:46:07  System    Connected to PostgreSQL successfully!
-2025-07-14 22:46:07  System    Current User loaded successfully!
-2025-07-14 22:46:07  Database  All Users loaded successfully!
-2025-07-14 22:47:50  System    System Started
-2025-07-14 22:47:50  System    Connected to PostgreSQL successfully!
-2025-07-14 22:47:50  System    Current User loaded successfully!
-2025-07-14 22:47:50  Database  All Users loaded successfully!
-2025-07-14 22:50:24  System    System Started
-2025-07-14 22:50:24  System    Connected to PostgreSQL successfully!
-2025-07-14 22:50:24  System    Current User loaded successfully!
-2025-07-14 22:50:24  Database  All Users loaded successfully!
-2025-07-14 22:52:21  System    System Started
-2025-07-14 22:52:21  System    Connected to PostgreSQL successfully!
-2025-07-14 22:52:21  System    Current User loaded successfully!
-2025-07-14 22:52:21  Database  All Users loaded successfully!
-2025-07-14 22:54:43  System    System Started
-2025-07-14 22:54:44  System    Connected to PostgreSQL successfully!
-2025-07-14 22:54:44  System    Current User loaded successfully!
-2025-07-14 22:54:44  Database  All Users loaded successfully!
-2025-07-14 22:55:57  System    System Started
-2025-07-14 22:55:57  System    Connected to PostgreSQL successfully!
-2025-07-14 22:55:57  System    Current User loaded successfully!
-2025-07-14 22:55:57  Database  All Users loaded successfully!
-2025-07-14 23:11:35  System    System Started
-2025-07-14 23:11:35  System    Connected to PostgreSQL successfully!
-2025-07-14 23:11:35  System    Current User loaded successfully!
-2025-07-14 23:11:35  Database  All Users loaded successfully!
-2025-07-14 23:17:43  System    System Started
-2025-07-14 23:17:43  System    Connected to PostgreSQL successfully!
-2025-07-14 23:17:43  System    Current User loaded successfully!
-2025-07-14 23:17:43  Database  All Users loaded successfully!
-2025-07-14 23:17:57  System    System Started
-2025-07-14 23:17:57  System    Connected to PostgreSQL successfully!
-2025-07-14 23:17:57  System    Current User loaded successfully!
-2025-07-14 23:17:57  Database  All Users loaded successfully!
-2025-07-14 23:18:06  System    System Started
-2025-07-14 23:18:06  System    Connected to PostgreSQL successfully!
-2025-07-14 23:18:06  System    Current User loaded successfully!
-2025-07-14 23:18:06  Database  All Users loaded successfully!
-2025-07-14 23:18:46  System    System Started
-2025-07-14 23:18:46  System    Connected to PostgreSQL successfully!
-2025-07-14 23:18:46  System    Current User loaded successfully!
-2025-07-14 23:18:46  Database  All Users loaded successfully!
-2025-07-14 23:20:53  System    System Started
-2025-07-14 23:20:53  System    Connected to PostgreSQL successfully!
-2025-07-14 23:20:53  System    Current User loaded successfully!
-2025-07-14 23:20:53  Database  All Users loaded successfully!
-2025-07-14 23:21:35  System    System Started
-2025-07-14 23:21:35  System    Connected to PostgreSQL successfully!
-2025-07-14 23:21:35  System    Current User loaded successfully!
-2025-07-14 23:21:35  Database  All Users loaded successfully!
-2025-07-14 23:22:33  System    System Started
-2025-07-14 23:22:33  System    Connected to PostgreSQL successfully!
-2025-07-14 23:22:33  System    Current User loaded successfully!
-2025-07-14 23:22:33  Database  All Users loaded successfully!
-2025-07-14 23:23:55  System    System Started
-2025-07-14 23:23:55  System    Connected to PostgreSQL successfully!
-2025-07-14 23:23:55  Database  All Users loaded successfully!
-2025-07-14 23:35:01  System    System Started
-2025-07-14 23:35:02  System    Connected to PostgreSQL successfully!
-2025-07-14 23:35:02  Database  All Users loaded successfully!
-2025-07-14 23:36:37  System    System Started
-2025-07-14 23:36:37  System    Connected to PostgreSQL successfully!
-2025-07-14 23:36:37  System    Current User loaded successfully!
-2025-07-14 23:36:37  Database  All Users loaded successfully!
-2025-07-14 23:36:52  System    System Started
-2025-07-14 23:36:52  System    Connected to PostgreSQL successfully!
-2025-07-14 23:36:52  Database  All Users loaded successfully!
+2025-07-15 22:44:50  System    System Started
+2025-07-15 22:44:50  System    Connected to PostgreSQL successfully!
+2025-07-15 22:44:50  Database  All Users loaded successfully!
+2025-07-15 22:45:06  System    Current User's user_id saved to file!
+2025-07-15 22:45:06  System    User logged in successfully
+
+2025-07-15 22:45:25  System    System Started
+2025-07-15 22:45:25  System    Connected to PostgreSQL successfully!
+2025-07-15 22:45:25  System    Current User loaded successfully!
+2025-07-15 22:45:25  Database  All Users loaded successfully!
+
+2025-07-15 22:45:56  System    System Started
+2025-07-15 22:45:56  System    Connected to PostgreSQL successfully!
+2025-07-15 22:45:56  Database  All Users loaded successfully!
+2025-07-15 22:46:16  System    User login aborted
+2025-07-15 22:46:29  System    User login aborted
+2025-07-15 22:46:53  System    User login aborted
+2025-07-15 22:48:12  System    User login aborted
+2025-07-15 22:49:00  System    System Started
+2025-07-15 22:49:00  System    Connected to PostgreSQL successfully!
+2025-07-15 22:49:00  Database  All Users loaded successfully!
+2025-07-15 22:51:38  System    System Started
+2025-07-15 22:51:38  System    Connected to PostgreSQL successfully!
+2025-07-15 22:51:38  Database  All Users loaded successfully!
+2025-07-15 22:51:42  System    User login aborted
+2025-07-15 22:51:51  System    User login aborted

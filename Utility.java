@@ -103,7 +103,7 @@ public class Utility {
 
 
         // Loop until valid email and password are valid
-        while (email.isEmpty() || password.isEmpty()) {
+        while (true) {
 
             // Getting user input
             System.out.print("Enter email: ");
@@ -121,9 +121,12 @@ public class Utility {
 
                 // if user chooses to try again, loop continues
                 if (tryAgain())
+                    continue;
+                else
                     return false;
 
             }
+            break;
 
         }
 

@@ -79,4 +79,52 @@ public class DatabaseIO {
 
     }
 
+    // function to register a new user
+    static void addUserToDB(User user, String password) throws SQLException {
+
+        // get current time
+        Timestamp now = new Timestamp(Utility.getNowLong());
+
+        // Insert into users table
+        String userInsert = """
+                INSERT INTO users (name, bio, gender, age, phone, email, city, is_active, last_active, is_deleted, created_at, updated_at)
+                VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        """;
+
+        PreparedStatement userStmt = connection.prepareStatement(userInsert);
+
+        userStmt.setString(1, user.name);
+        userStmt.setString(2, user.bio);
+        userStmt.setString(3, String.valueOf(user.gender));
+        userStmt.setInt(4, user.age);
+        userStmt.setLong(5, user.phone);
+        userStmt.setString(6, user.email);
+        userStmt.setString(7, user.city);
+        userStmt.setBoolean(8, true); // is_active
+        userStmt.setTimestamp(9, now); // last_active
+        userStmt.setBoolean(10, false); // is_deleted
+        userStmt.setTimestamp(11, now); // created_at
+        userStmt.setTimestamp(12, now); // updated_at
+
+        int r = userStmt.executeUpdate();
+
+
+        // Insert into auth table first to get uid
+        String authInsert = """
+            INSERT INTO auth VALUES (?, ?, (
+                    SELECT user_id FROM users WHERE email = ?
+                )
+            );
+        """;
+
+        PreparedStatement authStmt = connection.prepareStatement(authInsert);
+
+        authStmt.setString(1, user.email);
+        authStmt.setString(2, password);
+        authStmt.setString(3, user.email);
+
+        r = authStmt.executeUpdate();
+
+    }
+
 }

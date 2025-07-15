@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Utility {
@@ -40,7 +42,7 @@ public class Utility {
     static void openLoginMenu() {
 
         System.out.println("1. Login");
-        System.out.println("2. Register (Don't have an account");
+        System.out.println("2. Register (Don't have an account)");
         System.out.println("3. Exit");
         System.out.print("Enter your choice: ");
 
@@ -65,7 +67,15 @@ public class Utility {
                 break;
 
             case '2':
-                register();
+                if (register()) {
+                    System.out.println("Registration successful! Welcome, \n" + CurrentUser.data.getName() + ".");
+                    Log.S("User registered successfully");
+                }
+                else {
+                    System.out.println("Registration aborted.");
+                    Log.S("User registration aborted");
+                    openLoginMenu();
+                }
 
                 break;
 
@@ -89,8 +99,168 @@ public class Utility {
     // Function to open registration menu
     static boolean register() {
 
+        // Prompt for user details
 
-        return true;
+        String name;
+
+        while (true) {
+
+            System.out.print("Enter your name: ");
+            name = scanner.nextLine();
+            if (name.length() > 40) {
+                System.out.println("Name too long. Try a shorter name");
+                continue;
+            }
+            if (name.equals("")) {
+                System.out.println("Name cannot be empty. Try again");
+                continue;
+            }
+            break;
+        }
+
+        String bio;
+
+        while (true) {
+
+            System.out.print("Enter bio: ");
+            bio = scanner.nextLine();
+            if (bio.length() > 100) {
+                System.out.println("Bio too long. Try a shorter bio");
+                continue;
+            }
+            if (bio.equals("")) {
+                System.out.println("bio cannot be empty. Try again");
+                continue;
+            }
+            break;
+        }
+
+
+        char gender;
+
+        while (true) {
+
+            System.out.print("Enter your gender (m/f): ");
+            gender = scanner.next().toLowerCase().charAt(0);
+            scanner.nextLine();
+
+            if (gender != 'm' && gender != 'f') {
+                System.out.println("Your gender is not suitable for this app. Try again");
+                continue;
+            }
+
+            break;
+
+        }
+
+        int age;
+        while (true) {
+
+            System.out.print("Enter your age: ");
+            age = scanner.nextInt();
+            scanner.nextLine();
+
+            if (age < 18 || age > 100) {
+                System.out.println("Your age is not suitable for this app. Try again");
+                continue;
+            }
+            break;
+
+        }
+
+
+        long phone;
+
+        while (true) {
+
+            System.out.print("Enter your phone: ");
+            phone = scanner.nextLong();
+            scanner.nextLine();
+
+            if (phone < 1000000000 || phone > 9999999999L) {
+                System.out.println("Invalid phone number. Try again");
+                continue;
+            }
+            break;
+
+        }
+
+        String city;
+
+        while (true) {
+
+            System.out.print("Enter your city: ");
+            city = scanner.nextLine();
+
+            if (city.isEmpty()) {
+                System.out.println("City cannot be empty. Try again");
+                continue;
+            }
+            break;
+
+        }
+
+        String email;
+
+        while (true) {
+
+            System.out.print("Enter your email: ");
+            email = scanner.next();
+            scanner.nextLine();
+
+            if (!isEmailValid(email)) {
+                System.out.println("Invalid email format. Try again");
+                continue;
+            }
+            break;
+
+        }
+
+
+        String password;
+
+        while (true) {
+
+            System.out.print("Enter your password (min 8 chars): ");
+            password = scanner.next();
+            scanner.nextLine();
+
+            if (!isPasswordValid(password)) {
+                System.out.println("Invalid password format. Try again");
+                continue;
+            }
+            break;
+
+        }
+
+
+        Exception exception = null;
+        try {
+
+            long now = getNowLong();
+
+            // Register user in database
+            User user = new User(0, name, bio, gender, age, phone, email, city, true, now, false, now, now);
+
+            DatabaseIO.addUserToDB(user, password);
+
+            // Set current user and save to file
+            CurrentUser.data = user;
+            CurrentUser.addCurrentUserToFile();
+
+            return true;
+        }
+        catch (Exception e) {
+            exception = e;
+            Log.E("Registration error: " + e.getMessage());
+
+            return false;
+        }
+        finally {
+            if (exception != null)
+                exception.printStackTrace();
+        }
+
     }
 
 
@@ -214,6 +384,7 @@ public class Utility {
                         .replace("-", "")
                         .replace(":", "")
                         .replace(" ", "")
+                        .substring(0, 14)
         );
 
     }
@@ -228,6 +399,16 @@ public class Utility {
         char choice = scanner.next().charAt(0);
         scanner.nextLine();
         return choice == '1';
+    }
+
+    static long getNowLong() {
+        return Long.parseLong(
+                LocalDateTime
+                        .now()
+                        .format(
+                                DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
+                        )
+        );
     }
 
 }

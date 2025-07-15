@@ -1,26 +1,52 @@
-2025-07-15 22:44:50  System    System Started
-2025-07-15 22:44:50  System    Connected to PostgreSQL successfully!
-2025-07-15 22:44:50  Database  All Users loaded successfully!
-2025-07-15 22:45:06  System    Current User's user_id saved to file!
-2025-07-15 22:45:06  System    User logged in successfully
-
-2025-07-15 22:45:25  System    System Started
-2025-07-15 22:45:25  System    Connected to PostgreSQL successfully!
-2025-07-15 22:45:25  System    Current User loaded successfully!
-2025-07-15 22:45:25  Database  All Users loaded successfully!
-
-2025-07-15 22:45:56  System    System Started
-2025-07-15 22:45:56  System    Connected to PostgreSQL successfully!
-2025-07-15 22:45:56  Database  All Users loaded successfully!
-2025-07-15 22:46:16  System    User login aborted
-2025-07-15 22:46:29  System    User login aborted
-2025-07-15 22:46:53  System    User login aborted
-2025-07-15 22:48:12  System    User login aborted
-2025-07-15 22:49:00  System    System Started
-2025-07-15 22:49:00  System    Connected to PostgreSQL successfully!
-2025-07-15 22:49:00  Database  All Users loaded successfully!
-2025-07-15 22:51:38  System    System Started
-2025-07-15 22:51:38  System    Connected to PostgreSQL successfully!
-2025-07-15 22:51:38  Database  All Users loaded successfully!
-2025-07-15 22:51:42  System    User login aborted
-2025-07-15 22:51:51  System    User login aborted
+2025-07-16 00:09:45  System    System Started
+2025-07-16 00:09:45  System    Connected to PostgreSQL successfully!
+2025-07-16 00:09:46  Database  All Users loaded successfully!
+2025-07-16 00:09:58  System    User login aborted
+2025-07-16 00:10:45  System    System Started
+2025-07-16 00:10:45  System    Connected to PostgreSQL successfully!
+2025-07-16 00:10:45  Database  All Users loaded successfully!
+2025-07-16 00:43:31  System    System Started
+2025-07-16 00:43:31  System    Connected to PostgreSQL successfully!
+2025-07-16 00:43:31  Database  All Users loaded successfully!
+2025-07-16 00:44:23  Error     Registration error: ERROR: column "last_active" is of type timestamp without time zone but expression is of type character varying
+  Hint: You will need to rewrite or cast the expression.
+  Position: 179
+2025-07-16 00:44:23  System    User registration aborted
+2025-07-16 00:46:49  System    System Started
+2025-07-16 00:46:49  System    Connected to PostgreSQL successfully!
+2025-07-16 00:46:49  Database  All Users loaded successfully!
+2025-07-16 00:47:07  System    Current User's user_id saved to file!
+2025-07-16 00:47:07  System    User registered successfully
+2025-07-16 00:47:07  System    User registered successfully
+2025-07-16 00:49:31  System    System Started
+2025-07-16 00:49:32  System    Connected to PostgreSQL successfully!
+2025-07-16 00:49:32  System    Current User loaded successfully!
+2025-07-16 00:50:27  System    System Started
+2025-07-16 00:50:27  System    Connected to PostgreSQL successfully!
+2025-07-16 00:50:27  System    Current User loaded successfully!
+2025-07-16 00:50:27  Database  All Users loaded successfully!
+2025-07-16 00:50:53  System    Current User's user_id saved to file!
+2025-07-16 00:50:53  System    User registered successfully
+2025-07-16 00:50:53  System    User registered successfully
+2025-07-16 00:54:36  System    System Started
+2025-07-16 00:54:36  System    Connected to PostgreSQL successfully!
+2025-07-16 00:54:36  System    Current User loaded successfully!
+2025-07-16 00:54:36  Database  All Users loaded successfully!
+2025-07-16 00:55:41  System    System Started
+2025-07-16 00:55:42  System    Connected to PostgreSQL successfully!
+2025-07-16 00:55:42  System    Current User loaded successfully!
+2025-07-16 00:55:42  Database  All Users loaded successfully!
+2025-07-16 00:55:55  System    System Started
+2025-07-16 00:55:55  System    Connected to PostgreSQL successfully!
+2025-07-16 00:55:55  System    Current User loaded successfully!
+2025-07-16 00:55:55  Database  All Users loaded successfully!
+2025-07-16 00:56:27  System    System Started
+2025-07-16 00:56:27  System    Connected to PostgreSQL successfully!
+2025-07-16 00:56:27  System    Current User loaded successfully!
+2025-07-16 00:56:27  Database  All Users loaded successfully!
+2025-07-16 00:58:30  System    System Started
+2025-07-16 00:58:31  System    Connected to PostgreSQL successfully!
+2025-07-16 00:58:31  System    Current User loaded successfully!
+2025-07-16 00:58:31  Database  All Users loaded successfully!
+2025-07-16 00:59:19  System    Current User's user_id saved to file!
+2025-07-16 00:59:19  System    User registered successfully

@@ -288,3 +288,8 @@
 2025-07-17 00:35:11  System    System Started
 2025-07-17 00:35:11  System    Connected to PostgreSQL successfully!
 2025-07-17 00:35:11  Database  All Users loaded successfully!
+2025-07-17 00:35:55  System    System Started
+2025-07-17 00:35:55  System    Connected to PostgreSQL successfully!
+2025-07-17 00:35:55  Database  All Users loaded successfully!
+2025-07-17 00:36:13  System    Current User's user_id saved to file!
+2025-07-17 00:36:13  System    User logged in successfully

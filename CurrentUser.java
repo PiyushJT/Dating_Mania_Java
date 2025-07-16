@@ -11,6 +11,8 @@ public class CurrentUser {
 
     static ArrayList<Hobby> hobbies;
 
+    static ArrayList<Song> songs;
+
 
     // function to initialize current user data from file
     static void initUserData() throws IOException, SQLException {
@@ -60,6 +62,16 @@ public class CurrentUser {
             catch (SQLException e) {
                 hobbies = new ArrayList<>();
                 Log.E("Current User hobbies could not be loaded.");
+            }
+
+            try {
+                songs = DatabaseIO.getSongsFromUID(
+                                data.getId()
+                        );
+            }
+            catch (SQLException e) {
+                songs = new ArrayList<>();
+                Log.E("Current User songs could not be loaded.");
             }
 
         }

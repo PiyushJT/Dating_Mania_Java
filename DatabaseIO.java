@@ -138,13 +138,13 @@ public class DatabaseIO {
             SELECT
                 H.hobby_id, H.hobby_name
             FROM
-                user_hobbies US
+                user_hobbies UH
                 INNER JOIN
                 hobbies H
                 ON
-                US.hobby_id = H.hobby_id
+                UH.hobby_id = H.hobby_id
             WHERE
-                US.user_id = ?;
+                UH.user_id = ?;
         """;
 
 
@@ -162,6 +162,8 @@ public class DatabaseIO {
 
         return hobbies;
     }
+
+
 
     public static void addHobbiesToDB(int[] ind) throws SQLException {
 
@@ -191,6 +193,83 @@ public class DatabaseIO {
             pst.executeUpdate();
         }
 
+        CurrentUser.hobbies = getHobbiesFromUID(CurrentUser.data.userId);
 
     }
+
+    public static ArrayList<Song> getSongsFromUID(int uid) throws SQLException {
+
+
+        ArrayList<Song> hobbies = new ArrayList<>();
+
+        // query
+        String query = """
+            SELECT
+            	S.song_id, S.song_name,
+            	S.song_url, S.artist_name,
+            	T.type_name
+            FROM
+            	user_song US
+                INNER JOIN
+                songs S
+                ON
+                US.song_id = S.song_id
+            	INNER JOIN
+            	song_types T
+            	on
+            	T.type_id = S.type_id
+            WHERE
+            	US.user_id = ?;
+        """;
+
+
+        // query
+        PreparedStatement pst = connection.prepareStatement(query);
+        pst.setInt(1, uid);
+
+        // result
+        ResultSet rs = pst.executeQuery();
+
+
+        // getting users' data from result
+        while (rs.next())
+            hobbies.add(Song.fromDB(rs));
+
+        return hobbies;
+
+    }
+
+
+    public static void addSongsToDB(int[] ind) throws SQLException {
+
+        String deleteQuery = """
+                    DELETE FROM user_song
+                    WHERE user_id = ?;
+                """;
+
+        PreparedStatement pst = connection.prepareStatement(deleteQuery);
+        pst.setInt(1, CurrentUser.data.userId);
+
+        pst.executeUpdate();
+
+
+        String insertQuery = """
+                    INSERT INTO user_song (user_id, song_id)
+                    VALUES (?, ?);
+                """;
+
+
+        pst = connection.prepareStatement(insertQuery);
+        pst.setInt(1, CurrentUser.data.userId);
+
+        for (int i : ind) {
+            pst.setInt(2, i);
+            pst.executeUpdate();
+
+        }
+
+        CurrentUser.songs = getSongsFromUID(CurrentUser.data.userId);
+    }
+
+
 }

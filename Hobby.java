@@ -30,26 +30,26 @@ public class Hobby {
 
 
 
-    int hobby_id;
-    String hobby_name;
+    int hobbyId;
+    String hobbyName;
 
-    public Hobby(int hobby_id, String hobby_name) {
-        this.hobby_id = hobby_id;
-        this.hobby_name = hobby_name;
+    public Hobby(int hobbyId, String hobbyName) {
+        this.hobbyId = hobbyId;
+        this.hobbyName = hobbyName;
     }
 
-    public String getHobby_name() {
-        return hobby_name;
+    public String getHobbyName() {
+        return hobbyName;
     }
 
 
     static Hobby fromDB(ResultSet rs) throws SQLException {
 
 
-        int hobby_id = rs.getInt("hobby_id");
-        String hobby_name = rs.getString("hobby_name");
+        int hobbyId = rs.getInt("hobby_id");
+        String hobbyName = rs.getString("hobby_name");
 
-        return new Hobby(hobby_id, hobby_name);
+        return new Hobby(hobbyId, hobbyName);
 
     }
 

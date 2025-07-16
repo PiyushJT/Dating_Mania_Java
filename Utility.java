@@ -1,9 +1,7 @@
-import java.security.spec.RSAOtherPrimeInfo;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.function.DoubleBinaryOperator;
 
 public class Utility {
 
@@ -534,6 +532,12 @@ public class Utility {
 
                 openMainMenu();
 
+                break;
+
+
+            case "10":
+                System.out.println("Logging out...");
+                CurrentUser.removeCurrentUserFromFile();
                 break;
 
             case "11":

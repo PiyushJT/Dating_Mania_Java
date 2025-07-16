@@ -2,8 +2,6 @@ import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 
-import javax.net.ssl.HostnameVerifier;
-
 public class CurrentUser {
 
     // current user data
@@ -18,7 +16,7 @@ public class CurrentUser {
     static void initUserData() throws IOException, SQLException {
 
         // data file
-        File userData = new File("userData.txt");
+        File userData = new File("user_data.txt");
 
 
         // if file doesn't exist, not logged in. and return (no need to load data)
@@ -84,7 +82,7 @@ public class CurrentUser {
 
         try {
             BufferedWriter writer = new BufferedWriter(
-                    new FileWriter("userData.txt")
+                    new FileWriter("user_data.txt")
             );
 
             writer.write(data.getId() + "");
@@ -97,6 +95,21 @@ public class CurrentUser {
             Log.E("Login was unable to store in file.");
         }
 
+    }
+
+
+    public static void removeCurrentUserFromFile() {
+        try {
+            BufferedWriter writer = new BufferedWriter(
+                    new FileWriter("user_data.txt")
+            );
+
+            writer.write("");
+            writer.close();
+        }
+        catch (Exception e) {
+            Log.E("Login was unable ot delete.");
+        }
     }
 
 

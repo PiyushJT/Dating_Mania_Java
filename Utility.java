@@ -1,6 +1,8 @@
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.function.DoubleBinaryOperator;
 
 public class Utility {
 
@@ -44,6 +46,7 @@ public class Utility {
         System.out.println("1. Login");
         System.out.println("2. Register (Don't have an account)");
         System.out.println("3. Exit");
+
         System.out.print("Enter your choice: ");
 
         char choice = scanner.next().charAt(0);
@@ -346,6 +349,116 @@ public class Utility {
         return true;
     }
 
+
+    static void openMainMenu() {
+
+        System.out.println("1. Update hobbies");
+        System.out.println("2. Update song interests");
+        System.out.println("3. Create new match");
+        System.out.println("4. Match requests");
+        System.out.println("5. Open my profile");
+        System.out.println("6. Block / unblock user");
+        System.out.println("7. Delete / Deactivate account");
+        System.out.println("8. Open chats");
+        System.out.println("10. Log out");
+        System.out.println("11. Exit");
+
+        System.out.print("Enter your choice: ");
+
+        String choice = scanner.next();
+        scanner.nextLine();
+
+        switch (choice) {
+            case "1":
+                System.out.println("Update hobbies");
+
+                if (CurrentUser.hobbies.isEmpty()) {
+                    System.out.println("You have no hobbies.");
+                }
+                else {
+
+                    System.out.println("Your hobbies are:");
+
+                    for (Hobby hobby : CurrentUser.hobbies)
+                        System.out.println("- " + hobby.getHobby_name());
+
+                }
+
+                System.out.println("Enter 1. -> Edit hobbies");
+                System.out.println("Any other. -> Go back");
+
+
+                System.out.print("Enter your choice: ");
+                char choice1 = scanner.next().charAt(0);
+                scanner.nextLine();
+
+
+                if (choice1 == '1') {
+
+                    for (int i = 1; i <= Hobby.hobbies.size(); i++)
+                        System.out.println(i + ". " + Hobby.hobbies.get(i));
+
+
+                    int[] ind;
+
+                    outer: while (true) {
+
+                        System.out.println("Enter comma-separated indices of hobbies to add to your new list.");
+                        System.out.println("Example: 1,2,3");
+
+                        String input = scanner.next();
+                        scanner.nextLine();
+                        String[] parts = input.split(",");
+
+                        ind = new int[parts.length];
+
+                        for (int i = 0; i < parts.length; i++) {
+                            try {
+                                ind[i] = Integer.parseInt(parts[i].trim());
+
+                                if (ind[i] > 20 || ind[i] < 1) {
+                                    System.out.println("Invalid index. Try again.");
+                                    continue outer; // <-- This skips current outer loop iteration
+                                }
+
+                            }
+                            catch (NumberFormatException e) {
+                                System.out.println("Invalid input. Try again.");
+                                continue outer; // <-- This also skips to next outer loop iteration
+                            }
+                        }
+
+                        break; // all inputs were valid, exit the outer loop
+                    }
+
+
+                    try {
+                        DatabaseIO.addHobbiesToDB(ind);
+                    }
+                    catch (SQLException e) {
+                        return;
+                    }
+
+                }
+                else {
+                    openMainMenu();
+                }
+
+                break;
+
+
+            case "11":
+                System.out.println("Exiting...");
+                System.exit(0);
+
+            default:
+                System.out.println("Invalid choice.");
+                openMainMenu();
+                break;
+
+        }
+
+    }
 
 
     // Functions to validate email and password

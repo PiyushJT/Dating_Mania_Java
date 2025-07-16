@@ -69,11 +69,13 @@ public class Project {
 
 
         // Open Login Menu if not already logged in
-        if (CurrentUser.data == null) {
-
+        if (CurrentUser.data == null)
             Utility.openLoginMenu();
+        else
+            System.out.println("Welcome back " + CurrentUser.data.name + "!");
 
-        }
+
+        Utility.openMainMenu();
 
     }
 

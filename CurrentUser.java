@@ -1,10 +1,15 @@
 import java.io.*;
 import java.sql.*;
+import java.util.ArrayList;
+
+import javax.net.ssl.HostnameVerifier;
 
 public class CurrentUser {
 
     // current user data
     static User data;
+
+    static ArrayList<Hobby> hobbies;
 
 
     // function to initialize current user data from file
@@ -41,7 +46,22 @@ public class CurrentUser {
             Log.S("Current User loaded successfully!");
         }
         catch (NumberFormatException e) {
+            data = null;
             Log.E("Current User file is corrupted.");
+        }
+
+        if (data != null) {
+
+            try {
+                hobbies = DatabaseIO.getHobbiesFromUID(
+                                data.getId()
+                        );
+            }
+            catch (SQLException e) {
+                hobbies = new ArrayList<>();
+                Log.E("Current User hobbies could not be loaded.");
+            }
+
         }
 
     }

@@ -79,6 +79,7 @@ public class DatabaseIO {
 
     }
 
+
     // function to register a new user
     static void addUserToDB(User user, String password) throws SQLException {
 
@@ -127,4 +128,69 @@ public class DatabaseIO {
 
     }
 
+
+    static ArrayList<Hobby> getHobbiesFromUID(int uid) throws SQLException {
+
+        ArrayList<Hobby> hobbies = new ArrayList<>();
+
+        // query
+        String query = """
+            SELECT
+                H.hobby_id, H.hobby_name
+            FROM
+                user_hobbies US
+                INNER JOIN
+                hobbies H
+                ON
+                US.hobby_id = H.hobby_id
+            WHERE
+                US.user_id = ?;
+        """;
+
+
+        // query
+        PreparedStatement pst = connection.prepareStatement(query);
+        pst.setInt(1, uid);
+
+        // result
+        ResultSet rs = pst.executeQuery();
+
+
+        // getting users' data from result
+        while (rs.next())
+            hobbies.add(Hobby.fromDB(rs));
+
+        return hobbies;
+    }
+
+    public static void addHobbiesToDB(int[] ind) throws SQLException {
+
+
+        String deleteQuery = """
+            DELETE FROM user_hobbies
+            WHERE user_id = ?;
+        """;
+
+        PreparedStatement pst = connection.prepareStatement(deleteQuery);
+        pst.setInt(1, CurrentUser.data.userId);
+
+        pst.executeUpdate();
+
+
+        String insertQuery = """
+            INSERT INTO user_hobbies (user_id, hobby_id)
+            VALUES (?, ?);
+        """;
+
+
+        pst = connection.prepareStatement(insertQuery);
+        pst.setInt(1, CurrentUser.data.userId);
+
+        for (int i : ind) {
+            pst.setInt(2, i);
+            pst.executeUpdate();
+        }
+
+
+    }
 }

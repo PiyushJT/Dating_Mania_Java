@@ -1,3 +1,4 @@
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -346,6 +347,13 @@ public class Utility {
                 exception.printStackTrace();
         }
 
+
+        try {
+            CurrentUser.initUserData();
+        }
+        catch (Exception e) {
+            Log.E("Error initializing user data: " + e.getMessage());
+        }
         return true;
     }
 
@@ -396,7 +404,7 @@ public class Utility {
                 System.out.println("1. Delete account");
                 System.out.println("2. Deactivate account");
 
-                System.out.println("3. Cancel");
+                System.out.println("Any other -> Cancel");
 
                 System.out.print("Enter your choice: ");
 
@@ -433,19 +441,32 @@ public class Utility {
 
                     case "2":  {
 
+                        System.out.println("Deactivate account");
 
-                        break;
-                    }
+                        System.out.println("Enter your password to confirm: ");
+                        String password = scanner.next();
+                        scanner.nextLine();
 
-                    case "3": {
+                        try {
+                            if (DatabaseIO.deactivateUser(password)) {
+                                CurrentUser.logOut();
 
-                        openMainMenu();
+                                System.out.println("Account deactivated successfully.");
+                                System.out.println("Log in again to activate your account.");
+                            }
+                            else
+                                System.out.println("Wrong password.");
+                        }
+                        catch (Exception e) {
+                            System.out.println("Some error occurred..");
+                            openMainMenu();
+                            return;
+                        }
+
                         break;
                     }
 
                     default: {
-
-                        System.out.println("Invalid choice.");
                         openMainMenu();
                         break;
                     }

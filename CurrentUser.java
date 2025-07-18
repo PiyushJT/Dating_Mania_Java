@@ -7,8 +7,8 @@ public class CurrentUser {
     // current user data
     static User data;
 
-    static ArrayList<Hobby> hobbies;
-    static ArrayList<Song> songs;
+    static ArrayList<Hobby> hobbies = new ArrayList<>();
+    static ArrayList<Song> songs = new ArrayList<>();
 
     static Scanner scanner = new Scanner(System.in);
 
@@ -258,6 +258,17 @@ public class CurrentUser {
             }
 
         }
+
+    }
+
+
+    public static void logOut() {
+
+        removeCurrentUserFromFile();
+
+        data = null;
+        hobbies.clear();
+        songs.clear();
 
     }
 

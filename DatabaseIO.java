@@ -272,4 +272,46 @@ public class DatabaseIO {
     }
 
 
+    static boolean deleteUser(String password) throws SQLException {
+
+
+
+        String getPassQuery = """
+                    SELECT password
+                    FROM auth
+                    WHERE user_id = ?;
+                """;
+
+        PreparedStatement pst = connection.prepareStatement(getPassQuery);
+        pst.setInt(1, CurrentUser.data.userId);
+
+        ResultSet rs = pst.executeQuery();
+
+        if (!rs.next())
+            return false;
+
+        String pass = rs.getString("password");
+
+        System.out.println(pass);
+
+        if (!pass.equals(password))
+            return false;
+
+        String deleteQuery = """
+                    UPDATE users
+                    SET is_deleted = true
+                    WHERE user_id = ?
+                """;
+
+        pst = connection.prepareStatement(deleteQuery);
+        pst.setInt(1, CurrentUser.data.userId);
+
+        int r = pst.executeUpdate();
+
+        return r == 1;
+
+
+    }
+
+
 }

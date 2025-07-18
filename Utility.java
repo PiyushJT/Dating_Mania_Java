@@ -58,6 +58,7 @@ public class Utility {
                 if (login()) {
                     System.out.println("Welcome back " + CurrentUser.data.getName() + ".");
                     Log.S("User logged in successfully");
+                    openMainMenu();
                 }
                 else {
                     System.out.println("Login aborted.");
@@ -71,6 +72,7 @@ public class Utility {
                 if (register()) {
                     System.out.println("Registration successful! Welcome, \n" + CurrentUser.data.getName() + ".");
                     Log.S("User registered successfully");
+                    openMainMenu();
                 }
                 else {
                     System.out.println("Registration aborted.");
@@ -358,8 +360,8 @@ public class Utility {
         System.out.println("6. Block / unblock user");
         System.out.println("7. Delete / Deactivate account");
         System.out.println("8. Open chats");
-        System.out.println("10. Log out");
-        System.out.println("11. Exit");
+        System.out.println("9. Log out");
+        System.out.println("10. Exit");
 
         System.out.print("Enter your choice: ");
 
@@ -387,16 +389,91 @@ public class Utility {
             }
 
 
-            case "10": {
+            case "7": {
+
+                System.out.println("Delete / Deactivate account");
+
+                System.out.println("1. Delete account");
+                System.out.println("2. Deactivate account");
+
+                System.out.println("3. Cancel");
+
+                System.out.print("Enter your choice: ");
+
+                String choice2 = scanner.next();
+                scanner.nextLine();
+
+                switch (choice2) {
+
+                    case "1": {
+
+                        System.out.println("Delete account");
+
+                        System.out.println("Enter your password to confirm: ");
+                        String password = scanner.next();
+                        scanner.nextLine();
+
+                        try {
+                            if (DatabaseIO.deleteUser(password)) {
+                                CurrentUser.logOut();
+
+                                System.out.println("Account deleted successfully.");
+                            }
+                            else
+                                System.out.println("Wrong password.");
+                        }
+                        catch (Exception e) {
+                            System.out.println("Some error occurred..");
+                            openMainMenu();
+                            return;
+                        }
+
+                        break;
+                    }
+
+                    case "2":  {
+
+
+                        break;
+                    }
+
+                    case "3": {
+
+                        openMainMenu();
+                        break;
+                    }
+
+                    default: {
+
+                        System.out.println("Invalid choice.");
+                        openMainMenu();
+                        break;
+                    }
+
+                }
+
+                if (CurrentUser.data == null)
+                    openLoginMenu();
+                else
+                    openMainMenu();
+                break;
+
+
+            }
+
+
+
+            case "9": {
 
                 System.out.println("Logging out...");
-                CurrentUser.removeCurrentUserFromFile();
+                CurrentUser.logOut();
 
                 break;
 
             }
 
-            case "11": {
+
+            case "10": {
 
                 System.out.println("Exiting...");
                 System.exit(0);

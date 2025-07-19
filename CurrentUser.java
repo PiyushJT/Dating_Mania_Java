@@ -273,4 +273,279 @@ public class CurrentUser {
     }
 
 
+    public static void editProfile() {
+
+        System.out.println("Edit Profile");
+
+
+        while (true) {
+            System.out.println("1. Edit name.");
+            System.out.println("2. Edit bio.");
+            System.out.println("3. Edit gender.");
+            System.out.println("4. Edit age.");
+            System.out.println("5. Edit phone.");
+            System.out.println("6. Edit city.");
+            System.out.println("7. Edit email.");
+            System.out.println("8. Edit password.");
+            System.out.println("Any other -> Go back.");
+
+            System.out.print("Enter your choice: ");
+
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+
+                case "1": {
+                    String name;
+                    while (true) {
+
+                        System.out.print("Enter new name: ");
+                        name = scanner.nextLine();
+                        if (name.length() > 40) {
+                            System.out.println("Name too long. Try a shorter name");
+                            continue;
+                        }
+                        if (name.isEmpty()) {
+                            System.out.println("Name cannot be empty. Try again");
+                            continue;
+                        }
+                        break;
+                    }
+
+                    try {
+                        DatabaseIO.updateProfile("name", name);
+                    }
+                    catch (SQLException e) {
+                        break;
+                    }
+
+                    break;
+                }
+
+                case "2": {
+
+                    String bio;
+
+                    while (true) {
+
+                        System.out.print("Enter new bio: ");
+                        bio = scanner.nextLine();
+                        if (bio.length() > 100) {
+                            System.out.println("Bio too long. Try a shorter bio");
+                            continue;
+                        }
+                        if (bio.isEmpty()) {
+                            System.out.println("bio cannot be empty. Try again");
+                            continue;
+                        }
+                        break;
+                    }
+
+                    try {
+                        DatabaseIO.updateProfile("bio", bio);
+                    }
+                    catch (SQLException e) {
+                        break;
+                    }
+
+                    break;
+
+                }
+
+                case "3": {
+                    char gender;
+                    while (true) {
+
+                        System.out.print("Enter your gender (m/f): ");
+                        gender = scanner.next().toLowerCase().charAt(0);
+                        scanner.nextLine();
+
+                        if (gender != 'm' && gender != 'f') {
+                            System.out.println("Your gender is not suitable for this app. Try again");
+                            continue;
+                        }
+
+                        break;
+
+                    }
+                    try {
+                        DatabaseIO.updateProfile("gender", gender + "");
+                    }
+                    catch (SQLException e) {
+                        break;
+                    }
+
+                    break;
+                }
+
+
+                case "4": {
+                    int age;
+                    while (true) {
+                        System.out.print("Enter your age: ");
+                        age = scanner.nextInt();
+                        scanner.nextLine();
+                        if (age < 18 || age > 100) {
+                            System.out.println("Your age is not suitable for this app. Try again");
+                            continue;
+                        }
+                        break;
+                    }
+                    try {
+                        DatabaseIO.updateProfile("age", age);
+                    }
+                    catch (SQLException e) {
+                        break;
+                    }
+
+                    break;
+                }
+
+                case "5": {
+
+                    long phone;
+                    while (true) {
+                        System.out.print("Enter your phone: ");
+                        phone = scanner.nextLong();
+                        scanner.nextLine();
+
+                        if (phone < 1000000000 || phone > 9999999999L) {
+                            System.out.println("Your phone number is not suitable for this app. Try again");
+                            continue;
+                        }
+                        break;
+                    }
+                    try {
+                        if (DatabaseIO.updateProfile("phone", phone + ""))
+                            System.out.println("Update Successful");
+                        else
+                            System.out.println("Update Failed");
+                    }
+                    catch (SQLException e) {
+                        System.out.println("Update Failed");
+                        break;
+                    }
+
+                }
+
+                case "6": {
+                    String city;
+                    while (true) {
+                        System.out.print("Enter your city: ");
+                        city = scanner.nextLine();
+                        if (city.length() > 20) {
+                            System.out.println("City too long. Try a shorter city");
+                            continue;
+                        }
+                        if (city.isEmpty()) {
+                            System.out.println("City cannot be empty. Try again");
+                            continue;
+                        }
+                        break;
+                    }
+                    try {
+                        DatabaseIO.updateProfile("city", city);
+                    }
+                    catch (SQLException e) {
+                        break;
+                    }
+
+                    break;
+                }
+
+                case "7": {
+
+                    String email;
+                    while (true) {
+                        System.out.print("Enter your email: ");
+                        email = scanner.nextLine();
+
+                        if (email.length() > 30) {
+                            System.out.println("Email too long. Try a shorter email");
+                            continue;
+                        }
+                        if (email.equals("")) {
+                            System.out.println("Email cannot be empty. Try again");
+                            continue;
+                        }
+                        break;
+                    }
+                    try {
+                        DatabaseIO.updateProfile("email", email);
+                    }
+                    catch (SQLException e) {
+                        break;
+                    }
+
+                    break;
+                }
+
+                case "8": {
+
+
+                    String password = "";
+
+                    while (true) {
+                        System.out.println("Enter current password: ");
+                        password = scanner.nextLine();
+
+                        try {
+                            if (CurrentUser.data.userId == DatabaseIO.getUserFromAuth(CurrentUser.data.email, password).userId)
+                                break;
+                            else {
+                                System.out.println("Incorrect Password.");
+                                if (!Utility.tryAgain())
+                                    break;
+                            }
+                        }
+                        catch (Exception e) {
+                            System.out.println("Incorrect Password.");
+
+                            if (!Utility.tryAgain())
+                                break;
+
+                        }
+
+                    }
+
+                    String newPassword;
+
+                    while (true) {
+                        System.out.print("Enter your new password: ");
+                        newPassword = scanner.nextLine();
+                        if (newPassword.length() > 20) {
+                            System.out.println("Password too long. Try a shorter password");
+                            continue;
+                        }
+                        if (newPassword.equals("")) {
+                            System.out.println("Password cannot be empty. Try again");
+                            continue;
+                        }
+                        break;
+                    }
+                    try {
+                        if(DatabaseIO.updatePassword(newPassword))
+                            System.out.println("Update Successful");
+                        else
+                            System.out.println("Update Failed");
+                    }
+                    catch (SQLException e) {
+                        System.out.println("Update Failed");
+                        break;
+                    }
+
+                    break;
+
+                }
+
+                default: {
+                    return;
+                }
+
+            }
+
+        }
+
+    }
+
 }

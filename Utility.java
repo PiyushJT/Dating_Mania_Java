@@ -397,6 +397,76 @@ public class Utility {
             }
 
 
+            case "5": {
+
+                System.out.println("My Profile");
+
+                System.out.println("Name: ");
+                printTabs(1);
+                System.out.print(CurrentUser.data.getName());
+                printLines(1);
+
+                System.out.println("Bio: ");
+                printTabs(1);
+                System.out.print(CurrentUser.data.getBio());
+                printLines(1);
+
+                System.out.println("Gender: ");
+                printTabs(1);
+                System.out.print(CurrentUser.data.getGender());
+                printLines(1);
+
+                System.out.println("Age: ");
+                printTabs(1);
+                System.out.print(CurrentUser.data.getAge());
+                printLines(1);
+
+                System.out.println("Phone: ");
+                printTabs(1);
+                System.out.print(CurrentUser.data.getPhone());
+                printLines(1);
+
+                System.out.println("Email: ");
+                printTabs(1);
+                System.out.print(CurrentUser.data.getEmail());
+                printLines(1);
+
+                System.out.println("City: ");
+                printTabs(1);
+                System.out.print(CurrentUser.data.getCity());
+                printLines(1);
+
+                System.out.println("Hobbies: ");
+                for (Hobby hobby : CurrentUser.hobbies)
+                    System.out.println("\t" + hobby.getHobbyName());
+                printLines(1);
+
+                System.out.println("Song interests: ");
+                for (Song song : CurrentUser.songs)
+                    System.out.println("\t" + song);
+                printLines(1);
+
+
+                // Todo: friends / matches
+
+
+                System.out.println("1. Edit profile");
+                System.out.println("Any other -> Go Back");
+
+                System.out.print("Enter your choice: ");
+                String choice2 = scanner.next();
+                scanner.nextLine();
+
+                if (choice2.equals("1"))
+                    CurrentUser.editProfile();
+                else
+                    openMainMenu();
+
+
+                break;
+            }
+
+
             case "7": {
 
                 System.out.println("Delete / Deactivate account");

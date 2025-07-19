@@ -352,6 +352,70 @@ public class DatabaseIO {
     }
 
 
+    static boolean updateProfile(String toUpdate, String value) throws SQLException {
+
+
+        String query = """
+                UPDATE users
+                SET
+                """ + toUpdate +  """
+                 = ?
+                WHERE user_id = ?;
+            """;
+
+        PreparedStatement pst = connection.prepareStatement(query);
+        pst.setString(1, value);
+        pst.setInt(2, CurrentUser.data.userId);
+
+        int r = pst.executeUpdate();
+
+        return r == 1;
+
+    }
+
+
+    static boolean updateProfile(String toUpdate, int value) throws SQLException {
+
+
+        String query = """
+                UPDATE users
+                SET
+                """ + toUpdate +  """
+                 = ?
+                WHERE user_id = ?;
+            """;
+
+        PreparedStatement pst = connection.prepareStatement(query);
+        pst.setInt(1, value);
+        pst.setInt(2, CurrentUser.data.userId);
+
+        int r = pst.executeUpdate();
+
+        return r == 1;
+
+    }
+
+
+    static boolean updatePassword(String password) throws SQLException {
+
+
+        String query = """
+                UPDATE auth
+                SET password = ?
+                WHERE user_id = ?;
+            """;
+
+        PreparedStatement pst = connection.prepareStatement(query);
+        pst.setString(1, password);
+        pst.setInt(2, CurrentUser.data.userId);
+
+        int r = pst.executeUpdate();
+
+        return r == 1;
+
+    }
+
+
 
 
 

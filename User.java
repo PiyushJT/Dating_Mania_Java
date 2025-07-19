@@ -88,5 +88,28 @@ public class User {
         return userId;
     }
 
+    public String getBio() {
+        return bio;
+    }
+
+    public char getGender() {
+        return gender;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public long getPhone() {
+        return phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getCity() {
+        return city;
+    }
 
 }

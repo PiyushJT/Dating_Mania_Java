@@ -313,7 +313,7 @@ public class CurrentUser {
                     }
 
                     try {
-                        DatabaseIO.updateProfile("name", name);
+                        DatabaseIO.updateName(name);
                     }
                     catch (SQLException e) {
                         break;
@@ -342,7 +342,7 @@ public class CurrentUser {
                     }
 
                     try {
-                        DatabaseIO.updateProfile("bio", bio);
+                        DatabaseIO.updateBio(bio);
                     }
                     catch (SQLException e) {
                         break;
@@ -369,7 +369,7 @@ public class CurrentUser {
 
                     }
                     try {
-                        DatabaseIO.updateProfile("gender", gender + "");
+                        DatabaseIO.updateGender(gender + "");
                     }
                     catch (SQLException e) {
                         break;
@@ -392,7 +392,7 @@ public class CurrentUser {
                         break;
                     }
                     try {
-                        DatabaseIO.updateProfile("age", age);
+                        DatabaseIO.updateAge(age);
                     }
                     catch (SQLException e) {
                         break;
@@ -416,7 +416,7 @@ public class CurrentUser {
                         break;
                     }
                     try {
-                        if (DatabaseIO.updateProfile("phone", phone + ""))
+                        if (DatabaseIO.updatePhone(phone + ""))
                             System.out.println("Update Successful");
                         else
                             System.out.println("Update Failed");
@@ -444,7 +444,7 @@ public class CurrentUser {
                         break;
                     }
                     try {
-                        DatabaseIO.updateProfile("city", city);
+                        DatabaseIO.updateCity(city);
                     }
                     catch (SQLException e) {
                         break;
@@ -471,7 +471,7 @@ public class CurrentUser {
                         break;
                     }
                     try {
-                        DatabaseIO.updateProfile("email", email);
+                        DatabaseIO.updateEmail(email);
                     }
                     catch (SQLException e) {
                         break;

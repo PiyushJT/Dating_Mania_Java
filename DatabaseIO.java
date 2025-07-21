@@ -14,7 +14,12 @@ public class DatabaseIO {
 
         // query
         Statement st = connection.createStatement();
-        String query = "SELECT * FROM users";
+        String query = """
+            SELECT
+                *
+            FROM
+                users;
+        """;
 
         // result
         ResultSet rs = st.executeQuery(query);
@@ -34,11 +39,20 @@ public class DatabaseIO {
 
 
         // query
-        Statement st = connection.createStatement();
-        String query = "SELECT * FROM users WHERE user_id = " + user_id + ";";
+        String query = """
+            SELECT
+                *
+            FROM
+                users
+            WHERE
+                user_id = ?;
+        """;
+
+        PreparedStatement pst = connection.prepareStatement(query);
+        pst.setInt(1, user_id);
 
         // result
-        ResultSet rs = st.executeQuery(query);
+        ResultSet rs = pst.executeQuery(query);
 
 
         // return the user if exists
@@ -55,13 +69,21 @@ public class DatabaseIO {
 
         // query
         String query = """
-            SELECT *
-            FROM users
-            WHERE user_id = (
-                SELECT user_id
-                FROM auth
-                WHERE email = ? AND password = ?
-            );
+            SELECT
+                *
+            FROM
+                users
+            WHERE
+                user_id = (
+                    SELECT
+                        user_id
+                    FROM
+                        auth
+                    WHERE
+                        email = ?
+                        AND
+                        password = ?
+                );
             """;
 
         // run query
@@ -89,7 +111,8 @@ public class DatabaseIO {
 
         // Insert into users table
         String userInsert = """
-                INSERT INTO users (name, bio, gender, age, phone, email, city, is_active, last_active, is_deleted, created_at, updated_at)
+                INSERT INTO
+                    users (name, bio, gender, age, phone, email, city, is_active, last_active, is_deleted, created_at, updated_at)
                 VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
         """;
 
@@ -113,8 +136,15 @@ public class DatabaseIO {
 
         // Insert into auth table first to get uid
         String authInsert = """
-            INSERT INTO auth VALUES (?, ?, (
-                    SELECT user_id FROM users WHERE email = ?
+            INSERT INTO
+                auth
+            VALUES (?, ?, (
+                    SELECT
+                        user_id
+                    FROM
+                        users
+                    WHERE
+                    email = ?
                 )
             );
         """;
@@ -170,8 +200,10 @@ public class DatabaseIO {
 
 
         String deleteQuery = """
-            DELETE FROM user_hobbies
-            WHERE user_id = ?;
+            DELETE FROM
+                user_hobbies
+            WHERE
+                user_id = ?;
         """;
 
         PreparedStatement pst = connection.prepareStatement(deleteQuery);
@@ -181,7 +213,8 @@ public class DatabaseIO {
 
 
         String insertQuery = """
-            INSERT INTO user_hobbies (user_id, hobby_id)
+            INSERT INTO
+                user_hobbies (user_id, hobby_id)
             VALUES (?, ?);
         """;
 
@@ -244,8 +277,10 @@ public class DatabaseIO {
     public static void addSongsToDB(int[] ind) throws SQLException {
 
         String deleteQuery = """
-                    DELETE FROM user_song
-                    WHERE user_id = ?;
+                    DELETE FROM
+                        user_song
+                    WHERE
+                        user_id = ?;
                 """;
 
         PreparedStatement pst = connection.prepareStatement(deleteQuery);
@@ -255,7 +290,8 @@ public class DatabaseIO {
 
 
         String insertQuery = """
-                    INSERT INTO user_song (user_id, song_id)
+                    INSERT INTO
+                        user_song (user_id, song_id)
                     VALUES (?, ?);
                 """;
 
@@ -276,9 +312,12 @@ public class DatabaseIO {
     static boolean deleteUser(String password) throws SQLException {
 
         String getPassQuery = """
-                    SELECT password
-                    FROM auth
-                    WHERE user_id = ?;
+                    SELECT
+                        password
+                    FROM
+                        auth
+                    WHERE
+                        user_id = ?;
                 """;
 
         PreparedStatement pst = connection.prepareStatement(getPassQuery);
@@ -297,9 +336,12 @@ public class DatabaseIO {
             return false;
 
         String deleteQuery = """
-                    UPDATE users
-                    SET is_deleted = true
-                    WHERE user_id = ?
+                    UPDATE
+                        users
+                    SET
+                        is_deleted = true
+                    WHERE
+                        user_id = ?
                 """;
 
         pst = connection.prepareStatement(deleteQuery);
@@ -316,9 +358,12 @@ public class DatabaseIO {
     static boolean deactivateUser(String password) throws SQLException {
 
         String getPassQuery = """
-                    SELECT password
-                    FROM auth
-                    WHERE user_id = ?;
+                    SELECT
+                        password
+                    FROM
+                        auth
+                    WHERE
+                        user_id = ?;
                 """;
 
         PreparedStatement pst = connection.prepareStatement(getPassQuery);
@@ -337,9 +382,12 @@ public class DatabaseIO {
             return false;
 
         String deleteQuery = """
-                    UPDATE users
-                    SET is_active = false
-                    WHERE user_id = ?
+                    UPDATE
+                        users
+                    SET
+                        is_active = false
+                    WHERE
+                        user_id = ?
                 """;
 
         pst = connection.prepareStatement(deleteQuery);
@@ -353,15 +401,126 @@ public class DatabaseIO {
     }
 
 
-    static boolean updateProfile(String toUpdate, String value) throws SQLException {
+    static boolean updateName(String value) throws SQLException {
 
 
         String query = """
-                UPDATE users
-                SET
-                """ + toUpdate +  """
-                 = ?
-                WHERE user_id = ?;
+            UPDATE
+                users
+            SET
+                name = ?
+            WHERE
+                user_id = ?;
+            """;
+
+        PreparedStatement pst = connection.prepareStatement(query);
+        pst.setString(1, value);
+        pst.setInt(2, CurrentUser.data.userId);
+
+        int r = pst.executeUpdate();
+
+        return r == 1;
+
+    }
+
+    static boolean updateBio(String value) throws SQLException {
+
+
+        String query = """
+            UPDATE
+                users
+            SET
+                bio = ?
+            WHERE
+                user_id = ?;
+            """;
+
+        PreparedStatement pst = connection.prepareStatement(query);
+        pst.setString(1, value);
+        pst.setInt(2, CurrentUser.data.userId);
+
+        int r = pst.executeUpdate();
+
+        return r == 1;
+
+    }
+
+    static boolean updateGender(String value) throws SQLException {
+
+
+        String query = """
+            UPDATE
+                users
+            SET
+                gender = ?
+            WHERE
+                user_id = ?;
+            """;
+
+        PreparedStatement pst = connection.prepareStatement(query);
+        pst.setString(1, value);
+        pst.setInt(2, CurrentUser.data.userId);
+
+        int r = pst.executeUpdate();
+
+        return r == 1;
+
+    }
+
+    static boolean updatePhone(String value) throws SQLException {
+
+
+        String query = """
+            UPDATE
+                users
+            SET
+                phone = ?
+            WHERE
+                user_id = ?;
+            """;
+
+        PreparedStatement pst = connection.prepareStatement(query);
+        pst.setString(1, value);
+        pst.setInt(2, CurrentUser.data.userId);
+
+        int r = pst.executeUpdate();
+
+        return r == 1;
+
+    }
+
+    static boolean updateCity(String value) throws SQLException {
+
+
+        String query = """
+            UPDATE
+                users
+            SET
+                city = ?
+            WHERE
+                user_id = ?;
+            """;
+
+        PreparedStatement pst = connection.prepareStatement(query);
+        pst.setString(1, value);
+        pst.setInt(2, CurrentUser.data.userId);
+
+        int r = pst.executeUpdate();
+
+        return r == 1;
+
+    }
+
+    static boolean updateEmail(String value) throws SQLException {
+
+
+        String query = """
+            UPDATE
+                users
+            SET
+                email = ?
+            WHERE
+                user_id = ?;
             """;
 
         PreparedStatement pst = connection.prepareStatement(query);
@@ -375,19 +534,21 @@ public class DatabaseIO {
     }
 
 
-    static boolean updateProfile(String toUpdate, int value) throws SQLException {
+
+    static boolean updatePassword(String password) throws SQLException {
 
 
         String query = """
-                UPDATE users
-                SET
-                """ + toUpdate +  """
-                 = ?
-                WHERE user_id = ?;
+            UPDATE
+                auth
+            SET
+                password = ?
+            WHERE
+                user_id = ?;
             """;
 
         PreparedStatement pst = connection.prepareStatement(query);
-        pst.setInt(1, value);
+        pst.setString(1, password);
         pst.setInt(2, CurrentUser.data.userId);
 
         int r = pst.executeUpdate();
@@ -397,17 +558,20 @@ public class DatabaseIO {
     }
 
 
-    static boolean updatePassword(String password) throws SQLException {
+    static boolean updateAge(int value) throws SQLException {
 
 
         String query = """
-                UPDATE auth
-                SET password = ?
-                WHERE user_id = ?;
+            UPDATE
+                users
+            SET
+                age = ?
+            WHERE
+                user_id = ?;
             """;
 
         PreparedStatement pst = connection.prepareStatement(query);
-        pst.setString(1, password);
+        pst.setInt(1, value);
         pst.setInt(2, CurrentUser.data.userId);
 
         int r = pst.executeUpdate();
@@ -452,7 +616,8 @@ public class DatabaseIO {
 
     static void acceptMatch(Match match) throws SQLException {
         String update = """
-            UPDATE matches
+            UPDATE
+                matches
             SET
                 is_accepted = true,
                 accepted_at = ?

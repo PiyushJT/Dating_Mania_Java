@@ -13,7 +13,7 @@ public class Project {
         // Database Initialization
         String url = "jdbc:postgresql://localhost:5432/Dating_Mania";
         String user = "postgres";
-        String password = "";
+        String password = "15manav@";
 
         // Connect to Database
         Exception exception = null;

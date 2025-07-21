@@ -1,3 +1,5 @@
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -294,13 +296,22 @@ public class Utility {
             if (!isEmailValid(email) || !isPasswordValid(password)) {
                 System.out.println("Email or password is invalid.");
 
+                // if user chooses to try again, loop continues
+                if (tryAgain())
+                    continue;
+                else
+                    return false;
+            }
+            if(!isAccountActive(email)) {
+                System.out.println(("This Account is deactivated."));
+
+                System.out.println("Would you like to reactivate your account?");
 
                 // if user chooses to try again, loop continues
                 if (tryAgain())
                     continue;
                 else
                     return false;
-
             }
             break;
 
@@ -652,6 +663,30 @@ public class Utility {
         return password.length() >= 8;
     }
 
+    static boolean isAccountActive(String email)
+    {
+        boolean isActive = false;
+        Exception exception = null;
+
+        try {
+            // Assuming DatabaseIO.connection is your open JDBC Connection
+            String sql = "SELECT is_active FROM users WHERE email = ?";
+            PreparedStatement pst = DatabaseIO.connection.prepareStatement(sql);
+            pst.setString(1, email);
+
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                isActive = rs.getBoolean("is_active"); // true = active, false = deactivated
+            }
+            rs.close();
+            pst.close();
+        } catch (Exception e) {
+            exception = e;
+            Log.E("Error checking account active status: " + e.getMessage());
+        }
+        return isActive;
+
+    }
 
 
     // Function to print error message when log file is unaccessible

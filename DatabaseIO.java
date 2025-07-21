@@ -52,7 +52,7 @@ public class DatabaseIO {
         pst.setInt(1, user_id);
 
         // result
-        ResultSet rs = pst.executeQuery(query);
+        ResultSet rs = pst.executeQuery();
 
 
         // return the user if exists
@@ -593,6 +593,8 @@ public class DatabaseIO {
                 WHERE
                     receiver_user_id = ?
                     AND
+                    is_accepted is null
+                    AND
                     accepted_at is null
                     AND
                     is_deleted = false;
@@ -631,6 +633,25 @@ public class DatabaseIO {
         pst.setInt(2, match.senderUserId);
         pst.setInt(3, match.receiverUserId);
         pst.executeUpdate();
+
+    }
+
+    static void rejectMatch(Match match) throws SQLException {
+        String update = """
+            UPDATE
+                matches
+            SET
+                is_accepted = false
+            WHERE
+                sender_user_id = ?
+                AND
+                receiver_user_id = ?;
+        """;
+        PreparedStatement pst = connection.prepareStatement(update);
+        pst.setInt(1, match.senderUserId);
+        pst.setInt(2, match.receiverUserId);
+        pst.executeUpdate();
+
     }
 
 

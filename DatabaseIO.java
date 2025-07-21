@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class DatabaseIO {
@@ -84,7 +85,7 @@ public class DatabaseIO {
     static void addUserToDB(User user, String password) throws SQLException {
 
         // get current time
-        Timestamp now = new Timestamp(Utility.getNowLong());
+        Timestamp now = Timestamp.valueOf(LocalDateTime.now());
 
         // Insert into users table
         String userInsert = """
@@ -416,7 +417,56 @@ public class DatabaseIO {
     }
 
 
+    static ArrayList<Match> getMatchesByUid(int uid) throws SQLException {
 
+
+        ArrayList<Match> matches = new ArrayList<>();
+
+        // query
+        String query = """
+                SELECT *
+                FROM matches
+                WHERE
+                    receiver_user_id = ?
+                    AND
+                    accepted_at is null
+                    AND
+                    is_deleted = false;
+            """;
+
+        // run query
+        PreparedStatement pst = connection.prepareStatement(query);
+        pst.setInt(1, uid);
+
+        // result
+        ResultSet rs = pst.executeQuery();
+
+        while (rs.next()) {
+            matches.add(Match.fromDB(rs));
+        }
+
+        return matches;
+
+    }
+
+
+    static void acceptMatch(Match match) throws SQLException {
+        String update = """
+            UPDATE matches
+            SET
+                is_accepted = true,
+                accepted_at = ?
+            WHERE
+                sender_user_id = ?
+                AND
+                receiver_user_id = ?;
+        """;
+        PreparedStatement pst = connection.prepareStatement(update);
+        pst.setTimestamp(1, Timestamp.valueOf(LocalDateTime.now()));
+        pst.setInt(2, match.senderUserId);
+        pst.setInt(3, match.receiverUserId);
+        pst.executeUpdate();
+    }
 
 
 }

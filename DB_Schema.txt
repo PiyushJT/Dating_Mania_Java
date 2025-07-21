@@ -2,14 +2,14 @@ auth {
 
     email
     password
-    uid
+    user_id
 
 }
 
 
 user {
 
-    uid
+    user_id
     name
     bio
     gender
@@ -17,36 +17,36 @@ user {
     phone
     email
     city
-    isActive
-    lastActive
-    isDeleted
-    createdAt
-    updatedAt
+    is_active
+    last_active
+    is_deleted
+    created_at
+    updated_at
 
 }
 
 matches {
 
-    sender_uid
-    receiver_uid
-    isAccepted
+    sender_user_id
+    receiver_user_id
+    is_accepted
     accepted_at
     sent_at
     matched_on (song / hobby / humour)
-    idDeleted
+    id_deleted
 
 }
 
 user_song {
 
-    uid
-    sid
+    user_id
+    song_id
 
 }
 
 songs {
 
-    sid
+    song_id
     song_name
     song_url
     artist_name
@@ -63,23 +63,23 @@ song_types {
 
 user_hobbies {
 
-    uid
-    hid
+    user_id
+    hobby_id
 
 }
 
 hobbies {
 
-    hid
+    hobby_id
     hobby_name
 
 }
 
 block {
 
-    uid
-    blocked_uid
+    user_id
+    blocked_user_id
     blocked_at
-    isDeleted
+    is_deleted
 
 }

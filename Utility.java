@@ -3,6 +3,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import javax.swing.Icon;
+
 public class Utility {
 
     static Scanner scanner = new Scanner(System.in);
@@ -397,6 +399,59 @@ public class Utility {
             }
 
 
+            case "4": {
+
+                System.out.println("Match requests: ");
+
+                ArrayList<Match> matches;
+                try {
+                    matches = DatabaseIO.getMatchesByUid(CurrentUser.data.userId);
+                }
+                catch (SQLException e) {
+                    Log.E("Error getting matches: " + e.getMessage());
+                    break;
+                }
+
+                for (int i = 0; i < matches.size(); i++)
+                    System.out.println(matches.get(i));
+
+
+                outer: while (true) {
+                    System.out.print("Select a match to accept or reject: ");
+
+                    String choice2 = scanner.next();
+                    scanner.nextLine();
+
+                    for (Match match : matches) {
+
+                        if (choice2.equals(match.senderUserId + "")) {
+
+                            try {
+                                DatabaseIO.acceptMatch(match);
+                            }
+                            catch (SQLException e) {
+                                Log.E("Error accepting match: " + e.getMessage());
+                            }
+                            break outer;
+
+                        }
+
+                    }
+
+                    System.out.println("Invalid choice.");
+
+                    if (!Utility.tryAgain()) {
+                        break;
+                    }
+
+
+                }
+
+                break;
+
+            }
+
+
             case "5": {
 
                 System.out.println("My Profile");
@@ -622,6 +677,41 @@ public class Utility {
                         .replace(" ", "")
                         .substring(0, 14)
         );
+
+    }
+
+
+    static String getDateString(long dateLong) {
+
+        // Parse the long to LocalDateTime
+        String dateStr = String.valueOf(dateLong);
+        java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+        java.time.LocalDateTime dateTime;
+
+        try {
+            dateTime = java.time.LocalDateTime.parse(dateStr, formatter);
+        }
+        catch (Exception e) {
+            return dateLong + "";
+        }
+
+        java.time.LocalDateTime now = java.time.LocalDateTime.now();
+        java.time.LocalDate today = now.toLocalDate();
+
+        java.time.LocalDate date = dateTime.toLocalDate();
+        java.time.format.DateTimeFormatter timeFmt = java.time.format.DateTimeFormatter.ofPattern("h:mm a");
+        java.time.format.DateTimeFormatter dateFmt = java.time.format.DateTimeFormatter.ofPattern("d MMMM yyyy");
+        String timePart = dateTime.format(timeFmt);
+
+        if (date.equals(today)) {
+            return timePart + ", today";
+        }
+        else if (date.equals(today.minusDays(1))) {
+            return timePart + ", yesterday";
+        }
+        else {
+            return timePart + ", " + dateTime.format(dateFmt);
+        }
 
     }
 

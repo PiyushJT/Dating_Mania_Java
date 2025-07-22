@@ -52,7 +52,7 @@ public class DatabaseIO {
         pst.setInt(1, user_id);
 
         // result
-        ResultSet rs = pst.executeQuery(query);
+        ResultSet rs = pst.executeQuery();
 
 
         // return the user if exists
@@ -111,9 +111,9 @@ public class DatabaseIO {
 
         // Insert into users table
         String userInsert = """
-                INSERT INTO
-                    users (name, bio, gender, age, phone, email, city, is_active, last_active, is_deleted, created_at, updated_at)
-                VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+            INSERT INTO
+                users (name, bio, gender, age, phone, email, city, is_active, last_active, is_deleted, created_at, updated_at)
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
         """;
 
         PreparedStatement userStmt = connection.prepareStatement(userInsert);
@@ -277,11 +277,11 @@ public class DatabaseIO {
     public static void addSongsToDB(int[] ind) throws SQLException {
 
         String deleteQuery = """
-                    DELETE FROM
-                        user_song
-                    WHERE
-                        user_id = ?;
-                """;
+            DELETE FROM
+                user_song
+            WHERE
+                user_id = ?;
+        """;
 
         PreparedStatement pst = connection.prepareStatement(deleteQuery);
         pst.setInt(1, CurrentUser.data.userId);
@@ -290,10 +290,10 @@ public class DatabaseIO {
 
 
         String insertQuery = """
-                    INSERT INTO
-                        user_song (user_id, song_id)
-                    VALUES (?, ?);
-                """;
+            INSERT INTO
+                user_song (user_id, song_id)
+            VALUES (?, ?);
+        """;
 
 
         pst = connection.prepareStatement(insertQuery);
@@ -312,13 +312,13 @@ public class DatabaseIO {
     static boolean deleteUser(String password) throws SQLException {
 
         String getPassQuery = """
-                    SELECT
-                        password
-                    FROM
-                        auth
-                    WHERE
-                        user_id = ?;
-                """;
+            SELECT
+                password
+            FROM
+                auth
+            WHERE
+                user_id = ?;
+        """;
 
         PreparedStatement pst = connection.prepareStatement(getPassQuery);
         pst.setInt(1, CurrentUser.data.userId);
@@ -336,13 +336,13 @@ public class DatabaseIO {
             return false;
 
         String deleteQuery = """
-                    UPDATE
-                        users
-                    SET
-                        is_deleted = true
-                    WHERE
-                        user_id = ?
-                """;
+            UPDATE
+                users
+            SET
+                is_deleted = true
+            WHERE
+                user_id = ?
+        """;
 
         pst = connection.prepareStatement(deleteQuery);
         pst.setInt(1, CurrentUser.data.userId);
@@ -358,13 +358,13 @@ public class DatabaseIO {
     static boolean deactivateUser(String password) throws SQLException {
 
         String getPassQuery = """
-                    SELECT
-                        password
-                    FROM
-                        auth
-                    WHERE
-                        user_id = ?;
-                """;
+            SELECT
+                password
+            FROM
+                auth
+            WHERE
+                user_id = ?;
+        """;
 
         PreparedStatement pst = connection.prepareStatement(getPassQuery);
         pst.setInt(1, CurrentUser.data.userId);
@@ -382,13 +382,13 @@ public class DatabaseIO {
             return false;
 
         String deleteQuery = """
-                    UPDATE
-                        users
-                    SET
-                        is_active = false
-                    WHERE
-                        user_id = ?
-                """;
+            UPDATE
+                users
+            SET
+                is_active = false
+            WHERE
+                user_id = ?
+        """;
 
         pst = connection.prepareStatement(deleteQuery);
         pst.setInt(1, CurrentUser.data.userId);
@@ -411,7 +411,7 @@ public class DatabaseIO {
                 name = ?
             WHERE
                 user_id = ?;
-            """;
+        """;
 
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, value);
@@ -433,7 +433,7 @@ public class DatabaseIO {
                 bio = ?
             WHERE
                 user_id = ?;
-            """;
+        """;
 
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, value);
@@ -455,7 +455,7 @@ public class DatabaseIO {
                 gender = ?
             WHERE
                 user_id = ?;
-            """;
+        """;
 
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, value);
@@ -477,7 +477,7 @@ public class DatabaseIO {
                 phone = ?
             WHERE
                 user_id = ?;
-            """;
+        """;
 
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, value);
@@ -499,7 +499,7 @@ public class DatabaseIO {
                 city = ?
             WHERE
                 user_id = ?;
-            """;
+        """;
 
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, value);
@@ -521,7 +521,7 @@ public class DatabaseIO {
                 email = ?
             WHERE
                 user_id = ?;
-            """;
+        """;
 
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, value);
@@ -545,7 +545,7 @@ public class DatabaseIO {
                 password = ?
             WHERE
                 user_id = ?;
-            """;
+        """;
 
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, password);
@@ -568,7 +568,7 @@ public class DatabaseIO {
                 age = ?
             WHERE
                 user_id = ?;
-            """;
+        """;
 
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setInt(1, value);
@@ -588,15 +588,17 @@ public class DatabaseIO {
 
         // query
         String query = """
-                SELECT *
-                FROM matches
-                WHERE
-                    receiver_user_id = ?
-                    AND
-                    accepted_at is null
-                    AND
-                    is_deleted = false;
-            """;
+            SELECT *
+            FROM matches
+            WHERE
+                receiver_user_id = ?
+                AND
+                is_accepted is null
+                AND
+                accepted_at is null
+                AND
+                is_deleted = false;
+        """;
 
         // run query
         PreparedStatement pst = connection.prepareStatement(query);
@@ -631,7 +633,147 @@ public class DatabaseIO {
         pst.setInt(2, match.senderUserId);
         pst.setInt(3, match.receiverUserId);
         pst.executeUpdate();
+
     }
 
+    static void rejectMatch(Match match) throws SQLException {
+        String update = """
+            UPDATE
+                matches
+            SET
+                is_accepted = false
+            WHERE
+                sender_user_id = ?
+                AND
+                receiver_user_id = ?;
+        """;
+        PreparedStatement pst = connection.prepareStatement(update);
+        pst.setInt(1, match.senderUserId);
+        pst.setInt(2, match.receiverUserId);
+        pst.executeUpdate();
+
+    }
+
+
+
+    static ArrayList<User> getBlockedUsers(int uid) throws SQLException{
+
+        ArrayList<User> blockedUsers = new ArrayList<>();
+
+        // query
+        String query = """
+            SELECT
+                *
+            FROM
+                users
+            WHERE
+                user_id IN (
+                    SELECT
+                        blocked_user_id
+                    FROM
+                        block
+                    WHERE
+                        user_id = ?
+                        AND
+                        is_deleted = false
+                );
+        """;
+
+        // run query
+        PreparedStatement pst = connection.prepareStatement(query);
+        pst.setInt(1, uid);
+
+        // result
+        ResultSet rs = pst.executeQuery();
+
+        while (rs.next()) {
+            blockedUsers.add(User.fromDB(rs));
+        }
+
+        return blockedUsers;
+
+    }
+
+
+    static boolean unblockUser(int uid) throws SQLException {
+
+        String update = """
+            UPDATE
+                block
+            SET
+                is_deleted = true
+            WHERE
+                user_id = ?
+                AND
+                blocked_user_id = ?;
+        """;
+
+        PreparedStatement pst = connection.prepareStatement(update);
+        pst.setInt(1, CurrentUser.data.userId);
+        pst.setInt(2, uid);
+        int r = pst.executeUpdate();
+
+        return r == 1;
+    }
+
+
+    public static boolean blockUser(int uid) throws SQLException {
+
+        String existsQuery = """
+            SELECT
+                *
+            FROM
+                block
+            WHERE
+                user_id = ?
+                AND
+                blocked_user_id = ?;
+        """;
+
+        PreparedStatement pst1 = connection.prepareStatement(existsQuery);
+        pst1.setInt(1, CurrentUser.data.userId);
+        pst1.setInt(2, uid);
+        ResultSet rs = pst1.executeQuery();
+
+        if (rs.next()) {
+
+            String updateQuery = """
+                UPDATE
+                    block
+                SET
+                    is_deleted = false
+                WHERE
+                    user_id = ?
+                    AND
+                    blocked_user_id = ?;
+            """;
+
+            PreparedStatement pst2 = connection.prepareStatement(updateQuery);
+            pst2.setInt(1, CurrentUser.data.userId);
+            pst2.setInt(2, uid);
+
+            int r = pst2.executeUpdate();
+
+            return r == 1;
+
+        }
+
+        String insertQuery = """
+            INSERT INTO
+                block
+            VALUES
+                (?, ?, ?, ?);
+        """;
+
+        PreparedStatement pst = connection.prepareStatement(insertQuery);
+        pst.setInt(1, CurrentUser.data.userId);
+        pst.setInt(2, uid);
+        pst.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+        pst.setBoolean(4, false);
+        int r = pst.executeUpdate();
+
+        return r == 1;
+
+    }
 
 }

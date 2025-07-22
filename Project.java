@@ -1,14 +1,10 @@
 import java.sql.*;
-import java.util.ArrayList;
 
 public class Project {
 
     public static void main(String[] args) {
 
         Log.S("System Started");
-
-        // All users
-        ArrayList<User> users;
 
         // Database Initialization
         String url = "jdbc:postgresql://localhost:5432/Dating_Mania";
@@ -54,7 +50,7 @@ public class Project {
 
         // Load All Users
         try {
-            users = DatabaseIO.getUsers();
+            User.users = DatabaseIO.getUsers();
             Log.DB("All Users loaded successfully!");
         }
         catch (SQLException e) {

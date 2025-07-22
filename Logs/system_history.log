@@ -138,27 +138,3 @@
 2025-07-21 22:27:28  System    System Started
 2025-07-21 22:27:28  System    Connected to PostgreSQL successfully!
 2025-07-21 22:27:28  Database  All Users loaded successfully!
-2025-07-21 23:49:23  System    System Started
-2025-07-21 23:49:23  Error     JDBC Driver not found.
-2025-07-22 00:02:01  System    System Started
-2025-07-22 00:02:02  Error     Connection failed.
-2025-07-22 00:02:22  System    System Started
-2025-07-22 00:02:22  System    Connected to PostgreSQL successfully!
-2025-07-22 00:02:22  Database  All Users loaded successfully!
-2025-07-22 00:06:28  System    Current User's user_id saved to file!
-2025-07-22 00:06:28  Error     Error initializing user data: Can't use query methods that take a query string on a PreparedStatement.
-2025-07-22 00:06:28  System    User logged in successfully
-2025-07-22 00:07:21  System    Current User's user_id saved to file!
-2025-07-22 00:07:21  Error     Error initializing user data: Can't use query methods that take a query string on a PreparedStatement.
-2025-07-22 00:07:21  System    User logged in successfully
-2025-07-22 00:52:52  System    System Started
-2025-07-22 00:52:52  System    Connected to PostgreSQL successfully!
-2025-07-22 00:52:53  Database  All Users loaded successfully!
-2025-07-22 00:53:07  System    Current User's user_id saved to file!
-2025-07-22 00:53:07  Error     Error initializing user data: Can't use query methods that take a query string on a PreparedStatement.
-2025-07-22 00:53:07  System    User logged in successfully
-2025-07-22 00:53:37  System    User exited manually
-2025-07-22 01:03:46  System    System Started
-2025-07-22 01:03:47  System    Connected to PostgreSQL successfully!
-2025-07-22 01:03:47  Database  All Users loaded successfully!
-2025-07-22 01:04:28  System    User login aborted

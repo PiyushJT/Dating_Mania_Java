@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import javax.swing.Icon;
+import javax.swing.SwingConstants;
 
 public class Utility {
 
@@ -412,52 +413,7 @@ public class Utility {
 
             case "4": {
 
-                System.out.println("Match requests: ");
-
-                ArrayList<Match> matches;
-                try {
-                    matches = DatabaseIO.getMatchesByUid(CurrentUser.data.userId);
-                }
-                catch (SQLException e) {
-                    Log.E("Error getting matches: " + e.getMessage());
-                    break;
-                }
-
-                for (int i = 0; i < matches.size(); i++)
-                    System.out.println(matches.get(i));
-
-
-                outer: while (true) {
-                    System.out.print("Select a match to accept or reject: ");
-
-                    String choice2 = scanner.next();
-                    scanner.nextLine();
-
-                    for (Match match : matches) {
-
-                        if (choice2.equals(match.senderUserId + "")) {
-
-                            try {
-                                DatabaseIO.acceptMatch(match);
-                            }
-                            catch (SQLException e) {
-                                Log.E("Error accepting match: " + e.getMessage());
-                            }
-                            break outer;
-
-                        }
-
-                    }
-
-                    System.out.println("Invalid choice.");
-
-                    if (!Utility.tryAgain()) {
-                        break;
-                    }
-
-
-                }
-
+                openMatchRequests();
                 break;
 
             }
@@ -467,51 +423,7 @@ public class Utility {
 
                 System.out.println("My Profile");
 
-                System.out.println("Name: ");
-                printTabs(1);
-                System.out.print(CurrentUser.data.getName());
-                printLines(1);
-
-                System.out.println("Bio: ");
-                printTabs(1);
-                System.out.print(CurrentUser.data.getBio());
-                printLines(1);
-
-                System.out.println("Gender: ");
-                printTabs(1);
-                System.out.print(CurrentUser.data.getGender());
-                printLines(1);
-
-                System.out.println("Age: ");
-                printTabs(1);
-                System.out.print(CurrentUser.data.getAge());
-                printLines(1);
-
-                System.out.println("Phone: ");
-                printTabs(1);
-                System.out.print(CurrentUser.data.getPhone());
-                printLines(1);
-
-                System.out.println("Email: ");
-                printTabs(1);
-                System.out.print(CurrentUser.data.getEmail());
-                printLines(1);
-
-                System.out.println("City: ");
-                printTabs(1);
-                System.out.print(CurrentUser.data.getCity());
-                printLines(1);
-
-                System.out.println("Hobbies: ");
-                for (Hobby hobby : CurrentUser.hobbies)
-                    System.out.println("\t" + hobby.getHobbyName());
-                printLines(1);
-
-                System.out.println("Song interests: ");
-                for (Song song : CurrentUser.songs)
-                    System.out.println("\t" + song);
-                printLines(1);
-
+                showProfile(CurrentUser.data);
 
                 // Todo: friends / matches
 
@@ -530,6 +442,97 @@ public class Utility {
 
 
                 break;
+            }
+
+
+            case "6": {
+
+                System.out.println("Block / unblock user");
+
+                    System.out.println("1. Block");
+                    System.out.println("2. Unblock");
+                    System.out.println("Any other -> Back");
+
+                    System.out.print("Enter your choice: ");
+                    String choice2 = scanner.next();
+                    scanner.nextLine();
+
+                switch (choice2) {
+
+                    case "1": {
+
+                        System.out.println("Block User");
+
+
+                        System.out.println("Enter user's name to block: ");
+                        String name = scanner.next();
+                        scanner.nextLine();
+
+                        for (User user : User.users)
+                            if (user.getName().toLowerCase().contains(name))
+                                System.out.println(user);
+
+                        System.out.println("Enter user id to block: ");
+                        int uid = scanner.nextInt();
+                        scanner.nextLine();
+
+                        try {
+                            DatabaseIO.blockUser(uid);
+                        }
+                        catch (SQLException e) {
+                            Log.E("Error blocking user: " + e.getMessage());
+                        }
+
+                        break;
+                    }
+
+                    case "2": {
+
+                        System.out.println("Unblock user");
+
+                        ArrayList<User> blockedUsers;
+
+                        try {
+                            blockedUsers = DatabaseIO.getBlockedUsers(CurrentUser.data.userId);
+                        }
+                        catch (Exception e) {
+                            Log.E("Error getting blocked users: " + e.getMessage());
+                            break;
+                        }
+
+                        if (blockedUsers.isEmpty())
+                            break;
+
+                        for (User user : blockedUsers)
+                            System.out.println(user);
+
+                        System.out.println("Enter user id to unblock: ");
+                        int uid = scanner.nextInt();
+
+                        try {
+                            DatabaseIO.unblockUser(uid);
+                        }
+                        catch (Exception e) {
+                            Log.E("Error unblocking user: " + e.getMessage());
+                        }
+
+                        break;
+                    }
+
+
+                    default: {
+
+                        System.out.println("Process canceled");
+                        break;
+
+                    }
+
+
+                }
+
+                openMainMenu();
+                break;
+
             }
 
 
@@ -647,6 +650,167 @@ public class Utility {
 
         }
 
+    }
+
+    static void showProfile(User user) {
+
+
+        System.out.println("Name: ");
+        printTabs(1);
+        System.out.print(user.getName());
+        printLines(1);
+
+        System.out.println("Bio: ");
+        printTabs(1);
+        System.out.print(user.getBio());
+        printLines(1);
+
+        System.out.println("Gender: ");
+        printTabs(1);
+        System.out.print(user.getGender());
+        printLines(1);
+
+        System.out.println("Age: ");
+        printTabs(1);
+        System.out.print(user.getAge());
+        printLines(1);
+
+        System.out.println("Phone: ");
+        printTabs(1);
+        System.out.print(user.getPhone());
+        printLines(1);
+
+        System.out.println("Email: ");
+        printTabs(1);
+        System.out.print(user.getEmail());
+        printLines(1);
+
+        System.out.println("City: ");
+        printTabs(1);
+        System.out.print(user.getCity());
+        printLines(1);
+
+
+        try {
+            ArrayList<Hobby> hobbies = DatabaseIO.getHobbiesFromUID(user.userId);
+
+            System.out.println("Hobbies: ");
+            for (Hobby hobby : hobbies)
+                System.out.println("\t" + hobby.getHobbyName());
+            printLines(1);
+
+
+            ArrayList<Song> songs = DatabaseIO.getSongsFromUID(user.userId);
+
+            System.out.println("Song interests: ");
+            for (Song song : songs)
+                System.out.println("\t" + song);
+            printLines(1);
+
+        }
+        catch (Exception e) {
+            Log.E("Error getting hobbies and Songs: " + e.getMessage());
+        }
+
+
+    }
+
+    static void openMatchRequests() {
+
+        System.out.println("Match requests: ");
+
+        ArrayList<Match> matches;
+        try {
+            matches = DatabaseIO.getMatchesByUid(CurrentUser.data.userId);
+        }
+        catch (SQLException e) {
+            Log.E("Error getting matches: " + e.getMessage());
+            return;
+        }
+
+        for (int i = 0; i < matches.size(); i++)
+            System.out.println(matches.get(i));
+
+
+        outer: while (true) {
+            System.out.print("Select a match to accept or reject: ");
+
+            String choice2 = scanner.next();
+            scanner.nextLine();
+
+            for (Match match : matches) {
+
+                if (choice2.equals(match.senderUserId + "")) {
+
+                    System.out.println("1. View Sender's Profile");
+                    System.out.println("2. Accept");
+                    System.out.println("3. Reject");
+                    System.out.println("Any other -> Back");
+
+                    System.out.print("Enter your choice: ");
+                    String choice3 = scanner.next();
+                    scanner.nextLine();
+
+                    switch (choice3) {
+
+                        case "1": {
+
+                            System.out.println("Sender's Profile");
+
+                            showProfile(match.sender);
+
+                            openMatchRequests();
+                            break;
+                        }
+
+                        case "2": {
+
+                            try {
+                                DatabaseIO.acceptMatch(match);
+                            }
+                            catch (SQLException e) {
+                                Log.E("Error accepting match: " + e.getMessage());
+                            }
+
+                            openMatchRequests();
+                            break;
+                        }
+                        case "3": {
+
+                            try {
+                                DatabaseIO.rejectMatch(match);
+                            }
+                            catch (SQLException e) {
+                                Log.E("Error rejecting match: " + e.getMessage());
+                            }
+
+                            openMatchRequests();
+                            break;
+                        }
+
+                        default: {
+                            openMatchRequests();
+                            break;
+                        }
+
+                    }
+
+                    break outer;
+
+                }
+
+            }
+
+            System.out.println("Invalid choice.");
+
+            if (!Utility.tryAgain()) {
+                break;
+            }
+
+
+        }
+
+        openMainMenu();
     }
 
 

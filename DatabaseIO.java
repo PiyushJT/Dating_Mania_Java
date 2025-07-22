@@ -64,8 +64,8 @@ public class DatabaseIO {
     }
 
 
-    // function to get user from auth (email and password)
-    static User getUserFromAuth(String email, String password) throws SQLException {
+    // function to get user from auth (email/Phone and password)
+    static User getUserFromAuth(String emailPhone, String password) throws SQLException {
 
         // query
         String query = """
@@ -80,7 +80,11 @@ public class DatabaseIO {
                     FROM
                         auth
                     WHERE
-                        email = ?
+                        (
+                            email = ?
+                            OR
+                            phone = ?
+                        )
                         AND
                         password = ?
                 );
@@ -88,8 +92,9 @@ public class DatabaseIO {
 
         // run query
         PreparedStatement pst = connection.prepareStatement(query);
-        pst.setString(1, email);
-        pst.setString(2, password);
+        pst.setString(1, emailPhone);
+        pst.setString(2, emailPhone);
+        pst.setString(3, password);
 
         // result
         ResultSet rs = pst.executeQuery();

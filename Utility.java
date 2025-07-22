@@ -434,6 +434,77 @@ public class Utility {
             }
 
 
+            case "6": {
+
+                System.out.println("Block / unblock user");
+
+                    System.out.println("1. Block");
+                    System.out.println("2. Unblock");
+                    System.out.println("Any other -> Back");
+
+                    System.out.print("Enter your choice: ");
+                    String choice2 = scanner.next();
+                    scanner.nextLine();
+
+                switch (choice2) {
+
+                    case "1": {
+
+                        System.out.println("Block User");
+
+                        break;
+                    }
+
+                    case "2": {
+
+                        System.out.println("Unblock user");
+
+                        ArrayList<User> blockedUsers;
+
+                        try {
+                            blockedUsers = DatabaseIO.getBlockedUsers(CurrentUser.data.userId);
+                        }
+                        catch (Exception e) {
+                            Log.E("Error getting blocked users: " + e.getMessage());
+                            break;
+                        }
+
+                        if (blockedUsers.isEmpty())
+                            break;
+
+                        for (User user : blockedUsers)
+                            System.out.println(user);
+
+                        System.out.println("Enter user id to unblock: ");
+                        int uid = scanner.nextInt();
+
+                        try {
+                            DatabaseIO.unblockUser(CurrentUser.data.userId, uid);
+                        }
+                        catch (Exception e) {
+                            Log.E("Error unblocking user: " + e.getMessage());
+                        }
+
+                        break;
+                    }
+
+
+                    default: {
+
+                        System.out.println("Process canceled");
+                        break;
+
+                    }
+
+
+                }
+
+                openMainMenu();
+                break;
+
+            }
+
+
             case "7": {
 
                 System.out.println("Delete / Deactivate account");

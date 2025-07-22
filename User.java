@@ -1,6 +1,10 @@
 import java.sql.*;
+import java.util.ArrayList;
 
 public class User {
+
+    public static ArrayList<User> users;
+
 
     // User data
     int userId;

@@ -195,3 +195,37 @@
 2025-07-22 14:27:25  System    Connected to PostgreSQL successfully!
 2025-07-22 14:27:25  System    Current User loaded successfully!
 2025-07-22 14:27:25  Database  All Users loaded successfully!
+2025-07-22 14:47:58  System    System Started
+2025-07-22 14:47:58  System    Connected to PostgreSQL successfully!
+2025-07-22 14:47:58  System    Current User loaded successfully!
+2025-07-22 14:47:58  Database  All Users loaded successfully!
+2025-07-22 14:48:38  Error     Error getting blocked users: ERROR: more than one row returned by a subquery used as an expression
+2025-07-22 14:48:48  Error     Error getting blocked users: ERROR: more than one row returned by a subquery used as an expression
+2025-07-22 14:49:41  Error     Error getting blocked users: ERROR: more than one row returned by a subquery used as an expression
+2025-07-22 14:51:11  System    System Started
+2025-07-22 14:51:11  System    Connected to PostgreSQL successfully!
+2025-07-22 14:51:11  System    Current User loaded successfully!
+2025-07-22 14:51:11  Database  All Users loaded successfully!
+2025-07-22 14:51:15  Error     Error getting blocked users: Can't use query methods that take a query string on a PreparedStatement.
+2025-07-22 14:55:42  System    System Started
+2025-07-22 14:55:42  System    Connected to PostgreSQL successfully!
+2025-07-22 14:55:42  System    Current User loaded successfully!
+2025-07-22 14:55:42  Database  All Users loaded successfully!
+2025-07-22 14:56:28  Error     Error blocking user: ERROR: column "isdeleted" of relation "block" does not exist
+  Position: 42
+2025-07-22 14:57:05  Error     Error blocking user: ERROR: column "isdeleted" of relation "block" does not exist
+  Position: 42
+2025-07-22 14:58:50  System    System Started
+2025-07-22 14:58:50  System    Connected to PostgreSQL successfully!
+2025-07-22 14:58:50  System    Current User loaded successfully!
+2025-07-22 14:58:50  Database  All Users loaded successfully!
+2025-07-22 14:58:58  Error     Error blocking user: ERROR: column "isdeleted" of relation "block" does not exist
+  Position: 42
+2025-07-22 14:59:26  System    System Started
+2025-07-22 14:59:27  System    Connected to PostgreSQL successfully!
+2025-07-22 14:59:27  System    Current User loaded successfully!
+2025-07-22 14:59:27  Database  All Users loaded successfully!
+2025-07-22 15:00:36  System    System Started
+2025-07-22 15:00:36  System    Connected to PostgreSQL successfully!
+2025-07-22 15:00:36  System    Current User loaded successfully!
+2025-07-22 15:00:36  Database  All Users loaded successfully!

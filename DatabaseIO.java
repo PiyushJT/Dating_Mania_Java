@@ -667,7 +667,7 @@ public class DatabaseIO {
             FROM
                 users
             WHERE
-                user_id = (
+                user_id IN (
                     SELECT
                         blocked_user_id
                     FROM
@@ -695,7 +695,7 @@ public class DatabaseIO {
     }
 
 
-    static boolean unblockUser(int uid, int blockedUid) throws SQLException {
+    static boolean unblockUser(int uid) throws SQLException {
 
         String update = """
             UPDATE
@@ -709,12 +709,71 @@ public class DatabaseIO {
         """;
 
         PreparedStatement pst = connection.prepareStatement(update);
-        pst.setInt(1, uid);
-        pst.setInt(2, blockedUid);
+        pst.setInt(1, CurrentUser.data.userId);
+        pst.setInt(2, uid);
         int r = pst.executeUpdate();
 
         return r == 1;
     }
 
+
+    public static boolean blockUser(int uid) throws SQLException {
+
+        String existsQuery = """
+            SELECT
+                *
+            FROM
+                block
+            WHERE
+                user_id = ?
+                AND
+                blocked_user_id = ?;
+        """;
+
+        PreparedStatement pst1 = connection.prepareStatement(existsQuery);
+        pst1.setInt(1, CurrentUser.data.userId);
+        pst1.setInt(2, uid);
+        ResultSet rs = pst1.executeQuery();
+
+        if (rs.next()) {
+
+            String updateQuery = """
+                UPDATE
+                    block
+                SET
+                    is_deleted = false
+                WHERE
+                    user_id = ?
+                    AND
+                    blocked_user_id = ?;
+            """;
+
+            PreparedStatement pst2 = connection.prepareStatement(updateQuery);
+            pst2.setInt(1, CurrentUser.data.userId);
+            pst2.setInt(2, uid);
+
+            int r = pst2.executeUpdate();
+
+            return r == 1;
+
+        }
+
+        String insertQuery = """
+            INSERT INTO
+                block
+            VALUES
+                (?, ?, ?, ?);
+        """;
+
+        PreparedStatement pst = connection.prepareStatement(insertQuery);
+        pst.setInt(1, CurrentUser.data.userId);
+        pst.setInt(2, uid);
+        pst.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+        pst.setBoolean(4, false);
+        int r = pst.executeUpdate();
+
+        return r == 1;
+
+    }
 
 }

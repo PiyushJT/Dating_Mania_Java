@@ -452,6 +452,26 @@ public class Utility {
 
                         System.out.println("Block User");
 
+
+                        System.out.println("Enter user's name to block: ");
+                        String name = scanner.next();
+                        scanner.nextLine();
+
+                        for (User user : User.users)
+                            if (user.getName().toLowerCase().contains(name))
+                                System.out.println(user);
+
+                        System.out.println("Enter user id to block: ");
+                        int uid = scanner.nextInt();
+                        scanner.nextLine();
+
+                        try {
+                            DatabaseIO.blockUser(uid);
+                        }
+                        catch (SQLException e) {
+                            Log.E("Error blocking user: " + e.getMessage());
+                        }
+
                         break;
                     }
 
@@ -479,7 +499,7 @@ public class Utility {
                         int uid = scanner.nextInt();
 
                         try {
-                            DatabaseIO.unblockUser(CurrentUser.data.userId, uid);
+                            DatabaseIO.unblockUser(uid);
                         }
                         catch (Exception e) {
                             Log.E("Error unblocking user: " + e.getMessage());

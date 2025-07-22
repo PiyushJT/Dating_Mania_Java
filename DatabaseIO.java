@@ -52,7 +52,7 @@ public class DatabaseIO {
         pst.setInt(1, user_id);
 
         // result
-        ResultSet rs = pst.executeQuery(query);
+        ResultSet rs = pst.executeQuery();
 
 
         // return the user if exists

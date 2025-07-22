@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Project {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         Log.S("System Started");
 
@@ -73,7 +73,9 @@ public class Project {
             Utility.openLoginMenu();
         else {
             System.out.println("Welcome back " + CurrentUser.data.name + "!");
-            Utility.openMainMenu();
+
+                Utility.openMainMenu();
+
         }
 
     }

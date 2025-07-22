@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -44,7 +45,7 @@ public class Utility {
 
 
     // Function to open login menu
-    static void openLoginMenu() {
+    static void openLoginMenu() throws Exception {
 
         System.out.println("1. Login");
         System.out.println("2. Register (Don't have an account)");
@@ -371,18 +372,19 @@ public class Utility {
     }
 
 
-    static void openMainMenu() {
+    static void openMainMenu() throws Exception {
 
         System.out.println("1. Update hobbies");
         System.out.println("2. Update song interests");
-        System.out.println("3. Create new match");
-        System.out.println("4. Match requests");
-        System.out.println("5. Open my profile");
-        System.out.println("6. Block / unblock user");
-        System.out.println("7. Delete / Deactivate account");
-        System.out.println("8. Open chats");
-        System.out.println("9. Log out");
-        System.out.println("10. Exit");
+        System.out.println("3. Create new match using hobbies");
+        System.out.println("4. Create new match using songs");
+        System.out.println("5. Match requests");
+        System.out.println("6. Open my profile");
+        System.out.println("7. Block / unblock user");
+        System.out.println("8. Delete / Deactivate account");
+        System.out.println("9. Open chats");
+        System.out.println("10. Log out");
+        System.out.println("11. Exit");
 
         System.out.print("Enter your choice: ");
 
@@ -409,8 +411,79 @@ public class Utility {
 
             }
 
+            case "3": {
+                PriorityQueue<UserMatch> matches = Matchmaking.matchMadeUsingHobby();
 
-            case "4": {
+                if (matches.isEmpty()) {
+                    System.out.println("No matches found based on shared hobbies.");
+                } else {
+                    Scanner scanner = new Scanner(System.in);
+
+                    while (!matches.isEmpty()) {
+                        UserMatch match = matches.poll();
+                        User potentialMatch = match.getUser();
+
+                        try {
+                            // Display profile using your Profile class
+                            ArrayList<Hobby> theirHobbies = DatabaseIO.getHobbiesFromUID(potentialMatch.getId());
+                            ArrayList<Song> theirSongs = DatabaseIO.getSongsFromUID(potentialMatch.getId());
+
+                            Profile.display(potentialMatch, theirHobbies);
+                            System.out.println();
+                            // todo also display count of common hobbies and show their names
+                            // System.out.println(UserMatch.score());
+                        } catch (Exception e) {
+                            System.out.println("⚠️ Couldn't load full profile for this user.");
+                            continue;
+                        }
+
+                        System.out.println("Swipe [r] to match ✅, [l] to skip ⛔, or [q] to quit:");
+
+                        boolean validInput = false;
+                        while (!validInput) {
+                            System.out.print("Your choice (r/l/q): ");
+                            String input = scanner.nextLine().trim().toLowerCase();
+
+                            switch (input) {
+                                case "r":
+                                    try {
+                                        Matchmaking.sendMatchRequest(CurrentUser.data.getId(), potentialMatch.getId());
+                                        System.out.println("✅ Match request sent to " + potentialMatch.getName() + "!");
+                                        System.out.println();
+                                    } catch (Exception e) {
+                                        System.out.println("❌ Failed to send request. Please try again later.");
+                                    }
+                                    validInput = true;
+                                    break;
+
+                                case "l":
+                                    System.out.println("⛔ Skipped " + potentialMatch.getName() + ".");
+                                    System.out.println();
+                                    validInput = true;
+                                    break;
+
+                                case "q":
+                                    System.out.println("🚪 Exiting matchmaking.");
+                                    matches.clear(); // clear remaining matches to exit loop
+                                    validInput = true;
+                                    break;
+
+                                default:
+                                    System.out.println("❓ Invalid input! Please enter [r], [l], or [q].");
+                                    break;
+                            }
+                        }
+                    }
+                }
+
+                Utility.openMainMenu();
+                break;
+            }
+
+
+
+
+            case "5": {
 
                 System.out.println("Match requests: ");
 
@@ -463,77 +536,78 @@ public class Utility {
             }
 
 
-            case "5": {
+            case "6": {
 
-                System.out.println("My Profile");
 
-                System.out.println("Name: ");
-                printTabs(1);
-                System.out.print(CurrentUser.data.getName());
-                printLines(1);
+                    System.out.println("My Profile");
+                    Profile.display(CurrentUser.data, CurrentUser.hobbies, CurrentUser.songs);
 
-                System.out.println("Bio: ");
-                printTabs(1);
-                System.out.print(CurrentUser.data.getBio());
-                printLines(1);
+                    System.out.println("1. Edit profile");
+                    System.out.println("Any other -> Go Back");
 
-                System.out.println("Gender: ");
-                printTabs(1);
-                System.out.print(CurrentUser.data.getGender());
-                printLines(1);
+                    System.out.print("Enter your choice: ");
+                    String choice2 = scanner.nextLine();
 
-                System.out.println("Age: ");
-                printTabs(1);
-                System.out.print(CurrentUser.data.getAge());
-                printLines(1);
+                    if (choice2.equals("1"))
+                        CurrentUser.editProfile();
+                    else
+                        openMainMenu();
 
-                System.out.println("Phone: ");
-                printTabs(1);
-                System.out.print(CurrentUser.data.getPhone());
-                printLines(1);
+                    break;
 
-                System.out.println("Email: ");
-                printTabs(1);
-                System.out.print(CurrentUser.data.getEmail());
-                printLines(1);
-
-                System.out.println("City: ");
-                printTabs(1);
-                System.out.print(CurrentUser.data.getCity());
-                printLines(1);
-
-                System.out.println("Hobbies: ");
-                for (Hobby hobby : CurrentUser.hobbies)
-                    System.out.println("\t" + hobby.getHobbyName());
-                printLines(1);
-
-                System.out.println("Song interests: ");
-                for (Song song : CurrentUser.songs)
-                    System.out.println("\t" + song);
-                printLines(1);
+//                System.out.println("My Profile");
+//
+//                System.out.println("Name: ");
+//                printTabs(1);
+//                System.out.print(CurrentUser.data.getName());
+//                printLines(1);
+//
+//                System.out.println("Bio: ");
+//                printTabs(1);
+//                System.out.print(CurrentUser.data.getBio());
+//                printLines(1);
+//
+//                System.out.println("Gender: ");
+//                printTabs(1);
+//                System.out.print(CurrentUser.data.getGender());
+//                printLines(1);
+//
+//                System.out.println("Age: ");
+//                printTabs(1);
+//                System.out.print(CurrentUser.data.getAge());
+//                printLines(1);
+//
+//                System.out.println("Phone: ");
+//                printTabs(1);
+//                System.out.print(CurrentUser.data.getPhone());
+//                printLines(1);
+//
+//                System.out.println("Email: ");
+//                printTabs(1);
+//                System.out.print(CurrentUser.data.getEmail());
+//                printLines(1);
+//
+//                System.out.println("City: ");
+//                printTabs(1);
+//                System.out.print(CurrentUser.data.getCity());
+//                printLines(1);
+//
+//                System.out.println("Hobbies: ");
+//                for (Hobby hobby : CurrentUser.hobbies)
+//                    System.out.println("\t" + hobby.getHobbyName());
+//                printLines(1);
+//
+//                System.out.println("Song interests: ");
+//                for (Song song : CurrentUser.songs)
+//                    System.out.println("\t" + song);
+//                printLines(1);
 
 
                 // Todo: friends / matches
-
-
-                System.out.println("1. Edit profile");
-                System.out.println("Any other -> Go Back");
-
-                System.out.print("Enter your choice: ");
-                String choice2 = scanner.next();
-                scanner.nextLine();
-
-                if (choice2.equals("1"))
-                    CurrentUser.editProfile();
-                else
-                    openMainMenu();
-
-
-                break;
             }
 
 
-            case "7": {
+            case "8": {
 
                 System.out.println("Delete / Deactivate account");
 
@@ -620,7 +694,7 @@ public class Utility {
 
 
 
-            case "9": {
+            case "10": {
 
                 System.out.println("Logging out...");
                 CurrentUser.logOut();
@@ -630,7 +704,7 @@ public class Utility {
             }
 
 
-            case "10": {
+            case "11": {
 
                 System.out.println("Exiting...");
                 System.exit(0);
@@ -772,4 +846,18 @@ public class Utility {
         );
     }
 
-}
+        public static String readSwipeInput() throws IOException {
+            int ch1 = System.in.read();
+            if (ch1 == 27) {
+                int ch2 = System.in.read();
+                if (ch2 == 91) {
+                    int ch3 = System.in.read();
+                    if (ch3 == 67) return "right";  // →
+                    if (ch3 == 68) return "left";   // ←
+                }
+            } else if (ch1 == 'q' || ch1 == 'Q') {
+                return "quit";
+            }
+            return "invalid";
+        }
+    }

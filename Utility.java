@@ -332,6 +332,7 @@ public class Utility {
                 return false;
 
             }*/
+
             // If user data is null, user is not registered
             if (CurrentUser.data == null || CurrentUser.data.isDeleted) {
 

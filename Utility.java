@@ -321,7 +321,7 @@ public class Utility {
 
 
             // If user data is null, user is not registered
-            if (CurrentUser.data == null) {
+            /*if (CurrentUser.data == null) {
 
                 System.out.println("Wrong Credentials.");
 
@@ -331,7 +331,22 @@ public class Utility {
 
                 return false;
 
+            }*/
+            // If user data is null, user is not registered
+            if (CurrentUser.data == null || CurrentUser.data.isDeleted) {
+
+                if (CurrentUser.data != null && CurrentUser.data.isDeleted) {
+                    System.out.println("Account has been deleted. You cannot log in.");
+                } else {
+                    System.out.println("Wrong Credentials.");
+                }
+
+                if (tryAgain())
+                    return login();
+
+                return false;
             }
+
 
 
             // Method to add user_id to current user file

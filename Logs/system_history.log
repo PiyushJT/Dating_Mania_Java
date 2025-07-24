@@ -248,3 +248,81 @@
 2025-07-22 17:14:25  System    Current User's user_id saved to file!
 2025-07-22 17:14:25  System    Current User loaded successfully!
 2025-07-22 17:14:25  System    User logged in successfully
+2025-07-24 14:53:27  System    System Started
+2025-07-24 14:53:27  Error     JDBC Driver not found.
+2025-07-24 15:02:02  System    System Started
+2025-07-24 15:02:02  Error     JDBC Driver not found.
+2025-07-24 15:04:54  System    System Started
+2025-07-24 15:04:54  Error     JDBC Driver not found.
+2025-07-24 15:06:37  System    System Started
+2025-07-24 15:06:38  Error     Connection failed.
+2025-07-24 15:12:04  System    System Started
+2025-07-24 15:12:05  Error     Connection failed.
+2025-07-24 15:20:35  System    System Started
+2025-07-24 15:20:35  Error     Connection failed.
+2025-07-24 15:40:08  System    System Started
+2025-07-24 15:40:08  Error     Connection failed.
+2025-07-24 15:41:35  System    System Started
+2025-07-24 15:41:35  Error     Connection failed.
+2025-07-24 15:43:19  System    System Started
+2025-07-24 15:43:20  System    Connected to PostgreSQL successfully!
+2025-07-24 15:43:20  System    Current User loaded successfully!
+2025-07-24 15:43:20  Database  All Users loaded successfully!
+2025-07-24 15:54:10  System    System Started
+2025-07-24 15:54:11  System    Connected to PostgreSQL successfully!
+2025-07-24 15:54:11  System    Current User loaded successfully!
+2025-07-24 15:54:11  Database  All Users loaded successfully!
+2025-07-24 15:54:50  System    User login aborted
+2025-07-24 15:56:42  System    Current User's user_id saved to file!
+2025-07-24 15:56:42  System    User registered successfully
+2025-07-24 16:09:46  System    System Started
+2025-07-24 16:09:46  System    Connected to PostgreSQL successfully!
+2025-07-24 16:09:46  System    Current User loaded successfully!
+2025-07-24 16:09:46  Database  All Users loaded successfully!
+2025-07-24 16:10:14  System    Current User's user_id saved to file!
+2025-07-24 16:10:14  System    Current User loaded successfully!
+2025-07-24 16:10:14  System    User logged in successfully
+2025-07-24 16:10:53  System    Current User's user_id saved to file!
+2025-07-24 16:10:53  System    Current User loaded successfully!
+2025-07-24 16:10:53  System    User logged in successfully
+2025-07-24 17:05:39  System    System Started
+2025-07-24 17:05:40  System    Connected to PostgreSQL successfully!
+2025-07-24 17:05:40  Database  All Users loaded successfully!
+2025-07-24 17:06:19  System    Current User's user_id saved to file!
+2025-07-24 17:06:19  System    Current User loaded successfully!
+2025-07-24 17:06:19  System    User logged in successfully
+2025-07-24 17:07:37  System    System Started
+2025-07-24 17:07:38  System    Connected to PostgreSQL successfully!
+2025-07-24 17:07:38  System    Current User loaded successfully!
+2025-07-24 17:07:38  Database  All Users loaded successfully!
+2025-07-24 17:08:02  System    System Started
+2025-07-24 17:08:02  System    Connected to PostgreSQL successfully!
+2025-07-24 17:08:02  Database  All Users loaded successfully!
+2025-07-24 17:08:15  System    Current User's user_id saved to file!
+2025-07-24 17:08:15  System    Current User loaded successfully!
+2025-07-24 17:08:15  System    User logged in successfully
+2025-07-24 17:08:39  System    System Started
+2025-07-24 17:08:40  System    Connected to PostgreSQL successfully!
+2025-07-24 17:08:40  System    Current User loaded successfully!
+2025-07-24 17:08:40  Database  All Users loaded successfully!
+2025-07-24 17:10:12  System    Current User's user_id saved to file!
+2025-07-24 17:10:12  System    Current User loaded successfully!
+2025-07-24 17:10:12  System    User logged in successfully
+2025-07-24 17:17:02  System    System Started
+2025-07-24 17:17:03  System    Connected to PostgreSQL successfully!
+2025-07-24 17:17:03  System    Current User loaded successfully!
+2025-07-24 17:17:03  Database  All Users loaded successfully!
+2025-07-24 17:17:17  System    System Started
+2025-07-24 17:17:17  System    Connected to PostgreSQL successfully!
+2025-07-24 17:17:17  Database  All Users loaded successfully!
+2025-07-24 17:17:43  System    User login aborted
+2025-07-24 17:18:34  System    User login aborted
+2025-07-24 17:20:24  System    Current User's user_id saved to file!
+2025-07-24 17:20:24  System    User registered successfully
+2025-07-24 17:21:26  System    System Started
+2025-07-24 17:21:27  System    Connected to PostgreSQL successfully!
+2025-07-24 17:21:27  Database  All Users loaded successfully!
+2025-07-24 17:21:49  System    Current User's user_id saved to file!
+2025-07-24 17:21:49  System    Current User loaded successfully!
+2025-07-24 17:21:49  System    User logged in successfully
+2025-07-24 17:22:33  System    User login aborted

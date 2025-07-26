@@ -322,7 +322,7 @@ public class DatabaseIO {
             FROM
                 auth
             WHERE
-                user_id = ?;
+                user_id = ? ;
         """;
 
         PreparedStatement pst = connection.prepareStatement(getPassQuery);

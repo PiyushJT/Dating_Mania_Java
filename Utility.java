@@ -332,7 +332,7 @@ public class Utility {
 
 
             // If user data is null, user is not registered
-            if (CurrentUser.data == null) {
+            /*if (CurrentUser.data == null) {
 
                 System.out.println("Wrong Credentials.");
 
@@ -342,7 +342,23 @@ public class Utility {
 
                 return false;
 
+            }*/
+
+            // If user data is null, user is not registered
+            if (CurrentUser.data == null || CurrentUser.data.isDeleted) {
+
+                if (CurrentUser.data != null && CurrentUser.data.isDeleted) {
+                    System.out.println("Account has been deleted. You cannot log in.");
+                } else {
+                    System.out.println("Wrong Credentials.");
+                }
+
+                if (tryAgain())
+                    return login();
+
+                return false;
             }
+
 
 
             // Method to add user_id to current user file
@@ -378,8 +394,17 @@ public class Utility {
 
     static void openMainMenu() throws Exception {
 
-        System.out.println("1. Update hobbies");
-        System.out.println("2. Update song interests");
+        if(CurrentUser.hobbies.isEmpty())
+            System.out.println("1. Register your hobbies");
+        else
+            System.out.println("1. Update hobbies");
+
+
+        if(CurrentUser.songs.isEmpty())
+            System.out.println("2. Take the song quiz");
+        else
+            System.out.println("2. Retake song quiz");
+
         System.out.println("3. Create new match using hobbies");
         System.out.println("4. Create new match using songs");
         System.out.println("5. Match requests");
@@ -703,6 +728,8 @@ public class Utility {
                 System.out.println("Logging out...");
                 CurrentUser.logOut();
 
+                openLoginMenu();
+
                 break;
 
             }
@@ -712,6 +739,7 @@ public class Utility {
 
                 System.out.println("Exiting...");
                 System.exit(0);
+
 
             }
 

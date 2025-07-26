@@ -9,7 +9,7 @@ public class Project {
         // Database Initialization
         String url = "jdbc:postgresql://localhost:5432/Dating_Mania";
         String user = "postgres";
-        String password = "15manav@";
+        String password = "";
 
         // Connect to Database
         Exception exception = null;
@@ -69,9 +69,7 @@ public class Project {
             Utility.openLoginMenu();
         else {
             System.out.println("Welcome back " + CurrentUser.data.name + "!");
-
-                Utility.openMainMenu();
-
+            Utility.openMainMenu();
         }
 
     }

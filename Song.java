@@ -1,10 +1,13 @@
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Song {
 
     static ArrayList<Song> songs = new ArrayList<>();
+    static Map<Integer, Song> song = new HashMap<>();
 
     static {
         songs.add(new Song(1, "Blinding Lights", "https://www.youtube.com/watch?v=4NRXx6U8ABQ", "The Weeknd", "Pop"));
@@ -74,6 +77,28 @@ public class Song {
         return new Song(songID, songName, songUrl, artistName, type);
 
     }
+
+    public static ArrayList<Song> songQuiz() {
+
+        ArrayList<Integer> songInd = new ArrayList<>();
+        ArrayList<Song> songs = new ArrayList<>();
+
+        while(songInd.size()<15) {
+
+            int ind = (int) (Math.random() * 15);
+
+            if (!songInd.contains(ind))
+                songInd.add(ind);
+
+        }
+
+        for (int i : songInd)
+            songs.add(song.get(i));
+
+
+        return songs;
+    }
+
 
     @Override
     public String toString() {

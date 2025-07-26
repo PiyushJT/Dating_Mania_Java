@@ -266,6 +266,23 @@
 2025-07-23 14:21:28  System    Current User's user_id saved to file!
 2025-07-23 14:21:28  System    Current User loaded successfully!
 2025-07-23 14:21:28  System    User logged in successfully
+2025-07-26 19:49:57  System    System Started
+2025-07-26 19:49:57  System    Connected to PostgreSQL successfully!
+2025-07-26 19:49:57  System    Current User loaded successfully!
+2025-07-26 19:49:57  Database  All Users loaded successfully!
+2025-07-26 19:50:12  System    User exited manually
+2025-07-26 19:50:13  System    System Started
+2025-07-26 19:50:14  System    Connected to PostgreSQL successfully!
+2025-07-26 19:50:14  System    Current User loaded successfully!
+2025-07-26 19:50:14  Database  All Users loaded successfully!
+2025-07-26 19:50:25  System    System Started
+2025-07-26 19:50:25  System    Connected to PostgreSQL successfully!
+2025-07-26 19:50:25  System    Current User loaded successfully!
+2025-07-26 19:50:25  Database  All Users loaded successfully!
+2025-07-26 19:51:29  System    System Started
+2025-07-26 19:51:29  System    Connected to PostgreSQL successfully!
+2025-07-26 19:51:29  System    Current User loaded successfully!
+2025-07-26 19:51:29  Database  All Users loaded successfully!
 2025-07-26 11:35:23  System    System Started
 2025-07-26 11:35:23  System    Connected to PostgreSQL successfully!
 2025-07-26 11:35:23  System    Current User loaded successfully!

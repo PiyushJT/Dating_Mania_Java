@@ -307,7 +307,7 @@ public class Utility {
                 else
                     return false;
             }
-            if(!isAccountActive(email)) {
+            if(!isAccountActive(emailPhone)) {
                 System.out.println(("This Account is deactivated."));
 
                 System.out.println("Would you like to reactivate your account?");

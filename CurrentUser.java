@@ -213,6 +213,8 @@ public class CurrentUser {
 
         if (choice2 == '1') {
 
+
+
             for (int i = 0; i < Song.songs.size(); i++)
                 System.out.println(Song.songs.get(i));
 

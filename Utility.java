@@ -277,7 +277,7 @@ public class Utility {
     static boolean login() {
 
         // Initialize variables
-        String email = "";
+        String emailPhone = "";
         String password = "";
 
 
@@ -285,17 +285,21 @@ public class Utility {
         while (true) {
 
             // Getting user input
-            System.out.print("Enter email: ");
-            email = scanner.next();
+            System.out.print("Enter email / phone: ");
+            emailPhone = scanner.next().replace(" ", "");
             scanner.nextLine();
             System.out.print("Enter password: ");
             password = scanner.next();
             scanner.nextLine();
 
 
-            // validating email and password
-            if (!isEmailValid(email) || !isPasswordValid(password)) {
-                System.out.println("Email or password is invalid.");
+            // validating email/phone and password
+            if (
+                    !(isEmailValid(emailPhone) || isPhoneValid(emailPhone))
+                            ||
+                    !isPasswordValid(password)
+            ) {
+                System.out.println("Invalid Credentials");
 
                 // if user chooses to try again, loop continues
                 if (tryAgain())
@@ -324,13 +328,13 @@ public class Utility {
         try {
 
             // Getting user data from database
-            CurrentUser.data = DatabaseIO.getUserFromAuth(email, password);
+            CurrentUser.data = DatabaseIO.getUserFromAuth(emailPhone, password);
 
 
             // If user data is null, user is not registered
-            if (CurrentUser.data == null) {
+            /*if (CurrentUser.data == null) {
 
-                System.out.println("Wrong email or password.");
+                System.out.println("Wrong Credentials.");
 
                 // if user chooses to try again, function is called again
                 if (tryAgain())
@@ -338,7 +342,23 @@ public class Utility {
 
                 return false;
 
+            }*/
+
+            // If user data is null, user is not registered
+            if (CurrentUser.data == null || CurrentUser.data.isDeleted) {
+
+                if (CurrentUser.data != null && CurrentUser.data.isDeleted) {
+                    System.out.println("Account has been deleted. You cannot log in.");
+                } else {
+                    System.out.println("Wrong Credentials.");
+                }
+
+                if (tryAgain())
+                    return login();
+
+                return false;
             }
+
 
 
             // Method to add user_id to current user file
@@ -349,7 +369,7 @@ public class Utility {
         catch (Exception e) {
             exception = e;
 
-            System.out.println("Email or password is invalid.");
+            System.out.println("Invalid Credentials.");
 
             if (tryAgain())
                 return login();
@@ -741,6 +761,17 @@ public class Utility {
         if (email == null || email.isEmpty())
             return false;
         return email.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
+    }
+
+    static boolean isPhoneValid(String phone) {
+        try {
+            long ph = Long.parseLong(phone);
+
+            return ph >= 1000000000 && ph <= 9999999999L;
+        }
+        catch (Exception e) {
+            return false;
+        }
     }
 
     static boolean isPasswordValid(String password) {

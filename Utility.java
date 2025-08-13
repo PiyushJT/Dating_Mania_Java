@@ -1,12 +1,8 @@
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-
-import javax.swing.Icon;
 
 public class Utility {
 
@@ -277,8 +273,8 @@ public class Utility {
     static boolean login() {
 
         // Initialize variables
-        String emailPhone = "";
-        String password = "";
+        String emailPhone;
+        String password;
 
 
         // Loop until valid email and password are valid
@@ -307,7 +303,8 @@ public class Utility {
                 else
                     return false;
             }
-            if(!isAccountActive(emailPhone)) {
+            if( !DatabaseIO.isAccountActive(emailPhone) ) {
+
                 System.out.println(("This Account is deactivated."));
 
                 System.out.println("Would you like to reactivate your account?");
@@ -331,34 +328,20 @@ public class Utility {
             CurrentUser.data = DatabaseIO.getUserFromAuth(emailPhone, password);
 
 
-            // If user data is null, user is not registered
-            /*if (CurrentUser.data == null) {
-
-                System.out.println("Wrong Credentials.");
-
-                // if user chooses to try again, function is called again
-                if (tryAgain())
-                    return login();
-
-                return false;
-
-            }*/
-
-            // If user data is null, user is not registered
+            // If user data is null, user is not registered or if acc. is deleted
             if (CurrentUser.data == null || CurrentUser.data.isDeleted) {
 
-                if (CurrentUser.data != null && CurrentUser.data.isDeleted) {
+                if (CurrentUser.data != null)
                     System.out.println("Account has been deleted. You cannot log in.");
-                } else {
+                else
                     System.out.println("Wrong Credentials.");
-                }
 
                 if (tryAgain())
                     return login();
 
                 return false;
-            }
 
+            }
 
 
             // Method to add user_id to current user file
@@ -389,6 +372,7 @@ public class Utility {
             Log.E("Error initializing user data: " + e.getMessage());
         }
         return true;
+
     }
 
 
@@ -411,9 +395,8 @@ public class Utility {
         System.out.println("6. Open my profile");
         System.out.println("7. Block / unblock user");
         System.out.println("8. Delete / Deactivate account");
-        System.out.println("9. Open chats");
-        System.out.println("10. Log out");
-        System.out.println("11. Exit");
+        System.out.println("9. Log out");
+        System.out.println("10. Exit");
 
         System.out.print("Enter your choice: ");
 
@@ -539,12 +522,24 @@ public class Utility {
 
                         if (choice2.equals(match.senderUserId + "")) {
 
+                            System.out.println("Accept match?");
+                            System.out.println("Enter y to accept");
+                            System.out.println("Enter anything else to reject: ");
+                            String ch = scanner.next();
+
+
                             try {
-                                DatabaseIO.acceptMatch(match);
-                            }
-                            catch (SQLException e) {
-                                Log.E("Error accepting match: " + e.getMessage());
-                            }
+
+                                if (ch.equalsIgnoreCase("y"))
+                                    DatabaseIO.acceptMatch(match);
+                                else
+                                    DatabaseIO.rejectMatch(match);
+
+                                }
+                                catch (SQLException e) {
+                                    Log.E("Error accepting / Rejecting match: " + e.getMessage());
+                                }
+
                             break outer;
 
                         }
@@ -584,55 +579,97 @@ public class Utility {
 
                     break;
 
-//                System.out.println("My Profile");
-//
-//                System.out.println("Name: ");
-//                printTabs(1);
-//                System.out.print(CurrentUser.data.getName());
-//                printLines(1);
-//
-//                System.out.println("Bio: ");
-//                printTabs(1);
-//                System.out.print(CurrentUser.data.getBio());
-//                printLines(1);
-//
-//                System.out.println("Gender: ");
-//                printTabs(1);
-//                System.out.print(CurrentUser.data.getGender());
-//                printLines(1);
-//
-//                System.out.println("Age: ");
-//                printTabs(1);
-//                System.out.print(CurrentUser.data.getAge());
-//                printLines(1);
-//
-//                System.out.println("Phone: ");
-//                printTabs(1);
-//                System.out.print(CurrentUser.data.getPhone());
-//                printLines(1);
-//
-//                System.out.println("Email: ");
-//                printTabs(1);
-//                System.out.print(CurrentUser.data.getEmail());
-//                printLines(1);
-//
-//                System.out.println("City: ");
-//                printTabs(1);
-//                System.out.print(CurrentUser.data.getCity());
-//                printLines(1);
-//
-//                System.out.println("Hobbies: ");
-//                for (Hobby hobby : CurrentUser.hobbies)
-//                    System.out.println("\t" + hobby.getHobbyName());
-//                printLines(1);
-//
-//                System.out.println("Song interests: ");
-//                for (Song song : CurrentUser.songs)
-//                    System.out.println("\t" + song);
-//                printLines(1);
-
 
                 // Todo: friends / matches
+            }
+
+            case "7": {
+
+                System.out.println("Block / unblock user");
+
+                System.out.println("1. Block");
+                System.out.println("2. Unblock");
+                System.out.println("Any other -> Back");
+
+                System.out.print("Enter your choice: ");
+                String choice2 = scanner.next();
+                scanner.nextLine();
+
+                switch (choice2) {
+
+                    case "1": {
+
+                        System.out.println("Block User");
+
+                        System.out.println("Enter user's name to block: ");
+                        String name = scanner.next();
+                        scanner.nextLine();
+
+                        for (User user : User.users)
+                            if (user.getName().toLowerCase().contains(name))
+                                System.out.println(user);
+
+                        System.out.println("Enter user id to block: ");
+                        int uid = scanner.nextInt();
+                        scanner.nextLine();
+
+                        try {
+                            DatabaseIO.blockUser(uid);
+                        }
+                        catch (SQLException e) {
+                            Log.E("Error blocking user: " + e.getMessage());
+                        }
+
+                        break;
+                    }
+
+                    case "2": {
+
+                        System.out.println("Unblock user");
+
+                        ArrayList<User> blockedUsers;
+
+                        try {
+                            blockedUsers = DatabaseIO.getBlockedUsers(CurrentUser.data.userId);
+                        }
+                        catch (Exception e) {
+                            Log.E("Error getting blocked users: " + e.getMessage());
+                            break;
+                        }
+
+                        if (blockedUsers.isEmpty())
+                            break;
+
+                        for (User user : blockedUsers)
+                            System.out.println(user);
+
+                        System.out.println("Enter user id to unblock: ");
+                        int uid = scanner.nextInt();
+
+                        try {
+                            DatabaseIO.unblockUser(uid);
+                        }
+                        catch (Exception e) {
+                            Log.E("Error unblocking user: " + e.getMessage());
+                        }
+
+                        break;
+                    }
+
+
+                    default: {
+
+                        System.out.println("Process canceled");
+                        break;
+
+                    }
+
+
+                }
+
+                openMainMenu();
+                break;
+
             }
 
 
@@ -723,7 +760,7 @@ public class Utility {
 
 
 
-            case "10": {
+            case "9": {
 
                 System.out.println("Logging out...");
                 CurrentUser.logOut();
@@ -735,7 +772,7 @@ public class Utility {
             }
 
 
-            case "11": {
+            case "10": {
 
                 System.out.println("Exiting...");
                 System.exit(0);
@@ -778,31 +815,6 @@ public class Utility {
         if (password == null)
             return false;
         return password.length() >= 8;
-    }
-
-    static boolean isAccountActive(String email)
-    {
-        boolean isActive = false;
-        Exception exception = null;
-
-        try {
-            // Assuming DatabaseIO.connection is your open JDBC Connection
-            String sql = "SELECT is_active FROM users WHERE email = ?";
-            PreparedStatement pst = DatabaseIO.connection.prepareStatement(sql);
-            pst.setString(1, email);
-
-            ResultSet rs = pst.executeQuery();
-            if (rs.next()) {
-                isActive = rs.getBoolean("is_active"); // true = active, false = deactivated
-            }
-            rs.close();
-            pst.close();
-        } catch (Exception e) {
-            exception = e;
-            Log.E("Error checking account active status: " + e.getMessage());
-        }
-        return isActive;
-
     }
 
 

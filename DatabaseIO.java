@@ -620,6 +620,48 @@ public class DatabaseIO {
 
     }
 
+    static boolean isAccountActive(String emailPhone) {
+
+        boolean isActive = false;
+
+        try {
+            // Assuming DatabaseIO.connection is your open JDBC Connection
+
+            String sql = """
+                SELECT
+                    is_active
+                FROM
+                    users
+                WHERE
+                    email = ?
+                    OR
+                    phone = ?;
+            """;
+
+            PreparedStatement pst = DatabaseIO.connection.prepareStatement(sql);
+            pst.setString(1, emailPhone);
+            pst.setString(2, emailPhone);
+
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+
+                isActive = rs.getBoolean("is_active");
+
+            }
+
+            rs.close();
+            pst.close();
+
+        }
+        catch (Exception e) {
+            Log.E("Error checking account active status: " + e.getMessage());
+        }
+
+        return isActive;
+
+    }
+
 
     static void acceptMatch(Match match) throws SQLException {
         String update = """

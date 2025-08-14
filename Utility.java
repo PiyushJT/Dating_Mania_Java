@@ -552,11 +552,10 @@ public class Utility {
                         break;
                     }
 
-
                 }
 
+                Utility.openMainMenu();
                 break;
-
             }
 
 

@@ -41,7 +41,7 @@ public class Utility {
 
 
     // Function to open login menu
-    static void openLoginMenu() throws Exception {
+    static void openLoginMenu() {
 
         System.out.println("1. Login");
         System.out.println("2. Register (Don't have an account)");
@@ -105,6 +105,64 @@ public class Utility {
     static boolean register() {
 
         // Prompt for user details
+
+        String email;
+
+        while (true) {
+
+            System.out.print("Enter your email: ");
+            email = scanner.next();
+            scanner.nextLine();
+
+            if (!isEmailValid(email)) {
+                System.out.println("Invalid email format. Try again");
+                continue;
+            }
+
+            try {
+                if (DatabaseIO.isEmailPhoneDupe(email)) {
+                    System.out.println("Email already exists. Try again");
+                    continue;
+                }
+            }
+            catch (SQLException e) {
+                System.out.println("Error checking for duplicate email. Trying again");
+                continue;
+            }
+
+            break;
+
+        }
+
+
+        long phone;
+
+        while (true) {
+
+            System.out.print("Enter your phone: ");
+            phone = scanner.nextLong();
+            scanner.nextLine();
+
+            if (phone < 1000000000 || phone > 9999999999L) {
+                System.out.println("Invalid phone number. Try again");
+                continue;
+            }
+
+            try {
+                if (DatabaseIO.isEmailPhoneDupe(email)) {
+                    System.out.println("Phone already exists. Try again");
+                    continue;
+                }
+            }
+            catch (SQLException e) {
+                System.out.println("Error checking for duplicate phone. Trying again");
+                continue;
+            }
+
+            break;
+
+        }
+
 
         String name;
 
@@ -174,22 +232,6 @@ public class Utility {
         }
 
 
-        long phone;
-
-        while (true) {
-
-            System.out.print("Enter your phone: ");
-            phone = scanner.nextLong();
-            scanner.nextLine();
-
-            if (phone < 1000000000 || phone > 9999999999L) {
-                System.out.println("Invalid phone number. Try again");
-                continue;
-            }
-            break;
-
-        }
-
         String city;
 
         while (true) {
@@ -199,22 +241,6 @@ public class Utility {
 
             if (city.isEmpty()) {
                 System.out.println("City cannot be empty. Try again");
-                continue;
-            }
-            break;
-
-        }
-
-        String email;
-
-        while (true) {
-
-            System.out.print("Enter your email: ");
-            email = scanner.next();
-            scanner.nextLine();
-
-            if (!isEmailValid(email)) {
-                System.out.println("Invalid email format. Try again");
                 continue;
             }
             break;
@@ -250,7 +276,7 @@ public class Utility {
             DatabaseIO.addUserToDB(user, password);
 
             // Set current user and save to file
-            CurrentUser.data = user;
+            CurrentUser.data = DatabaseIO.getUserFromAuth(email, password);
             CurrentUser.addCurrentUserToFile();
 
             return true;
@@ -282,7 +308,7 @@ public class Utility {
 
             // Getting user input
             System.out.print("Enter email / phone: ");
-            emailPhone = scanner.next().replace(" ", "");
+            emailPhone = scanner.next();
             scanner.nextLine();
             System.out.print("Enter password: ");
             password = scanner.next();
@@ -306,22 +332,25 @@ public class Utility {
             if( !DatabaseIO.isAccountActive(emailPhone) ) {
 
                 System.out.println(("This Account is deactivated."));
+                System.out.println("Enter y to reactivate your account.");
+                System.out.println("Enter anything else to cancel and go back");
 
-                System.out.println("Would you like to reactivate your account?");
+                String choice = scanner.next();
+                scanner.nextLine();
 
-                // if user chooses to try again, loop continues
-                if (tryAgain())
-                    continue;
+                if(choice.equalsIgnoreCase("y"))
+                    DatabaseIO.reActivate(emailPhone);
                 else
-                    return false;
+                    openLoginMenu();
+
             }
+
             break;
 
         }
 
 
         // Exception for debugging
-        Exception exception = null;
         try {
 
             // Getting user data from database
@@ -332,7 +361,7 @@ public class Utility {
             if (CurrentUser.data == null || CurrentUser.data.isDeleted) {
 
                 if (CurrentUser.data != null)
-                    System.out.println("Account has been deleted. You cannot log in.");
+                    System.out.println("Account not found.");
                 else
                     System.out.println("Wrong Credentials.");
 
@@ -343,6 +372,12 @@ public class Utility {
 
             }
 
+            try {
+                DatabaseIO.updateLastActive(CurrentUser.data.userId);
+            }
+            catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
 
             // Method to add user_id to current user file
             CurrentUser.addCurrentUserToFile();
@@ -350,18 +385,12 @@ public class Utility {
         }
         // Invalid email or password
         catch (Exception e) {
-            exception = e;
-
             System.out.println("Invalid Credentials.");
 
             if (tryAgain())
                 return login();
 
             return false;
-        }
-        finally {
-            if (exception != null)
-                exception.printStackTrace();
         }
 
 
@@ -376,7 +405,7 @@ public class Utility {
     }
 
 
-    static void openMainMenu() throws Exception {
+    static void openMainMenu() {
 
         if(CurrentUser.hobbies.isEmpty())
             System.out.println("1. Register your hobbies");
@@ -573,8 +602,8 @@ public class Utility {
 
                     if (choice2.equals("1"))
                         CurrentUser.editProfile();
-                    else
-                        openMainMenu();
+
+                    openMainMenu();
 
                     break;
 

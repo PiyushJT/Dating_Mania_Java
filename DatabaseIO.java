@@ -663,7 +663,7 @@ public class DatabaseIO {
             WHERE
                 receiver_user_id = ?
                 AND
-                is_accepted is null
+                is_accepted is false
                 AND
                 accepted_at is null
                 AND
@@ -757,6 +757,23 @@ public class DatabaseIO {
 
     }
 
+    static void sendMatchRequest(int senderId, int receiverId) throws SQLException {
+        String sql = "INSERT INTO matches (sender_user_id, receiver_user_id, is_accepted, sent_at, is_deleted) " +
+                "VALUES (?, ?, FALSE, NOW(), FALSE)";
+
+        PreparedStatement stmt = connection.prepareStatement(sql);
+        stmt.setInt(1, senderId);
+        stmt.setInt(2, receiverId);
+
+        int rows = stmt.executeUpdate();
+        if (rows > 0) {
+            System.out.println("Request sent successfully from " + senderId + " to " + receiverId);
+        }
+        else {
+            System.out.println("Request failed to send.");
+        }
+
+    }
 
     static void acceptMatch(Match match) throws SQLException {
         String update = """

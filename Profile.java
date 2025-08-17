@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 public class Profile {
+
     public static void display(User user, ArrayList<Hobby> hobbies, ArrayList<Song> songs) {
         System.out.println("===============================================");
         System.out.println("         Profile of " + user.getName());

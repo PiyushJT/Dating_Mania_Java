@@ -225,9 +225,7 @@ public class CurrentUser {
 
                 System.out.println("Enter comma-separated ids of songs to add to your new list.");
                 System.out.println("Example: 1,2,3");
-
-                String input = scanner.next();
-                scanner.nextLine();
+                String input = scanner.nextLine().replace(" ", "");
                 String[] parts = input.split(",");
 
                 ind = new int[parts.length];
@@ -255,7 +253,7 @@ public class CurrentUser {
                 DatabaseIO.addSongsToDB(ind);
             }
             catch (SQLException e) {
-                return;
+                System.out.println(e.getMessage());
             }
 
         }

@@ -302,31 +302,6 @@ public class DatabaseIO {
     }
 
 
-    public static boolean amIBlockedBy(int senderUid) throws SQLException{
-
-        String query = """
-                SELECT
-                    1
-                FROM
-                    block
-                WHERE
-                    user_id = ?
-                    AND
-                    blocked_user_id = ?
-                    AND
-                    is_deleted = false;
-        """;
-
-        PreparedStatement pst = connection.prepareStatement(query);
-        pst.setInt(1, senderUid);
-        pst.setInt(2, CurrentUser.data.getId());
-
-        ResultSet rs = pst.executeQuery();
-
-        return rs.next();
-
-    }
-
     public static void addSongsToDB(int[] ind) throws SQLException {
 
         String deleteQuery = """
@@ -480,6 +455,31 @@ public class DatabaseIO {
 
     }
 
+
+    public static boolean amIBlockedBy(int senderUid) throws SQLException{
+
+        String query = """
+                SELECT
+                    1
+                FROM
+                    block
+                WHERE
+                    user_id = ?
+                    AND
+                    blocked_user_id = ?
+                    AND
+                    is_deleted = false;
+        """;
+
+        PreparedStatement pst = connection.prepareStatement(query);
+        pst.setInt(1, senderUid);
+        pst.setInt(2, CurrentUser.data.getId());
+
+        ResultSet rs = pst.executeQuery();
+
+        return rs.next();
+
+    }
 
     static boolean updateName(String value) throws SQLException {
 
@@ -711,6 +711,72 @@ public class DatabaseIO {
 
     }
 
+
+    public static ArrayList<User> getMatches() throws SQLException {
+
+        ArrayList<User> list = new ArrayList<>();
+
+
+        String sentQuery = """
+            SELECT
+                U.*
+            FROM
+                matches M
+                INNER JOIN
+                users U
+                ON
+                M.receiver_user_id = U.user_id
+            WHERE
+                sender_user_id = ?
+                AND
+                is_accepted = true
+                AND
+                M.is_deleted = false
+            ORDER BY
+                accepted_at DESC;
+    """;
+
+        PreparedStatement pst = connection.prepareStatement(sentQuery);
+        pst.setInt(1, CurrentUser.data.getId());
+        ResultSet rs = pst.executeQuery();
+
+        while (rs.next())
+            list.add(User.fromDB(rs));
+
+
+        String receivedQuery = """
+            SELECT
+                U.*
+            FROM
+                matches M
+                INNER JOIN
+                users U
+                ON
+                M.sender_user_id = U.user_id
+            WHERE
+                receiver_user_id = ?
+                AND
+                is_accepted = true
+                AND
+                M.is_deleted = false
+            ORDER BY
+                accepted_at DESC;
+    """;
+
+
+        pst = connection.prepareStatement(receivedQuery);
+        pst.setInt(1, CurrentUser.data.getId());
+        rs = pst.executeQuery();
+
+        while (rs.next())
+            list.add(User.fromDB(rs));
+
+
+        return list;
+
+    }
+
+
     static boolean isAccountActive(String emailPhone) {
 
         boolean isActive = false;
@@ -785,12 +851,11 @@ public class DatabaseIO {
 
     static void sendMatchRequest(int receiverId, String by) throws SQLException {
         String sql = """
-            INSERT INTO
-                matches
-            VALUES
-                (?, ?, null, null, NOW(), ?, false)
-    """;
-
+                INSERT INTO
+                    matches
+                VALUES
+                    (?, ?, null, null, NOW(), ?, false)
+        """;
         PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setInt(1, CurrentUser.data.getId());
         stmt.setInt(2, receiverId);
@@ -805,7 +870,6 @@ public class DatabaseIO {
         }
 
     }
-
 
     static void acceptMatch(Match match) throws SQLException {
         String update = """
@@ -1045,5 +1109,7 @@ public class DatabaseIO {
         return map;
 
     }
+
+
 
 }

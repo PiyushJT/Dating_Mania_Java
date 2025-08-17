@@ -319,7 +319,7 @@ public class Utility {
             if (
                     !(isEmailValid(emailPhone) || isPhoneValid(emailPhone))
                             ||
-                    !isPasswordValid(password)
+                            !isPasswordValid(password)
             ) {
                 System.out.println("Invalid Credentials");
 
@@ -408,23 +408,23 @@ public class Utility {
     static void openMainMenu() {
 
         if(CurrentUser.hobbies.isEmpty())
-            System.out.println("1. Register your hobbies");
+            System.out.println(" 1. Register your hobbies");
         else
-            System.out.println("1. Update hobbies");
+            System.out.println(" 1. Update hobbies");
 
 
         if(CurrentUser.songs.isEmpty())
-            System.out.println("2. Take the song quiz");
+            System.out.println(" 2. Take the song quiz");
         else
-            System.out.println("2. Retake song quiz");
+            System.out.println(" 2. Retake song quiz");
 
-        System.out.println("3. Create new match using hobbies");
-        System.out.println("4. Create new match using songs");
-        System.out.println("5. Match requests");
-        System.out.println("6. Open my profile");
-        System.out.println("7. Block / unblock user");
-        System.out.println("8. Delete / Deactivate account");
-        System.out.println("9. Log out");
+        System.out.println(" 3. View your matches");
+        System.out.println(" 4. Create new match");
+        System.out.println(" 5. Match requests");
+        System.out.println(" 6. Open my profile");
+        System.out.println(" 7. Block / unblock user");
+        System.out.println(" 8. Delete / Deactivate account");
+        System.out.println(" 9. Log out");
         System.out.println("10. Exit");
 
         System.out.print("Enter your choice: ");
@@ -453,6 +453,44 @@ public class Utility {
             }
 
             case "3": {
+
+
+                printLines(4);
+
+                System.out.println("Your matches");
+
+                ArrayList<User> matches = new ArrayList<>();
+                try {
+                    matches = DatabaseIO.getMatches();
+                }
+                catch (SQLException e) {
+                    Log.E("Error getting matches: " + e.getMessage());
+                }
+
+                for (User user : matches) {
+                    int uid = user.getId();
+
+                    try {
+                        Profile.display(
+                                DatabaseIO.getUserFromUid(uid),
+                                DatabaseIO.getHobbiesFromUID(uid),
+                                DatabaseIO.getSongsFromUID(uid)
+                        );
+                    } catch (SQLException e) {
+                        Log.E("Error getting user: " + e.getMessage());
+                    }
+
+                    printLines(4);
+
+                }
+
+
+                openMainMenu();
+                break;
+
+            }
+
+            case "4": {
 
                 System.out.println("BY Hobby / Song");
 
@@ -488,8 +526,6 @@ public class Utility {
 
                                     Profile.displayHobbies(potentialMatch, theirHobbies);
                                     System.out.println();
-                                    // todo also display count of common hobbies and show their names
-                                    // System.out.println(UserMatch.score());
                                 } catch (Exception e) {
                                     System.out.println("⚠️ Couldn't load full profile for this user.");
                                     continue;
@@ -505,7 +541,7 @@ public class Utility {
                                     switch (input) {
                                         case "r":
                                             try {
-                                                DatabaseIO.sendMatchRequest(CurrentUser.data.getId(), potentialMatch.getId(), "hobby");
+                                                DatabaseIO.sendMatchRequest(potentialMatch.getId(), "hobby");
                                                 System.out.println("✅ Match request sent to " + potentialMatch.getName() + "!");
                                                 System.out.println();
                                             } catch (Exception e) {
@@ -559,8 +595,6 @@ public class Utility {
 
                                     Profile.displaySongs(potentialMatch, theirSongs);
                                     System.out.println();
-                                    // todo also display count of common Songs and show their names
-                                    // System.out.println(UserMatch.score());
                                 }
                                 catch (Exception e) {
                                     System.out.println("⚠️ Couldn't load full profile for this user.");
@@ -577,7 +611,7 @@ public class Utility {
                                     switch (input) {
                                         case "r":
                                             try {
-                                                DatabaseIO.sendMatchRequest(CurrentUser.data.getId(), potentialMatch.getId(), "song");
+                                                DatabaseIO.sendMatchRequest(potentialMatch.getId(), "song");
                                                 System.out.println("✅ Match request sent to " + potentialMatch.getName() + "!");
                                                 System.out.println();
                                             } catch (Exception e) {
@@ -624,7 +658,7 @@ public class Utility {
 
 
 
-            case "4": {
+            case "5": {
 
                 System.out.println("Match requests: ");
 
@@ -664,10 +698,10 @@ public class Utility {
                                 else
                                     DatabaseIO.rejectMatch(match);
 
-                                }
-                                catch (SQLException e) {
-                                    Log.E("Error accepting / Rejecting match: " + e.getMessage());
-                                }
+                            }
+                            catch (SQLException e) {
+                                Log.E("Error accepting / Rejecting match: " + e.getMessage());
+                            }
 
                             break outer;
 
@@ -687,30 +721,28 @@ public class Utility {
             }
 
 
-            case "5": {
+            case "6": {
 
 
-                    System.out.println("My Profile");
-                    Profile.display(CurrentUser.data, CurrentUser.hobbies, CurrentUser.songs);
+                System.out.println("My Profile");
+                Profile.display(CurrentUser.data, CurrentUser.hobbies, CurrentUser.songs);
 
-                    System.out.println("1. Edit profile");
-                    System.out.println("Any other -> Go Back");
+                System.out.println("1. Edit profile");
+                System.out.println("Any other -> Go Back");
 
-                    System.out.print("Enter your choice: ");
-                    String choice2 = scanner.nextLine();
+                System.out.print("Enter your choice: ");
+                String choice2 = scanner.nextLine();
 
-                    if (choice2.equals("1"))
-                        CurrentUser.editProfile();
+                if (choice2.equals("1"))
+                    CurrentUser.editProfile();
 
-                    openMainMenu();
+                openMainMenu();
 
-                    break;
+                break;
 
-
-                // Todo: friends / matches
             }
 
-            case "6": {
+            case "7": {
 
                 System.out.println("Block / unblock user");
 
@@ -800,7 +832,7 @@ public class Utility {
             }
 
 
-            case "7": {
+            case "8": {
 
                 System.out.println("Delete / Deactivate account");
 
@@ -887,7 +919,7 @@ public class Utility {
 
 
 
-            case "8": {
+            case "9": {
 
                 System.out.println("Logging out...");
                 CurrentUser.logOut();
@@ -899,7 +931,7 @@ public class Utility {
             }
 
 
-            case "9": {
+            case "10": {
 
                 System.out.println("Exiting...");
                 System.exit(0);
@@ -1028,18 +1060,18 @@ public class Utility {
         );
     }
 
-        public static String readSwipeInput() throws IOException {
-            int ch1 = System.in.read();
-            if (ch1 == 27) {
-                int ch2 = System.in.read();
-                if (ch2 == 91) {
-                    int ch3 = System.in.read();
-                    if (ch3 == 67) return "right";  // →
-                    if (ch3 == 68) return "left";   // ←
-                }
-            } else if (ch1 == 'q' || ch1 == 'Q') {
-                return "quit";
+    public static String readSwipeInput() throws IOException {
+        int ch1 = System.in.read();
+        if (ch1 == 27) {
+            int ch2 = System.in.read();
+            if (ch2 == 91) {
+                int ch3 = System.in.read();
+                if (ch3 == 67) return "right";  // →
+                if (ch3 == 68) return "left";   // ←
             }
-            return "invalid";
+        } else if (ch1 == 'q' || ch1 == 'Q') {
+            return "quit";
         }
+        return "invalid";
     }
+}

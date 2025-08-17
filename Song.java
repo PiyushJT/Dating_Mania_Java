@@ -66,6 +66,10 @@ public class Song {
         this.type = type;
     }
 
+    public String getSongName() {
+        return songName;
+    }
+
     public static Song fromDB(ResultSet rs) throws SQLException {
 
         int songID = rs.getInt("song_id");

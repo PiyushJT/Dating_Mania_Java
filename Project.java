@@ -12,7 +12,6 @@ public class Project {
         String password = "";
 
         // Connect to Database
-        Exception exception = null;
         try {
 
             Class.forName("org.postgresql.Driver");
@@ -25,26 +24,19 @@ public class Project {
 
         }
         catch (ClassNotFoundException e) {
-            exception = e;
             System.out.println("JDBC Driver not found.");
             Log.E("JDBC Driver not found.");
             return;
         }
         catch (SQLException e) {
-            exception = e;
             System.out.println("Connection failed.");
             Log.E("Connection failed.");
             return;
         }
         catch (Exception e) {
-            exception = e;
             System.out.println("Database was unable to load! :(");
             Log.E("Database was unable to load! :(");
             return;
-        }
-        finally {
-            if (exception != null)
-                exception.printStackTrace();
         }
 
 

@@ -418,14 +418,13 @@ public class Utility {
         else
             System.out.println("2. Retake song quiz");
 
-        System.out.println("3. Create new match using hobbies");
-        System.out.println("4. Create new match using songs");
-        System.out.println("5. Match requests");
-        System.out.println("6. Open my profile");
-        System.out.println("7. Block / unblock user");
-        System.out.println("8. Delete / Deactivate account");
-        System.out.println("9. Log out");
-        System.out.println("10. Exit");
+        System.out.println("3. Create new match");
+        System.out.println("4. Match requests");
+        System.out.println("5. Open my profile");
+        System.out.println("6. Block / unblock user");
+        System.out.println("7. Delete / Deactivate account");
+        System.out.println("8. Log out");
+        System.out.println("9. Exit");
 
         System.out.print("Enter your choice: ");
 
@@ -453,78 +452,178 @@ public class Utility {
             }
 
             case "3": {
-                PriorityQueue<UserMatch> matches = Matchmaking.matchMadeUsingHobby();
 
-                if (matches.isEmpty()) {
-                    System.out.println("No matches found based on shared hobbies.");
-                } else {
-                    Scanner scanner = new Scanner(System.in);
+                System.out.println("BY Hobby / Song");
 
-                    while (!matches.isEmpty()) {
-                        UserMatch match = matches.poll();
-                        User potentialMatch = match.getUser();
+                System.out.println("1. Match by Hobby");
+                System.out.println("2. Match by Song");
 
-                        try {
-                            // Display profile using your Profile class
-                            ArrayList<Hobby> theirHobbies = DatabaseIO.getHobbiesFromUID(potentialMatch.getId());
-                            ArrayList<Song> theirSongs = DatabaseIO.getSongsFromUID(potentialMatch.getId());
+                System.out.println("Any other -> Cancel");
 
-                            Profile.display(potentialMatch, theirHobbies);
-                            System.out.println();
-                            // todo also display count of common hobbies and show their names
-                            // System.out.println(UserMatch.score());
-                        } catch (Exception e) {
-                            System.out.println("⚠️ Couldn't load full profile for this user.");
-                            continue;
-                        }
+                System.out.print("Enter your choice: ");
 
-                        System.out.println("Swipe [r] to match ✅, [l] to skip ⛔, or [q] to quit:");
+                String choice2 = scanner.next();
+                scanner.nextLine();
 
-                        boolean validInput = false;
-                        while (!validInput) {
-                            System.out.print("Your choice (r/l/q): ");
-                            String input = scanner.nextLine().trim().toLowerCase();
+                switch (choice2) {
 
-                            switch (input) {
-                                case "r":
-                                    try {
-                                        DatabaseIO.sendMatchRequest(CurrentUser.data.getId(), potentialMatch.getId());
-                                        System.out.println("✅ Match request sent to " + potentialMatch.getName() + "!");
-                                        System.out.println();
-                                    } catch (Exception e) {
-                                        System.out.println("❌ Failed to send request. Please try again later.");
-                                    }
-                                    validInput = true;
-                                    break;
+                    case "1": {
 
-                                case "l":
-                                    System.out.println("⛔ Skipped " + potentialMatch.getName() + ".");
+                        PriorityQueue<UserMatch> matches = Matchmaking.matchMadeUsingHobby();
+
+                        if (matches.isEmpty()) {
+                            System.out.println("No matches found based on shared hobbies.");
+                        } else {
+                            Scanner scanner = new Scanner(System.in);
+
+                            while (!matches.isEmpty()) {
+                                UserMatch match = matches.poll();
+                                User potentialMatch = match.getUser();
+
+                                try {
+                                    // Display profile using your Profile class
+                                    ArrayList<Hobby> theirHobbies = DatabaseIO.getHobbiesFromUID(potentialMatch.getId());
+                                    //ArrayList<Song> theirSongs = DatabaseIO.getSongsFromUID(potentialMatch.getId());
+
+                                    Profile.displayHobbies(potentialMatch, theirHobbies);
                                     System.out.println();
-                                    validInput = true;
-                                    break;
+                                    // todo also display count of common hobbies and show their names
+                                    // System.out.println(UserMatch.score());
+                                } catch (Exception e) {
+                                    System.out.println("⚠️ Couldn't load full profile for this user.");
+                                    continue;
+                                }
 
-                                case "q":
-                                    System.out.println("🚪 Exiting matchmaking.");
-                                    matches.clear(); // clear remaining matches to exit loop
-                                    validInput = true;
-                                    break;
+                                System.out.println("Swipe [r] to match ✅, [l] to skip ⛔, or [q] to quit:");
 
-                                default:
-                                    System.out.println("❓ Invalid input! Please enter [r], [l], or [q].");
-                                    break;
+                                boolean validInput = false;
+                                while (!validInput) {
+                                    System.out.print("Your choice (r/l/q): ");
+                                    String input = scanner.nextLine().trim().toLowerCase();
+
+                                    switch (input) {
+                                        case "r":
+                                            try {
+                                                DatabaseIO.sendMatchRequest(CurrentUser.data.getId(), potentialMatch.getId(), "hobby");
+                                                System.out.println("✅ Match request sent to " + potentialMatch.getName() + "!");
+                                                System.out.println();
+                                            } catch (Exception e) {
+                                                System.out.println("❌ Failed to send request. Please try again later.");
+                                            }
+                                            validInput = true;
+                                            break;
+
+                                        case "l":
+                                            System.out.println("⛔ Skipped " + potentialMatch.getName() + ".");
+                                            System.out.println();
+                                            validInput = true;
+                                            break;
+
+                                        case "q":
+                                            System.out.println("🚪 Exiting matchmaking.");
+                                            matches.clear(); // clear remaining matches to exit loop
+                                            validInput = true;
+                                            break;
+
+                                        default:
+                                            System.out.println("❓ Invalid input! Please enter [r], [l], or [q].");
+                                            break;
+                                    }
+                                }
                             }
                         }
-                    }
-                }
 
-                Utility.openMainMenu();
+                        Utility.openMainMenu();
+                        break;
+                    }
+
+                    case "2":  {
+
+                        PriorityQueue<UserMatch> matches = Matchmaking.matchMadeUsingSong();
+
+                        if (matches.isEmpty()) {
+                            System.out.println("No matches found based on shared songs.");
+                        }
+                        else {
+                            Scanner scanner = new Scanner(System.in);
+
+                            while (!matches.isEmpty()) {
+                                UserMatch match = matches.poll();
+                                User potentialMatch = match.getUser();
+
+                                try {
+                                    // Display profile using your Profile class
+                                    //ArrayList<Hobby> theirHobbies = DatabaseIO.getHobbiesFromUID(potentialMatch.getId());
+                                    ArrayList<Song> theirSongs = DatabaseIO.getSongsFromUID(potentialMatch.getId());
+
+                                    Profile.displaySongs(potentialMatch, theirSongs);
+                                    System.out.println();
+                                    // todo also display count of common Songs and show their names
+                                    // System.out.println(UserMatch.score());
+                                }
+                                catch (Exception e) {
+                                    System.out.println("⚠️ Couldn't load full profile for this user.");
+                                    continue;
+                                }
+
+                                System.out.println("Swipe [r] to match ✅, [l] to skip ⛔, or [q] to quit:");
+
+                                boolean validInput = false;
+                                while (!validInput) {
+                                    System.out.print("Your choice (r/l/q): ");
+                                    String input = scanner.nextLine().trim().toLowerCase();
+
+                                    switch (input) {
+                                        case "r":
+                                            try {
+                                                DatabaseIO.sendMatchRequest(CurrentUser.data.getId(), potentialMatch.getId(), "song");
+                                                System.out.println("✅ Match request sent to " + potentialMatch.getName() + "!");
+                                                System.out.println();
+                                            } catch (Exception e) {
+                                                System.out.println("❌ Failed to send request. Please try again later.");
+                                            }
+                                            validInput = true;
+                                            break;
+
+                                        case "l":
+                                            System.out.println("⛔ Skipped " + potentialMatch.getName() + ".");
+                                            System.out.println();
+                                            validInput = true;
+                                            break;
+
+                                        case "q":
+                                            System.out.println("🚪 Exiting matchmaking.");
+                                            matches.clear(); // clear remaining matches to exit loop
+                                            validInput = true;
+                                            break;
+
+                                        default:
+                                            System.out.println("❓ Invalid input! Please enter [r], [l], or [q].");
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+
+                        Utility.openMainMenu();
+                        break;
+
+                    }
+
+                    default: {
+                        openMainMenu();
+                        break;
+                    }
+
+                }
+                openMainMenu();
                 break;
             }
 
 
 
 
-            case "5": {
+            case "4": {
 
                 System.out.println("Match requests: ");
 
@@ -587,7 +686,7 @@ public class Utility {
             }
 
 
-            case "6": {
+            case "5": {
 
 
                     System.out.println("My Profile");
@@ -610,7 +709,7 @@ public class Utility {
                 // Todo: friends / matches
             }
 
-            case "7": {
+            case "6": {
 
                 System.out.println("Block / unblock user");
 
@@ -700,7 +799,7 @@ public class Utility {
             }
 
 
-            case "8": {
+            case "7": {
 
                 System.out.println("Delete / Deactivate account");
 
@@ -787,7 +886,7 @@ public class Utility {
 
 
 
-            case "9": {
+            case "8": {
 
                 System.out.println("Logging out...");
                 CurrentUser.logOut();
@@ -799,7 +898,7 @@ public class Utility {
             }
 
 
-            case "10": {
+            case "9": {
 
                 System.out.println("Exiting...");
                 System.exit(0);

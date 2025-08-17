@@ -2,7 +2,6 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class DatabaseIO {
 
@@ -302,6 +301,31 @@ public class DatabaseIO {
 
     }
 
+
+    public static boolean amIBlockedBy(int senderUid) throws SQLException{
+
+        String query = """
+                SELECT
+                    1
+                FROM
+                    block
+                WHERE
+                    user_id = ?
+                    AND
+                    blocked_user_id = ?
+                    AND
+                    is_deleted = false;
+        """;
+
+        PreparedStatement pst = connection.prepareStatement(query);
+        pst.setInt(1, senderUid);
+        pst.setInt(2, CurrentUser.data.getId());
+
+        ResultSet rs = pst.executeQuery();
+
+        return rs.next();
+
+    }
 
     public static void addSongsToDB(int[] ind) throws SQLException {
 

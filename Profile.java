@@ -24,7 +24,7 @@ public class Profile {
         System.out.println("===============================================");
     }
 
-    public static void display(User user, ArrayList<Hobby> theirHobbies)
+    public static void displayHobbies(User user, ArrayList<Hobby> theirHobbies)
     {
         System.out.println("===============================================");
         System.out.println("         Profile of " + user.getName());
@@ -43,4 +43,25 @@ public class Profile {
         System.out.println();
 
     }
+
+    public static void displaySongs(User user, ArrayList<Song> theirSongs)
+    {
+        System.out.println("===============================================");
+        System.out.println("         Profile of " + user.getName());
+        System.out.println("===============================================");
+        System.out.println("Bio: ");
+        System.out.println("  " + user.getBio());
+        System.out.println("Gender: " + user.getGender() + "  |  Age: " + user.getAge());
+//        System.out.println("Phone: " + user.getPhone());
+//        System.out.println("Email: " + user.getEmail());
+        System.out.println("City: " + user.getCity());
+        System.out.println();
+        System.out.println("Songs :");
+        for (Song s : theirSongs) {
+            System.out.println("  - " + s.getSongName());
+        }
+        System.out.println();
+
+    }
+
 }

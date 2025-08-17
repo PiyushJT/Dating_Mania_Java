@@ -3,7 +3,6 @@ import java.util.*;
 public class Matchmaking
 {
     static PriorityQueue<UserMatch> matchMadeUsingHobby() {
-
         PriorityQueue<UserMatch> queue = new PriorityQueue<>();
 
             try {

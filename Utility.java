@@ -488,7 +488,7 @@ public class Utility {
                             switch (input) {
                                 case "r":
                                     try {
-                                        Matchmaking.sendMatchRequest(CurrentUser.data.getId(), potentialMatch.getId());
+                                        DatabaseIO.sendMatchRequest(CurrentUser.data.getId(), potentialMatch.getId());
                                         System.out.println("✅ Match request sent to " + potentialMatch.getName() + "!");
                                         System.out.println();
                                     } catch (Exception e) {

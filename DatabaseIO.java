@@ -1,6 +1,8 @@
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DatabaseIO {
 
@@ -965,6 +967,58 @@ public class DatabaseIO {
         int r = pst.executeUpdate();
 
         return r == 1;
+
+    }
+
+
+    static ArrayList<Song> getAllSongs() throws SQLException {
+
+        ArrayList<Song> list = new ArrayList<>();
+
+        String query = """
+                        SELECT
+                            *
+                        FROM
+                            songs
+                """;
+
+
+        PreparedStatement pst1 = connection.prepareStatement(query);
+        ResultSet rs = pst1.executeQuery();
+
+        while (rs.next())
+            list.add(Song.fromDB(rs));
+
+
+        return list;
+
+    }
+
+
+    static HashMap<Integer, String> getAllHobbies() throws SQLException {
+
+
+        HashMap<Integer, String> map = new HashMap<>();
+
+        String query = """
+                        SELECT
+                            *
+                        FROM
+                            hobbies
+                """;
+
+
+        PreparedStatement pst1 = connection.prepareStatement(query);
+        ResultSet rs = pst1.executeQuery();
+
+        while (rs.next()) {
+
+            Hobby hobby = Hobby.fromDB(rs);
+            map.put(hobby.hobbyId, hobby.hobbyName);
+
+        }
+
+        return map;
 
     }
 

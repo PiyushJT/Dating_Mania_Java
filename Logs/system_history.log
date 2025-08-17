@@ -229,3 +229,7 @@
 2025-08-17 13:43:48  System    Current User's user_id saved to file!
 2025-08-17 13:43:48  System    Current User loaded successfully!
 2025-08-17 13:43:48  System    User logged in successfully
+2025-08-17 13:59:10  System    System Started
+2025-08-17 13:59:10  System    Connected to PostgreSQL successfully!
+2025-08-17 13:59:10  System    Current User loaded successfully!
+2025-08-17 13:59:10  Database  All Users loaded successfully!

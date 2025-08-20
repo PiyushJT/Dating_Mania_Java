@@ -90,7 +90,7 @@ public class CurrentUser {
 
         try {
             BufferedWriter writer = new BufferedWriter(
-                    new FileWriter("user_data.txt")
+                    new FileWriter("session/user_data.txt")
             );
 
             writer.write(data.getId() + "");
@@ -109,7 +109,7 @@ public class CurrentUser {
     public static void removeCurrentUserFromFile() {
         try {
             BufferedWriter writer = new BufferedWriter(
-                    new FileWriter("user_data.txt")
+                    new FileWriter("session/user_data.txt")
             );
 
             writer.write("");

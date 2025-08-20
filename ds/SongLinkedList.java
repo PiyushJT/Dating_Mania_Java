@@ -2,6 +2,8 @@ package ds;
 
 import model.Song;
 
+import java.util.Random;
+
 public class SongLinkedList extends AbstractLinkedList {
 
 
@@ -87,5 +89,30 @@ public class SongLinkedList extends AbstractLinkedList {
         return arr;
 
     }
+
+
+
+    public void shuffleSongs() {
+        // Convert linked list to array for easier shuffling
+        Song[] array = this.toArray();
+
+        // Shuffle the array using Collections.shuffle logic
+        Random rnd = new Random();
+        for (int i = array.length - 1; i > 0; i--) {
+            int j = rnd.nextInt(i + 1);
+            Song temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+
+        // Clear the current list
+        this.clear();
+
+        // Re-insert songs in shuffled order back into linked list
+        for (Song s : array) {
+            this.insert(s);
+        }
+    }
+
 
 }

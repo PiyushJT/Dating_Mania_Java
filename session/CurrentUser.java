@@ -270,6 +270,102 @@ public class CurrentUser {
 
     }
 
+    public static void takeSongQuiz() {
+        //Scanner scanner = new Scanner(System.in);
+        SongLinkedList allSongs = Song.songs;
+
+        System.out.println("Current Song List🎧");
+
+        if (CurrentUser.songs.isEmpty()) {
+            System.out.println("You have no song Interests.");
+        } else {
+
+            System.out.println("Your song interests are:");
+
+            for (Song song : (Song[]) CurrentUser.songs.toArray())
+                System.out.println(song);
+
+        }
+
+        System.out.println("Enter 1. -> 🎶take the Song quiz!🎧");
+        System.out.println("Any other. -> Go back");
+
+
+        System.out.print("Enter your choice: ");
+        char choice2 = scanner.next().charAt(0);
+        scanner.nextLine();
+
+
+        if (choice2 == '1') {
+
+            // Shuffle songs in SongLinkedList and take first 10
+            SongLinkedList shuffledSongs = new SongLinkedList();
+            for (int i = 0; i < allSongs.length(); i++) {
+                shuffledSongs.insert(allSongs.get(i));
+            }
+
+            // Use your existing shuffleSongs method
+            shuffledSongs.shuffleSongs();
+
+            // Limit to 10 songs max
+            int quizSize = Math.min(10, shuffledSongs.length());
+
+            SongLinkedList likedSongs = new SongLinkedList();
+            System.out.println("🎶 Swipe right (r) to like 👍, left (l) to skip 👎, or 'q' to quit 🚪 the quiz.");
+
+            // Iterate over shuffledSongs using index-based access
+            for (int i = 0; i < quizSize; i++) {
+                Song song = shuffledSongs.get(i);  // Assuming get() is implemented
+
+                System.out.println();
+                System.out.println("🎧 Now playing: " + song.getSongName() + " by " + song.getArtistName());
+
+                boolean validInput = false;
+                while (!validInput) {
+                    System.out.print("➡️ Swipe choice (r/l/q): ");
+                    String choice = scanner.nextLine().trim().toLowerCase();
+
+                    switch (choice) {
+                        case "r":
+                            likedSongs.insert(song);
+                            System.out.println("💖 Added to your liked songs!");
+                            validInput = true;
+                            break;
+                        case "l":
+                            System.out.println("⛔ Skipped.");
+                            validInput = true;
+                            break;
+                        case "q":
+                            System.out.println("🚪 Exiting quiz early.");
+                            i = quizSize; // exit loop
+                            validInput = true;
+                            break;
+                        default:
+                            System.out.println("❓ Invalid input! Please enter 'r', 'l' or 'q'.");
+                            break;
+                    }
+                }
+            }
+
+            // Save liked songs to DB and update CurrentUser.songs
+            try {
+                DatabaseIO.clearSongsForUser(CurrentUser.data.getId());
+
+                for (Song s : likedSongs.toArray()) {
+                    DatabaseIO.addSongToUser(CurrentUser.data.getId(), s.getSongId());
+                }
+
+                CurrentUser.songs = likedSongs;
+
+                System.out.println("\n🎉 Your song preferences have been updated based on your quiz choices! 🎉");
+            } catch (Exception e) {
+                System.out.println("⚠️ Failed to update your song interests. Please try again later.");
+                e.printStackTrace();
+            }
+        }
+    }
+
+
 
     public static void logOut() {
 

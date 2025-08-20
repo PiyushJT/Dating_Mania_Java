@@ -344,6 +344,25 @@ public class DatabaseIO {
         CurrentUser.songs = getSongsFromUID(CurrentUser.data.getUserId());
     }
 
+    public static void clearSongsForUser(int userId) throws SQLException {
+        String sql = "DELETE FROM user_song WHERE user_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            stmt.executeUpdate();
+        }
+    }
+
+    public static void addSongToUser(int userId, int songId) throws SQLException {
+        String sql = "INSERT INTO user_song (user_id, song_id) VALUES (?, ?) ON CONFLICT DO NOTHING";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            stmt.setInt(2, songId);
+            stmt.executeUpdate();
+        }
+    }
+
+
+
 
     public static boolean deleteUser(String password) throws SQLException {
 

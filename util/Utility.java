@@ -1,6 +1,5 @@
 package util;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -502,7 +501,7 @@ public class Utility {
 
             case "2": {
 
-                CurrentUser.updateSongs();
+                CurrentUser.takeSongQuiz();
                 openMainMenu();
 
                 break;
@@ -512,7 +511,7 @@ public class Utility {
             case "3": {
 
 
-                printLines(4);
+                printLines(2);
 
                 System.out.println("Your matches");
 
@@ -537,7 +536,7 @@ public class Utility {
                         Log.E("Error getting user: " + e.getMessage());
                     }
 
-                    printLines(4);
+                    printLines(2);
 
                 }
 
@@ -1112,18 +1111,4 @@ public class Utility {
         );
     }
 
-    public static String readSwipeInput() throws IOException {
-        int ch1 = System.in.read();
-        if (ch1 == 27) {
-            int ch2 = System.in.read();
-            if (ch2 == 91) {
-                int ch3 = System.in.read();
-                if (ch3 == 67) return "right";  // →
-                if (ch3 == 68) return "left";   // ←
-            }
-        } else if (ch1 == 'q' || ch1 == 'Q') {
-            return "quit";
-        }
-        return "invalid";
-    }
 }

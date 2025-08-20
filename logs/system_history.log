@@ -56,6 +56,52 @@
 2025-08-20 22:26:58  System    Connected to PostgreSQL successfully!
 2025-08-20 22:26:58  System    Current User loaded successfully!
 2025-08-20 22:26:58  Database  All Users loaded successfully!
+2025-08-20 22:58:23  System    System Started
+2025-08-20 22:58:23  Error     JDBC Driver not found.
+2025-08-20 23:04:53  System    System Started
+2025-08-20 23:04:53  Error     JDBC Driver not found.
+2025-08-20 23:05:08  System    System Started
+2025-08-20 23:05:08  Error     JDBC Driver not found.
+2025-08-20 23:05:16  System    System Started
+2025-08-20 23:05:16  Error     JDBC Driver not found.
+2025-08-20 23:06:01  System    System Started
+2025-08-20 23:06:01  Error     JDBC Driver not found.
+2025-08-20 23:06:16  System    System Started
+2025-08-20 23:06:16  Error     JDBC Driver not found.
+2025-08-20 23:07:10  System    System Started
+2025-08-20 23:07:10  Error     JDBC Driver not found.
+2025-08-20 23:08:36  System    System Started
+2025-08-20 23:08:37  System    Connected to PostgreSQL successfully!
+2025-08-20 23:08:37  System    Current User loaded successfully!
+2025-08-20 23:08:37  Database  All Users loaded successfully!
+2025-08-20 23:13:12  System    model.User login aborted
+2025-08-21 00:14:01  Error     Registration error: Cannot invoke "model.User.getId()" because "session.CurrentUser.data" is null
+2025-08-21 00:14:01  System    model.User registration aborted
+2025-08-21 00:15:20  System    model.User login aborted
+2025-08-21 00:15:22  System    model.User exited manually
+2025-08-21 00:19:46  System    System Started
+2025-08-21 00:19:47  System    Connected to PostgreSQL successfully!
+2025-08-21 00:19:47  Database  All Users loaded successfully!
+2025-08-21 00:20:12  System    System Started
+2025-08-21 00:20:13  System    Connected to PostgreSQL successfully!
+2025-08-21 00:20:13  System    Current User loaded successfully!
+2025-08-21 00:20:13  Database  All Users loaded successfully!
+2025-08-21 01:11:36  System    System Started
+2025-08-21 01:11:36  System    Connected to PostgreSQL successfully!
+2025-08-21 01:11:36  System    Current User loaded successfully!
+2025-08-21 01:11:36  Database  All Users loaded successfully!
+2025-08-21 01:12:00  System    System Started
+2025-08-21 01:12:01  System    Connected to PostgreSQL successfully!
+2025-08-21 01:12:01  System    Current User loaded successfully!
+2025-08-21 01:12:01  Database  All Users loaded successfully!
+2025-08-21 01:16:28  System    System Started
+2025-08-21 01:16:28  System    Connected to PostgreSQL successfully!
+2025-08-21 01:16:28  System    Current User loaded successfully!
+2025-08-21 01:16:28  Database  All Users loaded successfully!
+2025-08-21 01:18:26  System    System Started
+2025-08-21 01:18:27  System    Connected to PostgreSQL successfully!
+2025-08-21 01:18:27  System    Current User loaded successfully!
+2025-08-21 01:18:27  Database  All Users loaded successfully!
 2025-08-20 23:37:55  System    System Started
 2025-08-20 23:37:55  System    Connected to PostgreSQL successfully!
 2025-08-20 23:37:55  System    Current User loaded successfully!
@@ -272,3 +318,11 @@
 2025-08-21 01:14:37  System    Connected to PostgreSQL successfully!
 2025-08-21 01:14:37  System    Current User loaded successfully!
 2025-08-21 01:14:37  Database  All Users loaded successfully!
+2025-08-21 01:39:54  System    System Started
+2025-08-21 01:39:55  System    Connected to PostgreSQL successfully!
+2025-08-21 01:39:55  System    Current User loaded successfully!
+2025-08-21 01:39:55  Database  All Users loaded successfully!
+2025-08-21 01:44:30  System    System Started
+2025-08-21 01:44:31  System    Connected to PostgreSQL successfully!
+2025-08-21 01:44:31  System    Current User loaded successfully!
+2025-08-21 01:44:31  Database  All Users loaded successfully!

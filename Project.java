@@ -1,5 +1,11 @@
 import java.sql.*;
 
+import db.DatabaseIO;
+import logs.Log;
+import model.User;
+import session.CurrentUser;
+import util.Utility;
+
 public class Project {
 
     public static void main(String[] args) throws Exception {
@@ -19,7 +25,7 @@ public class Project {
 
             Log.S("Connected to PostgreSQL successfully!");
 
-            // Load Current User data if Logged in.
+            // Load Current model.User data if Logged in.
             CurrentUser.initUserData();
 
         }
@@ -60,7 +66,7 @@ public class Project {
         if (CurrentUser.data == null)
             Utility.openLoginMenu();
         else {
-            System.out.println("Welcome back " + CurrentUser.data.name + "!");
+            System.out.println("Welcome back " + CurrentUser.data.getName() + "!");
             Utility.openMainMenu();
         }
 

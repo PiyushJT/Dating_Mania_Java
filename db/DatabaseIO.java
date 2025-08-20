@@ -1,14 +1,23 @@
+package db;
+
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import logs.Log;
+import model.Hobby;
+import model.Match;
+import model.Song;
+import model.User;
+import session.CurrentUser;
+
 public class DatabaseIO {
 
-    static Connection connection;
+    public static Connection connection;
 
     // function to get all users from database
-    static ArrayList<User> getUsers() throws SQLException {
+    public static ArrayList<User> getUsers() throws SQLException {
 
         // base arraylist
         ArrayList<User> users = new ArrayList<>();
@@ -35,13 +44,13 @@ public class DatabaseIO {
     }
 
 
-    static Timestamp now() {
+    public static Timestamp now() {
         return Timestamp.valueOf(LocalDateTime.now());
     }
 
 
     // function to get user from uid
-    static User getUserFromUid(int user_id) throws SQLException {
+    public static User getUserFromUid(int user_id) throws SQLException {
 
 
         // query
@@ -70,7 +79,7 @@ public class DatabaseIO {
     }
 
 
-    static void updateLastActive(int uid) throws SQLException{
+    public static void updateLastActive(int uid) throws SQLException{
 
         String sql = """
             UPDATE
@@ -91,29 +100,26 @@ public class DatabaseIO {
     }
 
     // function to get user from auth (email/Phone and password)
-    static User getUserFromAuth(String emailPhone, String password) throws SQLException {
+    public static User getUserFromAuth(String emailPhone, String password) throws SQLException {
 
         // query
         String query = """
             SELECT
-                *
+                U.*
             FROM
-                users
+                users U
+                INNER JOIN
+                auth A
+                ON
+                U.user_id = A.user_id
             WHERE
-                user_id = (
-                    SELECT
-                        user_id
-                    FROM
-                        auth
-                    WHERE
-                        (
-                            email = ?
-                            OR
-                            phone = ?
-                        )
-                        AND
-                        password = ?
-                );
+                (
+                    U.email = ?
+                    or
+                    U.phone = ?
+                )
+                AND
+                A.password = ?
             """;
 
         // run query
@@ -135,7 +141,7 @@ public class DatabaseIO {
 
 
     // function to register a new user
-    static void addUserToDB(User user, String password) throws SQLException {
+    public static void addUserToDB(User user, String password) throws SQLException {
 
         // Insert into users table
         String userInsert = """
@@ -146,27 +152,27 @@ public class DatabaseIO {
 
         PreparedStatement userStmt = connection.prepareStatement(userInsert);
 
-        userStmt.setString(1, user.name);
-        userStmt.setString(2, user.bio);
-        userStmt.setString(3, String.valueOf(user.gender));
-        userStmt.setInt(4, user.age);
-        userStmt.setLong(5, user.phone);
-        userStmt.setString(6, user.email);
-        userStmt.setString(7, user.city);
+        userStmt.setString(1, user.getName());
+        userStmt.setString(2, user.getBio());
+        userStmt.setString(3, String.valueOf(user.getGender()));
+        userStmt.setInt(4, user.getAge());
+        userStmt.setLong(5, user.getPhone());
+        userStmt.setString(6, user.getEmail());
+        userStmt.setString(7, user.getCity());
         userStmt.setBoolean(8, true); // is_active
         userStmt.setTimestamp(9, now()); // last_active
         userStmt.setBoolean(10, false); // is_deleted
         userStmt.setTimestamp(11, now()); // created_at
         userStmt.setTimestamp(12, now()); // updated_at
 
-        int r = userStmt.executeUpdate();
+        userStmt.executeUpdate();
 
 
         // Insert into auth table first to get uid
         String authInsert = """
             INSERT INTO
                 auth
-            VALUES (?, ?, (
+            VALUES (?, (
                     SELECT
                         user_id
                     FROM
@@ -177,18 +183,18 @@ public class DatabaseIO {
             );
         """;
 
+
         PreparedStatement authStmt = connection.prepareStatement(authInsert);
 
-        authStmt.setString(1, user.email);
-        authStmt.setString(2, password);
-        authStmt.setString(3, user.email);
+        authStmt.setString(1, password);
+        authStmt.setString(2, user.getEmail());
 
-        r = authStmt.executeUpdate();
+        authStmt.executeUpdate();
 
     }
 
 
-    static ArrayList<Hobby> getHobbiesFromUID(int uid) throws SQLException {
+    public static ArrayList<Hobby> getHobbiesFromUID(int uid) throws SQLException {
 
         ArrayList<Hobby> hobbies = new ArrayList<>();
 
@@ -235,7 +241,7 @@ public class DatabaseIO {
         """;
 
         PreparedStatement pst = connection.prepareStatement(deleteQuery);
-        pst.setInt(1, CurrentUser.data.userId);
+        pst.setInt(1, CurrentUser.data.getUserId());
 
         pst.executeUpdate();
 
@@ -248,14 +254,14 @@ public class DatabaseIO {
 
 
         pst = connection.prepareStatement(insertQuery);
-        pst.setInt(1, CurrentUser.data.userId);
+        pst.setInt(1, CurrentUser.data.getUserId());
 
         for (int i : ind) {
             pst.setInt(2, i);
             pst.executeUpdate();
         }
 
-        CurrentUser.hobbies = getHobbiesFromUID(CurrentUser.data.userId);
+        CurrentUser.hobbies = getHobbiesFromUID(CurrentUser.data.getUserId());
 
     }
 
@@ -312,7 +318,7 @@ public class DatabaseIO {
         """;
 
         PreparedStatement pst = connection.prepareStatement(deleteQuery);
-        pst.setInt(1, CurrentUser.data.userId);
+        pst.setInt(1, CurrentUser.data.getUserId());
 
         pst.executeUpdate();
 
@@ -325,7 +331,7 @@ public class DatabaseIO {
 
 
         pst = connection.prepareStatement(insertQuery);
-        pst.setInt(1, CurrentUser.data.userId);
+        pst.setInt(1, CurrentUser.data.getUserId());
 
         for (int i : ind) {
             pst.setInt(2, i);
@@ -333,11 +339,11 @@ public class DatabaseIO {
 
         }
 
-        CurrentUser.songs = getSongsFromUID(CurrentUser.data.userId);
+        CurrentUser.songs = getSongsFromUID(CurrentUser.data.getUserId());
     }
 
 
-    static boolean deleteUser(String password) throws SQLException {
+    public static boolean deleteUser(String password) throws SQLException {
 
         String getPassQuery = """
             SELECT
@@ -349,7 +355,7 @@ public class DatabaseIO {
         """;
 
         PreparedStatement pst = connection.prepareStatement(getPassQuery);
-        pst.setInt(1, CurrentUser.data.userId);
+        pst.setInt(1, CurrentUser.data.getUserId());
 
         ResultSet rs = pst.executeQuery();
 
@@ -375,7 +381,7 @@ public class DatabaseIO {
         """;
 
         pst = connection.prepareStatement(deleteQuery);
-        pst.setInt(1, CurrentUser.data.userId);
+        pst.setInt(1, CurrentUser.data.getUserId());
         pst.executeUpdate();
 
 
@@ -388,7 +394,7 @@ public class DatabaseIO {
         """;
 
         pst = connection.prepareStatement(deleteQuery);
-        pst.setInt(1, CurrentUser.data.userId);
+        pst.setInt(1, CurrentUser.data.getUserId());
         pst.executeUpdate();
 
 
@@ -401,7 +407,7 @@ public class DatabaseIO {
         """;
 
         pst = connection.prepareStatement(deleteQuery);
-        pst.setInt(1, CurrentUser.data.userId);
+        pst.setInt(1, CurrentUser.data.getUserId());
         pst.executeUpdate();
 
         return true;
@@ -410,7 +416,7 @@ public class DatabaseIO {
     }
 
 
-    static boolean deactivateUser(String password) throws SQLException {
+    public static boolean deactivateUser(String password) throws SQLException {
 
         String getPassQuery = """
             SELECT
@@ -422,7 +428,7 @@ public class DatabaseIO {
         """;
 
         PreparedStatement pst = connection.prepareStatement(getPassQuery);
-        pst.setInt(1, CurrentUser.data.userId);
+        pst.setInt(1, CurrentUser.data.getUserId());
 
         ResultSet rs = pst.executeQuery();
 
@@ -446,7 +452,7 @@ public class DatabaseIO {
         """;
 
         pst = connection.prepareStatement(deleteQuery);
-        pst.setInt(1, CurrentUser.data.userId);
+        pst.setInt(1, CurrentUser.data.getUserId());
 
         int r = pst.executeUpdate();
 
@@ -481,7 +487,7 @@ public class DatabaseIO {
 
     }
 
-    static boolean updateName(String value) throws SQLException {
+    public static boolean updateName(String value) throws SQLException {
 
 
         String query = """
@@ -497,7 +503,7 @@ public class DatabaseIO {
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, value);
         pst.setTimestamp(2, now());
-        pst.setInt(3, CurrentUser.data.userId);
+        pst.setInt(3, CurrentUser.data.getUserId());
 
         int r = pst.executeUpdate();
 
@@ -505,7 +511,7 @@ public class DatabaseIO {
 
     }
 
-    static boolean updateBio(String value) throws SQLException {
+    public static boolean updateBio(String value) throws SQLException {
 
 
         String query = """
@@ -521,7 +527,7 @@ public class DatabaseIO {
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, value);
         pst.setTimestamp(2, now());
-        pst.setInt(3, CurrentUser.data.userId);
+        pst.setInt(3, CurrentUser.data.getUserId());
 
         int r = pst.executeUpdate();
 
@@ -529,7 +535,7 @@ public class DatabaseIO {
 
     }
 
-    static boolean updateGender(String value) throws SQLException {
+    public static boolean updateGender(String value) throws SQLException {
 
 
         String query = """
@@ -545,7 +551,7 @@ public class DatabaseIO {
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, value);
         pst.setTimestamp(2, now());
-        pst.setInt(3, CurrentUser.data.userId);
+        pst.setInt(3, CurrentUser.data.getUserId());
 
         int r = pst.executeUpdate();
 
@@ -553,7 +559,7 @@ public class DatabaseIO {
 
     }
 
-    static boolean updatePhone(String value) throws SQLException {
+    public static boolean updatePhone(String value) throws SQLException {
 
 
         String query = """
@@ -569,7 +575,7 @@ public class DatabaseIO {
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, value);
         pst.setTimestamp(2, now());
-        pst.setInt(3, CurrentUser.data.userId);
+        pst.setInt(3, CurrentUser.data.getUserId());
 
         int r = pst.executeUpdate();
 
@@ -577,7 +583,7 @@ public class DatabaseIO {
 
     }
 
-    static boolean updateCity(String value) throws SQLException {
+    public static boolean updateCity(String value) throws SQLException {
 
 
         String query = """
@@ -593,7 +599,7 @@ public class DatabaseIO {
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, value);
         pst.setTimestamp(2, now());
-        pst.setInt(3, CurrentUser.data.userId);
+        pst.setInt(3, CurrentUser.data.getUserId());
 
         int r = pst.executeUpdate();
 
@@ -601,7 +607,7 @@ public class DatabaseIO {
 
     }
 
-    static boolean updateEmail(String value) throws SQLException {
+    public static boolean updateEmail(String value) throws SQLException {
 
 
         String query = """
@@ -617,7 +623,7 @@ public class DatabaseIO {
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, value);
         pst.setTimestamp(2, now());
-        pst.setInt(3, CurrentUser.data.userId);
+        pst.setInt(3, CurrentUser.data.getUserId());
 
         int r = pst.executeUpdate();
 
@@ -627,7 +633,7 @@ public class DatabaseIO {
 
 
 
-    static boolean updatePassword(String password) throws SQLException {
+    public static boolean updatePassword(String password) throws SQLException {
 
 
         String query = """
@@ -643,7 +649,7 @@ public class DatabaseIO {
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, password);
         pst.setTimestamp(2, now());
-        pst.setInt(3, CurrentUser.data.userId);
+        pst.setInt(3, CurrentUser.data.getUserId());
 
         int r = pst.executeUpdate();
 
@@ -652,7 +658,7 @@ public class DatabaseIO {
     }
 
 
-    static boolean updateAge(int value) throws SQLException {
+    public static boolean updateAge(int value) throws SQLException {
 
 
         String query = """
@@ -668,7 +674,7 @@ public class DatabaseIO {
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setInt(1, value);
         pst.setTimestamp(2, now());
-        pst.setInt(3, CurrentUser.data.userId);
+        pst.setInt(3, CurrentUser.data.getUserId());
 
         int r = pst.executeUpdate();
 
@@ -677,7 +683,7 @@ public class DatabaseIO {
     }
 
 
-    static ArrayList<Match> getMatchesByUid(int uid) throws SQLException {
+    public static ArrayList<Match> getMatchesByUid(int uid) throws SQLException {
 
 
         ArrayList<Match> matches = new ArrayList<>();
@@ -777,12 +783,12 @@ public class DatabaseIO {
     }
 
 
-    static boolean isAccountActive(String emailPhone) {
+    public static boolean isAccountActive(String emailPhone) {
 
         boolean isActive = false;
 
         try {
-            // Assuming DatabaseIO.connection is your open JDBC Connection
+            // Assuming db.DatabaseIO.connection is your open JDBC Connection
 
             String sql = """
                 SELECT
@@ -820,7 +826,7 @@ public class DatabaseIO {
     }
 
 
-    static void reActivate(String emailPhone) {
+    public static void reActivate(String emailPhone) {
 
         try {
 
@@ -849,7 +855,7 @@ public class DatabaseIO {
 
     }
 
-    static void sendMatchRequest(int receiverId, String by) throws SQLException {
+    public static void sendMatchRequest(int receiverId, String by) throws SQLException {
         String sql = """
                 INSERT INTO
                     matches
@@ -871,7 +877,7 @@ public class DatabaseIO {
 
     }
 
-    static void acceptMatch(Match match) throws SQLException {
+    public static void acceptMatch(Match match) throws SQLException {
         String update = """
             UPDATE
                 matches
@@ -885,13 +891,13 @@ public class DatabaseIO {
         """;
         PreparedStatement pst = connection.prepareStatement(update);
         pst.setTimestamp(1, now());
-        pst.setInt(2, match.senderUserId);
-        pst.setInt(3, match.receiverUserId);
+        pst.setInt(2, match.getSenderUserId());
+        pst.setInt(3, match.getReceiverUserId());
         pst.executeUpdate();
 
     }
 
-    static void rejectMatch(Match match) throws SQLException {
+    public static void rejectMatch(Match match) throws SQLException {
         String update = """
             UPDATE
                 matches
@@ -903,15 +909,15 @@ public class DatabaseIO {
                 receiver_user_id = ?;
         """;
         PreparedStatement pst = connection.prepareStatement(update);
-        pst.setInt(1, match.senderUserId);
-        pst.setInt(2, match.receiverUserId);
+        pst.setInt(1, match.getSenderUserId());
+        pst.setInt(2, match.getReceiverUserId());
         pst.executeUpdate();
 
     }
 
 
 
-    static ArrayList<User> getBlockedUsers(int uid) throws SQLException{
+    public static ArrayList<User> getBlockedUsers(int uid) throws SQLException{
 
         ArrayList<User> blockedUsers = new ArrayList<>();
 
@@ -950,7 +956,7 @@ public class DatabaseIO {
     }
 
 
-    static boolean unblockUser(int uid) throws SQLException {
+    public static boolean unblockUser(int uid) throws SQLException {
 
         String update = """
             UPDATE
@@ -964,7 +970,7 @@ public class DatabaseIO {
         """;
 
         PreparedStatement pst = connection.prepareStatement(update);
-        pst.setInt(1, CurrentUser.data.userId);
+        pst.setInt(1, CurrentUser.data.getUserId());
         pst.setInt(2, uid);
         int r = pst.executeUpdate();
 
@@ -972,7 +978,7 @@ public class DatabaseIO {
     }
 
 
-    static boolean isEmailPhoneDupe(String emailPhone) throws SQLException{
+    public static boolean isEmailPhoneDupe(String emailPhone) throws SQLException{
 
         String existsQuery = """
             SELECT
@@ -1013,7 +1019,7 @@ public class DatabaseIO {
         """;
 
         PreparedStatement pst1 = connection.prepareStatement(existsQuery);
-        pst1.setInt(1, CurrentUser.data.userId);
+        pst1.setInt(1, CurrentUser.data.getUserId());
         pst1.setInt(2, uid);
         ResultSet rs = pst1.executeQuery();
 
@@ -1031,7 +1037,7 @@ public class DatabaseIO {
             """;
 
             PreparedStatement pst2 = connection.prepareStatement(updateQuery);
-            pst2.setInt(1, CurrentUser.data.userId);
+            pst2.setInt(1, CurrentUser.data.getUserId());
             pst2.setInt(2, uid);
 
             int r = pst2.executeUpdate();
@@ -1048,7 +1054,7 @@ public class DatabaseIO {
         """;
 
         PreparedStatement pst = connection.prepareStatement(insertQuery);
-        pst.setInt(1, CurrentUser.data.userId);
+        pst.setInt(1, CurrentUser.data.getUserId());
         pst.setInt(2, uid);
         pst.setTimestamp(3, now());
         pst.setBoolean(4, false);
@@ -1059,7 +1065,7 @@ public class DatabaseIO {
     }
 
 
-    static ArrayList<Song> getAllSongs() throws SQLException {
+    public static ArrayList<Song> getAllSongs() throws SQLException {
 
         ArrayList<Song> list = new ArrayList<>();
 
@@ -1067,7 +1073,13 @@ public class DatabaseIO {
                         SELECT
                             *
                         FROM
-                            songs
+                            songs S
+                            INNER JOIN
+                            song_types ST
+                            ON
+                            S.type_id = ST.type_id
+                        ORDER BY
+                            S.song_id
                 """;
 
 
@@ -1083,7 +1095,7 @@ public class DatabaseIO {
     }
 
 
-    static HashMap<Integer, String> getAllHobbies() throws SQLException {
+    public static HashMap<Integer, String> getAllHobbies() throws SQLException {
 
 
         HashMap<Integer, String> map = new HashMap<>();
@@ -1102,7 +1114,7 @@ public class DatabaseIO {
         while (rs.next()) {
 
             Hobby hobby = Hobby.fromDB(rs);
-            map.put(hobby.hobbyId, hobby.hobbyName);
+            map.put(hobby.getHobbyId(), hobby.getHobbyName());
 
         }
 

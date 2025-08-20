@@ -1,23 +1,30 @@
+package session;
+
 import java.io.*;
 import java.sql.*;
 import java.util.*;
 
+import model.*;
+import db.DatabaseIO;
+import logs.Log;
+import util.Utility;
+
 public class CurrentUser {
 
     // current user data
-    static User data;
+    public static User data;
 
-    static ArrayList<Hobby> hobbies = new ArrayList<>();
-    static ArrayList<Song> songs = new ArrayList<>();
+    public static ArrayList<Hobby> hobbies = new ArrayList<>();
+    public static ArrayList<Song> songs = new ArrayList<>();
 
     static Scanner scanner = new Scanner(System.in);
 
 
     // function to initialize current user data from file
-    static void initUserData() throws IOException, SQLException {
+    public static void initUserData() throws IOException, SQLException {
 
         // data file
-        File userData = new File("user_data.txt");
+        File userData = new File("session/user_data.txt");
 
 
         // if file doesn't exist, not logged in. and return (no need to load data)
@@ -38,7 +45,7 @@ public class CurrentUser {
 
         int user_id;
 
-        // parse uid from file and get User data from it
+        // parse uid from file and get model.User data from it
         try {
             user_id = Integer.parseInt(line);
             reader.close();
@@ -274,7 +281,7 @@ public class CurrentUser {
 
     public static void editProfile() {
 
-        System.out.println("Edit Profile");
+        System.out.println("Edit util.Profile");
 
 
         while (true) {
@@ -489,7 +496,10 @@ public class CurrentUser {
                         password = scanner.nextLine();
 
                         try {
-                            if (CurrentUser.data.userId == DatabaseIO.getUserFromAuth(CurrentUser.data.email, password).userId)
+                            if (CurrentUser.data.getUserId() == DatabaseIO.getUserFromAuth(
+                                    CurrentUser.data.getEmail(), password)
+                                    .getUserId()
+                            )
                                 break;
                             else {
                                 System.out.println("Incorrect Password.");

@@ -1,12 +1,16 @@
+package model;
+
 import java.sql.*;
 import java.util.ArrayList;
+
+import util.*;
 
 public class User {
 
     public static ArrayList<User> users;
 
 
-    // User data
+    // model.User data
     int userId;
     String name;
     String bio;
@@ -54,7 +58,7 @@ public class User {
 
 
     // Function to load user from "database result set"
-    static User fromDB(ResultSet rs) throws SQLException {
+    public static User fromDB(ResultSet rs) throws SQLException {
 
         int id = rs.getInt("user_id");
         String name = rs.getString("name");
@@ -116,4 +120,31 @@ public class User {
         return city;
     }
 
+    public static ArrayList<User> getUsers() {
+        return users;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public long getLastActive() {
+        return lastActive;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public long getCreatedAt() {
+        return createdAt;
+    }
+
+    public long getUpdatedAt() {
+        return updatedAt;
+    }
 }

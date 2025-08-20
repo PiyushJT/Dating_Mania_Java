@@ -1,17 +1,18 @@
+package model;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+
 
 public class Song {
 
-    static ArrayList<Song> songs;
+    public static ArrayList<Song> songs;
 
     static {
 
         try {
-            songs = DatabaseIO.getAllSongs();
+            songs = db.DatabaseIO.getAllSongs();
         }
         catch (SQLException e) {
             songs = new ArrayList<>();
@@ -38,8 +39,16 @@ public class Song {
         this.type = type;
     }
 
+    public int getSongId() {
+        return songId;
+    }
+
     public String getSongName() {
         return songName;
+    }
+
+    public String getArtistName() {
+        return artistName;
     }
 
     public static Song fromDB(ResultSet rs) throws SQLException {

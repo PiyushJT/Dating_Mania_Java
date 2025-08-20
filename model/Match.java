@@ -1,4 +1,10 @@
+package model;
+
 import java.sql.*;
+
+import db.DatabaseIO;
+import logs.Log;
+import util.Utility;
 
 public class Match {
 
@@ -56,7 +62,7 @@ public class Match {
     }
 
 
-    static Match fromDB(ResultSet rs) throws SQLException {
+    public static Match fromDB(ResultSet rs) throws SQLException {
 
         int senderUserId = rs.getInt("sender_user_id");
         int receiverUserId = rs.getInt("receiver_user_id");
@@ -81,4 +87,35 @@ public class Match {
 
     }
 
+    public int getSenderUserId() {
+        return senderUserId;
+    }
+
+    public int getReceiverUserId() {
+        return receiverUserId;
+    }
+
+    public boolean isAccepted() {
+        return isAccepted;
+    }
+
+    public long getAcceptedAt() {
+        return acceptedAt;
+    }
+
+    public long getSentAt() {
+        return sentAt;
+    }
+
+    public String getMatchedOn() {
+        return matchedOn;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public User getSender() {
+        return sender;
+    }
 }

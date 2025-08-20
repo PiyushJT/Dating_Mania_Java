@@ -1,7 +1,18 @@
+package service;
+
 import java.util.*;
-public class Matchmaking
-{
-    static PriorityQueue<UserMatch> matchMadeUsingHobby() {
+
+import model.Hobby;
+import model.Song;
+import model.User;
+import model.UserMatch;
+import session.CurrentUser;
+import db.DatabaseIO;
+import logs.Log;
+
+public class Matchmaking {
+
+    public static PriorityQueue<UserMatch> matchMadeUsingHobby() {
         PriorityQueue<UserMatch> queue = new PriorityQueue<>();
 
             try {
@@ -10,7 +21,7 @@ public class Matchmaking
                 ArrayList<Hobby> myHobbiesList = DatabaseIO.getHobbiesFromUID(myId);
                 HashSet<Integer> myHobbyIds = new HashSet<>();
                 for (Hobby h : myHobbiesList) {
-                    myHobbyIds.add(h.hobbyId);
+                    myHobbyIds.add(h.getHobbyId());
                 }
 
                 // Get all users
@@ -19,7 +30,7 @@ public class Matchmaking
                     // Skip self and same gender or inactive
                     if (user.getId() == myId)
                         continue;
-                    if (!user.isActive || user.getGender() == myGender)
+                    if (!user.isActive() || user.getGender() == myGender)
                         continue;
                     if (DatabaseIO.amIBlockedBy(user.getId()))
                         continue;
@@ -28,7 +39,7 @@ public class Matchmaking
                     ArrayList<Hobby> theirHobbies = DatabaseIO.getHobbiesFromUID(user.getId());
                     HashSet<Integer> theirHobbyIds = new HashSet<>();
                     for (Hobby h : theirHobbies) {
-                        theirHobbyIds.add(h.hobbyId);
+                        theirHobbyIds.add(h.getHobbyId());
                     }
 
                     // Calculate number of shared hobbies
@@ -49,7 +60,7 @@ public class Matchmaking
     }
 
 
-    static PriorityQueue<UserMatch> matchMadeUsingSong() {
+    public static PriorityQueue<UserMatch> matchMadeUsingSong() {
         PriorityQueue<UserMatch> queue = new PriorityQueue<>();
 
         try {
@@ -58,7 +69,7 @@ public class Matchmaking
             ArrayList<Song> mySongsList = DatabaseIO.getSongsFromUID(myId);
             HashSet<Integer> mySongIds = new HashSet<>();
             for (Song s : mySongsList) {
-                mySongIds.add(s.songId);
+                mySongIds.add(s.getSongId());
             }
 
             // Get all users
@@ -67,14 +78,14 @@ public class Matchmaking
                 // Skip self and same gender or inactive
                 if (user.getId() == myId)
                     continue;
-                if (!user.isActive || user.getGender() == myGender)
+                if (!user.isActive() || user.getGender() == myGender)
                     continue;
 
                 // Get songs for this user
                 ArrayList<Song> theirSong = DatabaseIO.getSongsFromUID(user.getId());
                 HashSet<Integer> theirSongIds = new HashSet<>();
                 for (Song s : theirSong) {
-                    theirSongIds.add(s.songId);
+                    theirSongIds.add(s.getSongId());
                 }
 
                 // Calculate number of shared songs

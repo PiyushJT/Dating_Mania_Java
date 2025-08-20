@@ -1,3 +1,5 @@
+package model;
+
 public class UserMatch implements Comparable<UserMatch> {
     User user;
     int score;

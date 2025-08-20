@@ -1,9 +1,13 @@
+package model;
+
 import java.sql.*;
 import java.util.HashMap;
 
+import db.DatabaseIO;
+
 public class Hobby {
 
-    static HashMap<Integer, String> hobbies;
+    public static HashMap<Integer, String> hobbies;
 
     static {
 
@@ -25,12 +29,16 @@ public class Hobby {
         this.hobbyName = hobbyName;
     }
 
+    public int getHobbyId() {
+        return hobbyId;
+    }
+
     public String getHobbyName() {
         return hobbyName;
     }
 
 
-    static Hobby fromDB(ResultSet rs) throws SQLException {
+    public static Hobby fromDB(ResultSet rs) throws SQLException {
 
 
         int hobbyId = rs.getInt("hobby_id");

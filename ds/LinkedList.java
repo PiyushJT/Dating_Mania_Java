@@ -1,19 +1,21 @@
+package ds;
+
 public class LinkedList {
 
     Node head = null;
 
     public class Node {
-        UserMatch data;
+        Object data;
         Node next;
 
-        Node(UserMatch data) {
+        Node(Object data) {
             this.data = data;
             this.next = null;
         }
 
     }
 
-    public void insertFirst(UserMatch data) {
+    public void insertFirst(Object data) {
 
         Node n = new Node(data);
         n.next = head;
@@ -23,7 +25,7 @@ public class LinkedList {
     }
 
 
-    public void insertEnd(UserMatch data) {
+    public void insertEnd(Object data) {
 
         Node n = head;
 
@@ -38,7 +40,7 @@ public class LinkedList {
     }
 
 
-    public void deleteVal(UserMatch val){
+    public void deleteVal(Object val){
 
         Node n = head;
 

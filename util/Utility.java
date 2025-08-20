@@ -1,23 +1,35 @@
+package util;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import db.DatabaseIO;
+import model.Hobby;
+import model.Match;
+import model.Song;
+import model.User;
+import model.UserMatch;
+import service.Matchmaking;
+import session.CurrentUser;
+import logs.Log;
+
 public class Utility {
 
-    static Scanner scanner = new Scanner(System.in);
+    public static Scanner scanner = new Scanner(System.in);
 
 
     // Functions to print lines and tabs
-    static void printLines(int lines) {
+    public static void printLines(int lines) {
 
         for (int i = 1; i <= lines; i++)
             System.out.println();
 
     }
 
-    static void printTabs(int tabs) {
+    public static void printTabs(int tabs) {
 
         for (int i = 1; i <= tabs; i++)
             System.out.print("\t");
@@ -26,7 +38,7 @@ public class Utility {
 
 
     // Functions to print welcome screen
-    static void printWelcome() {
+    public static void printWelcome() {
         printLines(2);
         System.out.println("||======================================||");
         System.out.print("||");
@@ -41,7 +53,7 @@ public class Utility {
 
 
     // Function to open login menu
-    static void openLoginMenu() {
+    public static void openLoginMenu() {
 
         System.out.println("1. Login");
         System.out.println("2. Register (Don't have an account)");
@@ -59,12 +71,12 @@ public class Utility {
             case '1':
                 if (login()) {
                     System.out.println("Welcome back " + CurrentUser.data.getName() + ".");
-                    Log.S("User logged in successfully");
+                    Log.S("model.User logged in successfully");
                     openMainMenu();
                 }
                 else {
                     System.out.println("Login aborted.");
-                    Log.S("User login aborted");
+                    Log.S("model.User login aborted");
                     openLoginMenu();
                 }
 
@@ -73,12 +85,12 @@ public class Utility {
             case '2':
                 if (register()) {
                     System.out.println("Registration successful! Welcome, \n" + CurrentUser.data.getName() + ".");
-                    Log.S("User registered successfully");
+                    Log.S("model.User registered successfully");
                     openMainMenu();
                 }
                 else {
                     System.out.println("Registration aborted.");
-                    Log.S("User registration aborted");
+                    Log.S("model.User registration aborted");
                     openLoginMenu();
                 }
 
@@ -86,7 +98,7 @@ public class Utility {
 
             case '3':
                 System.out.println("Exiting...");
-                Log.S("User exited manually");
+                Log.S("model.User exited manually");
                 System.exit(0);
 
                 break;
@@ -102,7 +114,7 @@ public class Utility {
 
 
     // Function to open registration menu
-    static boolean register() {
+    public static boolean register() {
 
         // Prompt for user details
 
@@ -296,7 +308,7 @@ public class Utility {
 
 
     // Function to open login menu
-    static boolean login() {
+    public static boolean login() {
 
         // Initialize variables
         String emailPhone;
@@ -358,7 +370,7 @@ public class Utility {
 
 
             // If user data is null, user is not registered or if acc. is deleted
-            if (CurrentUser.data == null || CurrentUser.data.isDeleted) {
+            if (CurrentUser.data == null || CurrentUser.data.isDeleted()) {
 
                 if (CurrentUser.data != null)
                     System.out.println("Account not found.");
@@ -373,7 +385,7 @@ public class Utility {
             }
 
             try {
-                DatabaseIO.updateLastActive(CurrentUser.data.userId);
+                DatabaseIO.updateLastActive(CurrentUser.data.getUserId());
             }
             catch (SQLException e) {
                 System.out.println(e.getMessage());
@@ -405,7 +417,7 @@ public class Utility {
     }
 
 
-    static void openMainMenu() {
+    public static void openMainMenu() {
 
         if(CurrentUser.hobbies.isEmpty())
             System.out.println(" 1. Register your hobbies");
@@ -420,7 +432,7 @@ public class Utility {
 
         System.out.println(" 3. View your matches");
         System.out.println(" 4. Create new match");
-        System.out.println(" 5. Match requests");
+        System.out.println(" 5. model.Match requests");
         System.out.println(" 6. Open my profile");
         System.out.println(" 7. Block / unblock user");
         System.out.println(" 8. Delete / Deactivate account");
@@ -492,10 +504,10 @@ public class Utility {
 
             case "4": {
 
-                System.out.println("BY Hobby / Song");
+                System.out.println("BY model.Hobby / model.Song");
 
-                System.out.println("1. Match by Hobby");
-                System.out.println("2. Match by Song");
+                System.out.println("1. model.Match by model.Hobby");
+                System.out.println("2. model.Match by model.Song");
 
                 System.out.println("Any other -> Cancel");
 
@@ -520,9 +532,9 @@ public class Utility {
                                 User potentialMatch = match.getUser();
 
                                 try {
-                                    // Display profile using your Profile class
+                                    // Display profile using your util.Profile class
                                     ArrayList<Hobby> theirHobbies = DatabaseIO.getHobbiesFromUID(potentialMatch.getId());
-                                    //ArrayList<Song> theirSongs = DatabaseIO.getSongsFromUID(potentialMatch.getId());
+                                    //ArrayList<model.Song> theirSongs = db.DatabaseIO.getSongsFromUID(potentialMatch.getId());
 
                                     Profile.displayHobbies(potentialMatch, theirHobbies);
                                     System.out.println();
@@ -542,7 +554,7 @@ public class Utility {
                                         case "r":
                                             try {
                                                 DatabaseIO.sendMatchRequest(potentialMatch.getId(), "hobby");
-                                                System.out.println("✅ Match request sent to " + potentialMatch.getName() + "!");
+                                                System.out.println("✅ model.Match request sent to " + potentialMatch.getName() + "!");
                                                 System.out.println();
                                             } catch (Exception e) {
                                                 System.out.println("❌ Failed to send request. Please try again later.");
@@ -589,8 +601,8 @@ public class Utility {
                                 User potentialMatch = match.getUser();
 
                                 try {
-                                    // Display profile using your Profile class
-                                    //ArrayList<Hobby> theirHobbies = DatabaseIO.getHobbiesFromUID(potentialMatch.getId());
+                                    // Display profile using your util.Profile class
+                                    //ArrayList<model.Hobby> theirHobbies = db.DatabaseIO.getHobbiesFromUID(potentialMatch.getId());
                                     ArrayList<Song> theirSongs = DatabaseIO.getSongsFromUID(potentialMatch.getId());
 
                                     Profile.displaySongs(potentialMatch, theirSongs);
@@ -612,7 +624,7 @@ public class Utility {
                                         case "r":
                                             try {
                                                 DatabaseIO.sendMatchRequest(potentialMatch.getId(), "song");
-                                                System.out.println("✅ Match request sent to " + potentialMatch.getName() + "!");
+                                                System.out.println("✅ model.Match request sent to " + potentialMatch.getName() + "!");
                                                 System.out.println();
                                             } catch (Exception e) {
                                                 System.out.println("❌ Failed to send request. Please try again later.");
@@ -660,11 +672,11 @@ public class Utility {
 
             case "5": {
 
-                System.out.println("Match requests: ");
+                System.out.println("model.Match requests: ");
 
                 ArrayList<Match> matches;
                 try {
-                    matches = DatabaseIO.getMatchesByUid(CurrentUser.data.userId);
+                    matches = DatabaseIO.getMatchesByUid(CurrentUser.data.getUserId());
                 }
                 catch (SQLException e) {
                     Log.E("Error getting matches: " + e.getMessage());
@@ -683,7 +695,7 @@ public class Utility {
 
                     for (Match match : matches) {
 
-                        if (choice2.equals(match.senderUserId + "")) {
+                        if (choice2.equals(match.getSenderUserId() + "")) {
 
                             System.out.println("Accept match?");
                             System.out.println("Enter y to accept");
@@ -724,7 +736,7 @@ public class Utility {
             case "6": {
 
 
-                System.out.println("My Profile");
+                System.out.println("My util.Profile");
                 Profile.display(CurrentUser.data, CurrentUser.hobbies, CurrentUser.songs);
 
                 System.out.println("1. Edit profile");
@@ -758,7 +770,7 @@ public class Utility {
 
                     case "1": {
 
-                        System.out.println("Block User");
+                        System.out.println("Block model.User");
 
                         System.out.println("Enter user's name to block: ");
                         String name = scanner.next();
@@ -789,7 +801,7 @@ public class Utility {
                         ArrayList<User> blockedUsers;
 
                         try {
-                            blockedUsers = DatabaseIO.getBlockedUsers(CurrentUser.data.userId);
+                            blockedUsers = DatabaseIO.getBlockedUsers(CurrentUser.data.getUserId());
                         }
                         catch (Exception e) {
                             Log.E("Error getting blocked users: " + e.getMessage());
@@ -953,13 +965,13 @@ public class Utility {
 
 
     // Functions to validate email and password
-    static boolean isEmailValid(String email) {
+    public static boolean isEmailValid(String email) {
         if (email == null || email.isEmpty())
             return false;
         return email.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
     }
 
-    static boolean isPhoneValid(String phone) {
+    public static boolean isPhoneValid(String phone) {
         try {
             long ph = Long.parseLong(phone);
 
@@ -970,7 +982,7 @@ public class Utility {
         }
     }
 
-    static boolean isPasswordValid(String password) {
+    public static boolean isPasswordValid(String password) {
         if (password == null)
             return false;
         return password.length() >= 8;
@@ -978,7 +990,7 @@ public class Utility {
 
 
     // Function to print error message when log file is unaccessible
-    static void printLogInaccessibleWarning() {
+    public static void printLogInaccessibleWarning() {
         printLines(2);
         System.out.print("||");
         printTabs(2);
@@ -991,7 +1003,7 @@ public class Utility {
     }
 
 
-    static long getDateFromSQLDate(String dateStr) {
+    public static long getDateFromSQLDate(String dateStr) {
 
         return Long.parseLong(
                 dateStr
@@ -1004,7 +1016,7 @@ public class Utility {
     }
 
 
-    static String getDateString(long dateLong) {
+    public static String getDateString(long dateLong) {
 
         // Parse the long to LocalDateTime
         String dateStr = String.valueOf(dateLong);
@@ -1040,7 +1052,7 @@ public class Utility {
 
 
     // Function to get user input for try again (multiple uses)
-    static boolean tryAgain() {
+    public static boolean tryAgain() {
         System.out.println("Enter 1. -> Try again");
         System.out.println("Any other. -> Go back");
 
@@ -1050,7 +1062,7 @@ public class Utility {
         return choice == '1';
     }
 
-    static long getNowLong() {
+    public static long getNowLong() {
         return Long.parseLong(
                 LocalDateTime
                         .now()

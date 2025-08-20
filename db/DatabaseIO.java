@@ -2,7 +2,6 @@ package db;
 
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import ds.SongLinkedList;
@@ -19,10 +18,10 @@ public class DatabaseIO {
     public static Connection connection;
 
     // function to get all users from database
-    public static ArrayList<User> getUsers() throws SQLException {
+    public static UserLinkedList getUsers() throws SQLException {
 
-        // base arraylist
-        ArrayList<User> users = new ArrayList<>();
+        // base list
+        UserLinkedList users = new UserLinkedList();
 
         // query
         Statement st = connection.createStatement();
@@ -39,7 +38,7 @@ public class DatabaseIO {
 
         // getting users' data from result
         while (rs.next())
-            users.add(User.fromDB(rs));
+            users.insert(User.fromDB(rs));
 
         return users;
 
@@ -686,10 +685,10 @@ public class DatabaseIO {
     }
 
 
-    public static ArrayList<Match> getMatchesByUid(int uid) throws SQLException {
+    public static MatchLinkedList getMatchesByUid(int uid) throws SQLException {
 
 
-        ArrayList<Match> matches = new ArrayList<>();
+        MatchLinkedList matches = new MatchLinkedList();
 
         // query
         String query = """
@@ -713,7 +712,7 @@ public class DatabaseIO {
         ResultSet rs = pst.executeQuery();
 
         while (rs.next()) {
-            matches.add(Match.fromDB(rs));
+            matches.insert(Match.fromDB(rs));
         }
 
         return matches;
@@ -721,9 +720,9 @@ public class DatabaseIO {
     }
 
 
-    public static ArrayList<User> getMatches() throws SQLException {
+    public static UserLinkedList getMatches() throws SQLException {
 
-        ArrayList<User> list = new ArrayList<>();
+        UserLinkedList list = new UserLinkedList();
 
 
         String sentQuery = """
@@ -750,7 +749,7 @@ public class DatabaseIO {
         ResultSet rs = pst.executeQuery();
 
         while (rs.next())
-            list.add(User.fromDB(rs));
+            list.insert(User.fromDB(rs));
 
 
         String receivedQuery = """
@@ -778,7 +777,7 @@ public class DatabaseIO {
         rs = pst.executeQuery();
 
         while (rs.next())
-            list.add(User.fromDB(rs));
+            list.insert(User.fromDB(rs));
 
 
         return list;
@@ -920,9 +919,9 @@ public class DatabaseIO {
 
 
 
-    public static ArrayList<User> getBlockedUsers(int uid) throws SQLException{
+    public static UserLinkedList getBlockedUsers(int uid) throws SQLException{
 
-        ArrayList<User> blockedUsers = new ArrayList<>();
+        UserLinkedList blockedUsers = new UserLinkedList();
 
         // query
         String query = """
@@ -951,7 +950,7 @@ public class DatabaseIO {
         ResultSet rs = pst.executeQuery();
 
         while (rs.next()) {
-            blockedUsers.add(User.fromDB(rs));
+            blockedUsers.insert(User.fromDB(rs));
         }
 
         return blockedUsers;

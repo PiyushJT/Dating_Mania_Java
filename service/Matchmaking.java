@@ -23,8 +23,8 @@ public class Matchmaking {
                 }
 
                 // Get all users
-                ArrayList<User> users = DatabaseIO.getUsers();
-                for (User user : users) {
+                UserLinkedList users = DatabaseIO.getUsers();
+                for (User user : users.toArray()) {
                     // Skip self and same gender or inactive
                     if (user.getId() == myId)
                         continue;
@@ -69,8 +69,8 @@ public class Matchmaking {
                 mySongIds.add(s.getSongId());
 
             // Get all users
-            ArrayList<User> users = DatabaseIO.getUsers();
-            for (User user : users) {
+            UserLinkedList users = DatabaseIO.getUsers();
+            for (User user : users.toArray()) {
                 // Skip self and same gender or inactive
                 if (user.getId() == myId)
                     continue;

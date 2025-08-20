@@ -8,7 +8,9 @@ import java.util.*;
 
 import db.DatabaseIO;
 import ds.HobbyLinkedList;
+import ds.MatchLinkedList;
 import ds.SongLinkedList;
+import ds.UserLinkedList;
 import model.*;
 import service.Matchmaking;
 import session.CurrentUser;
@@ -470,7 +472,7 @@ public class Utility {
 
                 System.out.println("Your matches");
 
-                ArrayList<User> matches = new ArrayList<>();
+                UserLinkedList matches = new UserLinkedList();
                 try {
                     matches = DatabaseIO.getMatches();
                 }
@@ -478,7 +480,7 @@ public class Utility {
                     Log.E("Error getting matches: " + e.getMessage());
                 }
 
-                for (User user : matches) {
+                for (User user : matches.toArray()) {
                     int uid = user.getId();
 
                     try {
@@ -599,8 +601,6 @@ public class Utility {
                                 User potentialMatch = match.getUser();
 
                                 try {
-                                    // Display profile using your util.Profile class
-                                    //ArrayList<model.Hobby> theirHobbies = db.DatabaseIO.getHobbiesFromUID(potentialMatch.getId());
                                     SongLinkedList theirSongs = DatabaseIO.getSongsFromUID(potentialMatch.getId());
 
                                     Profile.displaySongs(potentialMatch, theirSongs);
@@ -672,7 +672,7 @@ public class Utility {
 
                 System.out.println("model.Match requests: ");
 
-                ArrayList<Match> matches;
+                MatchLinkedList matches;
                 try {
                     matches = DatabaseIO.getMatchesByUid(CurrentUser.data.getUserId());
                 }
@@ -681,7 +681,7 @@ public class Utility {
                     break;
                 }
 
-                for (int i = 0; i < matches.size(); i++)
+                for (int i = 0; i < matches.length(); i++)
                     System.out.println(matches.get(i));
 
 
@@ -691,7 +691,7 @@ public class Utility {
                     String choice2 = scanner.next();
                     scanner.nextLine();
 
-                    for (Match match : matches) {
+                    for (Match match : matches.toArray()) {
 
                         if (choice2.equals(match.getSenderUserId() + "")) {
 
@@ -774,7 +774,7 @@ public class Utility {
                         String name = scanner.next();
                         scanner.nextLine();
 
-                        for (User user : User.users)
+                        for (User user : User.users.toArray())
                             if (user.getName().toLowerCase().contains(name))
                                 System.out.println(user);
 
@@ -796,7 +796,7 @@ public class Utility {
 
                         System.out.println("Unblock user");
 
-                        ArrayList<User> blockedUsers;
+                        UserLinkedList blockedUsers;
 
                         try {
                             blockedUsers = DatabaseIO.getBlockedUsers(CurrentUser.data.getUserId());
@@ -809,7 +809,7 @@ public class Utility {
                         if (blockedUsers.isEmpty())
                             break;
 
-                        for (User user : blockedUsers)
+                        for (User user : blockedUsers.toArray())
                             System.out.println(user);
 
                         System.out.println("Enter user id to unblock: ");

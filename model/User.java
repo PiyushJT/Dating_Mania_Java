@@ -1,13 +1,13 @@
 package model;
 
 import java.sql.*;
-import java.util.ArrayList;
 
+import ds.UserLinkedList;
 import util.*;
 
 public class User {
 
-    public static ArrayList<User> users;
+    public static UserLinkedList users;
 
 
     // model.User data
@@ -120,7 +120,7 @@ public class User {
         return city;
     }
 
-    public static ArrayList<User> getUsers() {
+    public static UserLinkedList getUsers() {
         return users;
     }
 

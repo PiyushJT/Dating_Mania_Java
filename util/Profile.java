@@ -17,12 +17,12 @@ public class Profile {
         System.out.println("City: " + user.getCity());
         System.out.println();
         System.out.println("Hobbies:");
-        for (Hobby h : (Hobby[]) hobbies.toArray()) {
+        for (Hobby h : hobbies.toArray()) {
             System.out.println("  - " + h.getHobbyName());
         }
         System.out.println();
         System.out.println("model.Song interests:");
-        for (Song s : (Song[]) songs.toArray()) {
+        for (Song s : songs.toArray()) {
             System.out.println("  - " +s.getSongName()+" BY "+s.getArtistName());
         }
         System.out.println("===============================================");

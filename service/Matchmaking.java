@@ -2,10 +2,8 @@ package service;
 
 import java.util.*;
 
-import model.Hobby;
-import model.Song;
-import model.User;
-import model.UserMatch;
+import ds.*;
+import model.*;
 import session.CurrentUser;
 import db.DatabaseIO;
 import logs.Log;
@@ -18,9 +16,9 @@ public class Matchmaking {
             try {
                 int myId = CurrentUser.data.getId();
                 char myGender = CurrentUser.data.getGender();
-                ArrayList<Hobby> myHobbiesList = DatabaseIO.getHobbiesFromUID(myId);
+                HobbyLinkedList myHobbiesList = DatabaseIO.getHobbiesFromUID(myId);
                 HashSet<Integer> myHobbyIds = new HashSet<>();
-                for (Hobby h : myHobbiesList) {
+                for (Hobby h : myHobbiesList.toArray()) {
                     myHobbyIds.add(h.getHobbyId());
                 }
 
@@ -36,11 +34,10 @@ public class Matchmaking {
                         continue;
 
                     // Get hobbies for this user
-                    ArrayList<Hobby> theirHobbies = DatabaseIO.getHobbiesFromUID(user.getId());
+                    HobbyLinkedList theirHobbies = DatabaseIO.getHobbiesFromUID(user.getId());
                     HashSet<Integer> theirHobbyIds = new HashSet<>();
-                    for (Hobby h : theirHobbies) {
+                    for (Hobby h : theirHobbies.toArray())
                         theirHobbyIds.add(h.getHobbyId());
-                    }
 
                     // Calculate number of shared hobbies
                     HashSet<Integer> common = new HashSet<>(myHobbyIds);
@@ -66,11 +63,10 @@ public class Matchmaking {
         try {
             int myId = CurrentUser.data.getId();
             char myGender = CurrentUser.data.getGender();
-            ArrayList<Song> mySongsList = DatabaseIO.getSongsFromUID(myId);
+            SongLinkedList mySongsList = DatabaseIO.getSongsFromUID(myId);
             HashSet<Integer> mySongIds = new HashSet<>();
-            for (Song s : mySongsList) {
+            for (Song s :  mySongsList.toArray())
                 mySongIds.add(s.getSongId());
-            }
 
             // Get all users
             ArrayList<User> users = DatabaseIO.getUsers();
@@ -82,11 +78,11 @@ public class Matchmaking {
                     continue;
 
                 // Get songs for this user
-                ArrayList<Song> theirSong = DatabaseIO.getSongsFromUID(user.getId());
+                SongLinkedList theirSong = DatabaseIO.getSongsFromUID(user.getId());
                 HashSet<Integer> theirSongIds = new HashSet<>();
-                for (Song s : theirSong) {
+
+                for (Song s : theirSong.toArray())
                     theirSongIds.add(s.getSongId());
-                }
 
                 // Calculate number of shared songs
                 HashSet<Integer> common = new HashSet<>(mySongIds);

@@ -7,11 +7,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import db.DatabaseIO;
-import model.Hobby;
-import model.Match;
-import model.Song;
-import model.User;
-import model.UserMatch;
+import ds.HobbyLinkedList;
+import ds.SongLinkedList;
+import model.*;
 import service.Matchmaking;
 import session.CurrentUser;
 import logs.Log;
@@ -152,16 +150,17 @@ public class Utility {
         while (true) {
 
             System.out.print("Enter your phone: ");
-            phone = scanner.nextLong();
+            String strPhone = scanner.next();
             scanner.nextLine();
 
-            if (phone < 1000000000 || phone > 9999999999L) {
+            if (!isPhoneValid(strPhone)) {
                 System.out.println("Invalid phone number. Try again");
                 continue;
             }
+            phone = Long.parseLong(strPhone);
 
             try {
-                if (DatabaseIO.isEmailPhoneDupe(email)) {
+                if (DatabaseIO.isEmailPhoneDupe(phone + "")) {
                     System.out.println("Phone already exists. Try again");
                     continue;
                 }
@@ -533,8 +532,7 @@ public class Utility {
 
                                 try {
                                     // Display profile using your util.Profile class
-                                    ArrayList<Hobby> theirHobbies = DatabaseIO.getHobbiesFromUID(potentialMatch.getId());
-                                    //ArrayList<model.Song> theirSongs = db.DatabaseIO.getSongsFromUID(potentialMatch.getId());
+                                    HobbyLinkedList theirHobbies = DatabaseIO.getHobbiesFromUID(potentialMatch.getId());
 
                                     Profile.displayHobbies(potentialMatch, theirHobbies);
                                     System.out.println();
@@ -603,7 +601,7 @@ public class Utility {
                                 try {
                                     // Display profile using your util.Profile class
                                     //ArrayList<model.Hobby> theirHobbies = db.DatabaseIO.getHobbiesFromUID(potentialMatch.getId());
-                                    ArrayList<Song> theirSongs = DatabaseIO.getSongsFromUID(potentialMatch.getId());
+                                    SongLinkedList theirSongs = DatabaseIO.getSongsFromUID(potentialMatch.getId());
 
                                     Profile.displaySongs(potentialMatch, theirSongs);
                                     System.out.println();
@@ -975,7 +973,7 @@ public class Utility {
         try {
             long ph = Long.parseLong(phone);
 
-            return ph >= 1000000000 && ph <= 9999999999L;
+            return ph >= 6000000000L && ph <= 9999999999L;
         }
         catch (Exception e) {
             return false;

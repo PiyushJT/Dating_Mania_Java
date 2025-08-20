@@ -7,6 +7,7 @@ public class UserMatch implements Comparable<UserMatch> {
     public User getUser() {
         return user;
     }
+
     public UserMatch(User user, int score) {
         this.user = user;
         this.score = score;
@@ -14,7 +15,6 @@ public class UserMatch implements Comparable<UserMatch> {
 
     @Override
     public int compareTo(UserMatch other) {
-        // Reverse order for max-heap (top scores first)
         return Integer.compare(other.score, this.score);
     }
 
@@ -22,4 +22,5 @@ public class UserMatch implements Comparable<UserMatch> {
     public String toString() {
         return user.getName() + " — Shared hobbies: " + score;
     }
+
 }

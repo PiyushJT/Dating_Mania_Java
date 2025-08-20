@@ -5,12 +5,14 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import ds.SongLinkedList;
 import logs.Log;
 import model.Hobby;
 import model.Match;
 import model.Song;
 import model.User;
 import session.CurrentUser;
+import ds.*;
 
 public class DatabaseIO {
 
@@ -194,9 +196,9 @@ public class DatabaseIO {
     }
 
 
-    public static ArrayList<Hobby> getHobbiesFromUID(int uid) throws SQLException {
+    public static HobbyLinkedList getHobbiesFromUID(int uid) throws SQLException {
 
-        ArrayList<Hobby> hobbies = new ArrayList<>();
+        HobbyLinkedList hobbies = new HobbyLinkedList();
 
         // query
         String query = """
@@ -222,8 +224,9 @@ public class DatabaseIO {
 
 
         // getting users' data from result
-        while (rs.next())
-            hobbies.add(Hobby.fromDB(rs));
+        while (rs.next()) {
+            hobbies.insert(Hobby.fromDB(rs));
+        }
 
         return hobbies;
     }
@@ -265,10 +268,10 @@ public class DatabaseIO {
 
     }
 
-    public static ArrayList<Song> getSongsFromUID(int uid) throws SQLException {
+    public static SongLinkedList getSongsFromUID(int uid) throws SQLException {
 
 
-        ArrayList<Song> hobbies = new ArrayList<>();
+        SongLinkedList songs = new SongLinkedList();
 
         // query
         String query = """
@@ -301,9 +304,9 @@ public class DatabaseIO {
 
         // getting users' data from result
         while (rs.next())
-            hobbies.add(Song.fromDB(rs));
+            songs.insert(Song.fromDB(rs));
 
-        return hobbies;
+        return songs;
 
     }
 
@@ -1065,9 +1068,9 @@ public class DatabaseIO {
     }
 
 
-    public static ArrayList<Song> getAllSongs() throws SQLException {
+    public static SongLinkedList getAllSongs() throws SQLException {
 
-        ArrayList<Song> list = new ArrayList<>();
+        SongLinkedList list = new SongLinkedList();
 
         String query = """
                         SELECT
@@ -1087,7 +1090,7 @@ public class DatabaseIO {
         ResultSet rs = pst1.executeQuery();
 
         while (rs.next())
-            list.add(Song.fromDB(rs));
+            list.insert(Song.fromDB(rs));
 
 
         return list;

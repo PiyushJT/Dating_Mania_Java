@@ -15,3 +15,28 @@
 2025-08-20 17:04:54  System    Current User's user_id saved to file!
 2025-08-20 17:04:54  System    Current User loaded successfully!
 2025-08-20 17:04:54  System    model.User logged in successfully
+2025-08-20 17:22:15  System    System Started
+2025-08-20 17:22:15  System    Connected to PostgreSQL successfully!
+2025-08-20 17:22:15  System    Current User loaded successfully!
+2025-08-20 17:22:15  Database  All Users loaded successfully!
+2025-08-20 17:27:43  System    System Started
+2025-08-20 17:27:43  System    Connected to PostgreSQL successfully!
+2025-08-20 17:27:43  Database  All Users loaded successfully!
+2025-08-20 17:28:08  System    System Started
+2025-08-20 17:28:08  System    Connected to PostgreSQL successfully!
+2025-08-20 17:28:08  Database  All Users loaded successfully!
+2025-08-20 17:29:28  System    Current User's user_id saved to file!
+2025-08-20 17:29:28  System    model.User registered successfully
+2025-08-20 17:47:38  System    System Started
+2025-08-20 17:47:38  System    Connected to PostgreSQL successfully!
+2025-08-20 17:47:38  Database  All Users loaded successfully!
+2025-08-20 18:15:17  System    System Started
+2025-08-20 18:15:17  System    Connected to PostgreSQL successfully!
+2025-08-20 18:15:17  Database  All Users loaded successfully!
+2025-08-20 18:15:27  System    Current User's user_id saved to file!
+2025-08-20 18:15:27  System    Current User loaded successfully!
+2025-08-20 18:15:27  System    model.User logged in successfully
+2025-08-20 19:08:37  System    System Started
+2025-08-20 19:08:37  System    Connected to PostgreSQL successfully!
+2025-08-20 19:08:37  System    Current User loaded successfully!
+2025-08-20 19:08:37  Database  All Users loaded successfully!

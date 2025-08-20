@@ -8,7 +8,7 @@ import util.Utility;
 
 public class Project {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         Log.S("System Started");
 

@@ -1,14 +1,13 @@
 package util;
 
-import java.util.ArrayList;
-
+import ds.*;
 import model.Hobby;
 import model.Song;
 import model.User;
 
 public class Profile {
 
-    public static void display(User user, ArrayList<Hobby> hobbies, ArrayList<Song> songs) {
+    public static void display(User user, HobbyLinkedList hobbies, SongLinkedList songs) {
         System.out.println("===============================================");
         System.out.println("         util.Profile of " + user.getName());
         System.out.println("===============================================");
@@ -18,19 +17,19 @@ public class Profile {
         System.out.println("City: " + user.getCity());
         System.out.println();
         System.out.println("Hobbies:");
-        for (Hobby h : hobbies) {
+        for (Hobby h : (Hobby[]) hobbies.toArray()) {
             System.out.println("  - " + h.getHobbyName());
         }
         System.out.println();
         System.out.println("model.Song interests:");
-        for (Song s : songs) {
+        for (Song s : (Song[]) songs.toArray()) {
             System.out.println("  - " +s.getSongName()+" BY "+s.getArtistName());
         }
         System.out.println("===============================================");
     }
 
-    public static void displayHobbies(User user, ArrayList<Hobby> theirHobbies)
-    {
+    public static void displayHobbies(User user, HobbyLinkedList hobbies) {
+
         System.out.println("===============================================");
         System.out.println("         util.Profile of " + user.getName());
         System.out.println("===============================================");
@@ -40,16 +39,19 @@ public class Profile {
         System.out.println("City: " + user.getCity());
         System.out.println();
         System.out.println("Hobbies:");
-        for (Hobby h : theirHobbies) {
+        for (Hobby h : hobbies.toArray()) {
             System.out.println("  - " + h.getHobbyName());
         }
         System.out.println();
 
+
     }
 
-    public static void displaySongs(User user, ArrayList<Song> theirSongs)
+
+    public static void displaySongs(User user, SongLinkedList songs)
     {
-        System.out.println("===============================================");
+
+         System.out.println("===============================================");
         System.out.println("         util.Profile of " + user.getName());
         System.out.println("===============================================");
         System.out.println("Bio: ");
@@ -58,11 +60,13 @@ public class Profile {
         System.out.println("City: " + user.getCity());
         System.out.println();
         System.out.println("Songs :");
-        for (Song s : theirSongs) {
+        for (Song s : songs.toArray()) {
             System.out.println("  - " + s.getSongName());
         }
         System.out.println();
 
+
     }
+
 
 }

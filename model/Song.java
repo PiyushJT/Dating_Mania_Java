@@ -2,12 +2,12 @@ package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import ds.SongLinkedList;
 
 
 public class Song {
 
-    public static ArrayList<Song> songs;
+    public static SongLinkedList songs;
 
     static {
 
@@ -15,7 +15,7 @@ public class Song {
             songs = db.DatabaseIO.getAllSongs();
         }
         catch (SQLException e) {
-            songs = new ArrayList<>();
+            songs = new SongLinkedList();
         }
 
     }

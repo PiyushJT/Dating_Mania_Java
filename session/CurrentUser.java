@@ -4,6 +4,8 @@ import java.io.*;
 import java.sql.*;
 import java.util.*;
 
+import ds.HobbyLinkedList;
+import ds.SongLinkedList;
 import model.*;
 import db.DatabaseIO;
 import logs.Log;
@@ -14,8 +16,8 @@ public class CurrentUser {
     // current user data
     public static User data;
 
-    public static ArrayList<Hobby> hobbies = new ArrayList<>();
-    public static ArrayList<Song> songs = new ArrayList<>();
+    public static HobbyLinkedList hobbies = new HobbyLinkedList();
+    public static SongLinkedList songs = new SongLinkedList();
 
     static Scanner scanner = new Scanner(System.in);
 
@@ -66,7 +68,7 @@ public class CurrentUser {
                         );
             }
             catch (SQLException e) {
-                hobbies = new ArrayList<>();
+                hobbies = new HobbyLinkedList();
                 Log.E("Current User hobbies could not be loaded.");
             }
 
@@ -76,7 +78,7 @@ public class CurrentUser {
                         );
             }
             catch (SQLException e) {
-                songs = new ArrayList<>();
+                songs = new SongLinkedList();
                 Log.E("Current User songs could not be loaded.");
             }
 
@@ -126,11 +128,12 @@ public class CurrentUser {
 
         if (CurrentUser.hobbies.isEmpty()) {
             System.out.println("You have no hobbies.");
-        } else {
+        }
+        else {
 
             System.out.println("Your hobbies are:");
 
-            for (Hobby hobby : CurrentUser.hobbies)
+            for (Hobby hobby : (Hobby[]) CurrentUser.hobbies.toArray())
                 System.out.println("- " + hobby.getHobbyName());
 
         }
@@ -203,7 +206,7 @@ public class CurrentUser {
 
             System.out.println("Your song interests are:");
 
-            for (Song song : CurrentUser.songs)
+            for (Song song : (Song[]) CurrentUser.songs.toArray())
                 System.out.println(song);
 
         }
@@ -221,7 +224,7 @@ public class CurrentUser {
 
 
 
-            for (int i = 0; i < Song.songs.size(); i++)
+            for (int i = 0; i < Song.songs.length(); i++)
                 System.out.println(Song.songs.get(i));
 
 

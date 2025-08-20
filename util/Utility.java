@@ -41,16 +41,59 @@ public class Utility {
     // Functions to print welcome screen
     public static void printWelcome() {
         printLines(2);
-        System.out.println("||======================================||");
-        System.out.print("||");
-        printTabs(2);
-        System.out.print("Welcome to the Dating App");
-        printTabs(2);
-        System.out.println("||");
-        System.out.println("||======================================||");
+        println("||==========================================||", 2);
+        print("||", 2);
+        printTabs(4);
+        print("DATING MANIA", 2);
+        printTabs(4);
+        println("||", 2);
+        println("||==========================================||", 2);
         printLines(2);
 
     }
+
+
+    public static void print(String str, int color) {
+
+        String[] colors = {
+                "\u001B[91m", // 0 red
+                "\u001B[92m", // 1 lime
+                "\u001B[93m", // 2 yellow
+                "\u001B[94m", // 3 blue
+                "\u001B[97m", // 4 white
+
+        };
+
+        System.out.print(colors[color] + str + "\u001B[0m");
+
+    }
+
+
+    public static void println(String str, int color) {
+
+        String[] colors = {
+                "\u001B[91m", // 0 red
+                "\u001B[92m", // 1 lime
+                "\u001B[93m", // 2 yellow
+                "\u001B[94m", // 3 blue
+                "\u001B[97m", // 4 white
+
+                "\u001B[30m", // Black
+                "\u001B[31m", // Red
+                "\u001B[32m", // Green
+                "\u001B[33m", // Yellow
+                "\u001B[34m", // Blue
+                "\u001B[35m", // Purple
+                "\u001B[36m", // Cyan
+                "\u001B[37m"  // White
+
+        };
+
+        System.out.println(colors[color] + str + "\u001B[0m");
+
+    }
+
+
 
 
     // Function to open login menu
@@ -60,7 +103,7 @@ public class Utility {
         System.out.println("2. Register (Don't have an account)");
         System.out.println("3. Exit");
 
-        System.out.print("Enter your choice: ");
+        Utility.print("Enter your choice: ", 4);
 
         char choice = scanner.next().charAt(0);
         scanner.nextLine();
@@ -71,12 +114,12 @@ public class Utility {
 
             case '1':
                 if (login()) {
-                    System.out.println("Welcome back " + CurrentUser.data.getName() + ".");
+                    Utility.println("Welcome back " + CurrentUser.data.getName() + ".", 3);
                     Log.S("User logged in successfully");
                     openMainMenu();
                 }
                 else {
-                    System.out.println("Login aborted.");
+                    Utility.println("Login aborted.", 2);
                     Log.S("User login aborted");
                     openLoginMenu();
                 }
@@ -123,7 +166,7 @@ public class Utility {
 
         while (true) {
 
-            System.out.print("Enter your email: ");
+            Utility.print("Enter your email: ", 4);
             email = scanner.next();
             scanner.nextLine();
 
@@ -152,7 +195,7 @@ public class Utility {
 
         while (true) {
 
-            System.out.print("Enter your phone: ");
+            Utility.print("Enter your phone: ", 4);
             String strPhone = scanner.next();
             scanner.nextLine();
 
@@ -182,7 +225,7 @@ public class Utility {
 
         while (true) {
 
-            System.out.print("Enter your name: ");
+            Utility.print("Enter your name: ", 4);
             name = scanner.nextLine();
             if (name.length() > 40) {
                 System.out.println("Name too long. Try a shorter name");
@@ -199,7 +242,7 @@ public class Utility {
 
         while (true) {
 
-            System.out.print("Enter bio: ");
+            Utility.print("Enter bio: ", 4);
             bio = scanner.nextLine();
             if (bio.length() > 100) {
                 System.out.println("Bio too long. Try a shorter bio");
@@ -217,7 +260,7 @@ public class Utility {
 
         while (true) {
 
-            System.out.print("Enter your gender (m/f): ");
+            Utility.print("Enter your gender (m/f): ", 4);
             gender = scanner.next().toLowerCase().charAt(0);
             scanner.nextLine();
 
@@ -233,7 +276,7 @@ public class Utility {
         int age;
         while (true) {
 
-            System.out.print("Enter your age: ");
+            Utility.print("Enter your age: ", 4);
             age = scanner.nextInt();
             scanner.nextLine();
 
@@ -250,7 +293,7 @@ public class Utility {
 
         while (true) {
 
-            System.out.print("Enter your city: ");
+            Utility.print("Enter your city: ", 4);
             city = scanner.nextLine();
 
             if (city.isEmpty()) {
@@ -266,7 +309,7 @@ public class Utility {
 
         while (true) {
 
-            System.out.print("Enter your password (min 8 chars): ");
+            Utility.print("Enter your password (min 8 chars): ", 4);
             password = scanner.next();
             scanner.nextLine();
 
@@ -321,10 +364,10 @@ public class Utility {
         while (true) {
 
             // Getting user input
-            System.out.print("Enter email / phone: ");
+            Utility.print("Enter email / phone: ", 4);
             emailPhone = scanner.next();
             scanner.nextLine();
-            System.out.print("Enter password: ");
+            Utility.print("Enter password: ", 4);
             password = scanner.next();
             scanner.nextLine();
 
@@ -347,7 +390,7 @@ public class Utility {
 
                 System.out.println(("This Account is deactivated."));
                 System.out.println("Enter y to reactivate your account.");
-                System.out.println("Enter anything else to cancel and go back");
+                Utility.println("Enter anything else to cancel and go back", 4);
 
                 String choice = scanner.next();
                 scanner.nextLine();
@@ -441,7 +484,7 @@ public class Utility {
         System.out.println(" 9. Log out");
         System.out.println("10. Exit");
 
-        System.out.print("Enter your choice: ");
+        Utility.print("Enter your choice: ", 4);
 
         String choice = scanner.next();
         scanner.nextLine();
@@ -513,7 +556,7 @@ public class Utility {
 
                 System.out.println("Any other -> Cancel");
 
-                System.out.print("Enter your choice: ");
+                Utility.print("Enter your choice: ", 4);
 
                 String choice2 = scanner.next();
                 scanner.nextLine();
@@ -575,7 +618,7 @@ public class Utility {
                                             break;
 
                                         default:
-                                            System.out.println("❓ Invalid input! Please enter [r], [l], or [q].");
+                                            Utility.println("❓ Invalid input! Please enter [r], [l], or [q].", 4);
                                             break;
                                     }
                                 }
@@ -642,7 +685,7 @@ public class Utility {
                                             break;
 
                                         default:
-                                            System.out.println("❓ Invalid input! Please enter [r], [l], or [q].");
+                                            Utility.println("❓ Invalid input! Please enter [r], [l], or [q].", 4);
                                             break;
                                     }
                                 }
@@ -696,7 +739,7 @@ public class Utility {
 
                             System.out.println("Accept match?");
                             System.out.println("Enter y to accept");
-                            System.out.println("Enter anything else to reject: ");
+                            Utility.println("Enter anything else to reject: ", 4);
                             String ch = scanner.next();
 
 
@@ -739,7 +782,7 @@ public class Utility {
                 System.out.println("1. Edit profile");
                 System.out.println("Any other -> Go Back");
 
-                System.out.print("Enter your choice: ");
+                Utility.print("Enter your choice: ", 4);
                 String choice2 = scanner.nextLine();
 
                 if (choice2.equals("1"))
@@ -757,9 +800,9 @@ public class Utility {
 
                 System.out.println("1. Block");
                 System.out.println("2. Unblock");
-                System.out.println("Any other -> Back");
+                Utility.println("Any other -> Back", 4);
 
-                System.out.print("Enter your choice: ");
+                Utility.print("Enter your choice: ", 4);
                 String choice2 = scanner.next();
                 scanner.nextLine();
 
@@ -769,7 +812,7 @@ public class Utility {
 
                         System.out.println("Block User");
 
-                        System.out.println("Enter user's name to block: ");
+                        Utility.println("Enter user's name to block: ", 4);
                         String name = scanner.next();
                         scanner.nextLine();
 
@@ -777,7 +820,7 @@ public class Utility {
                             if (user.getName().toLowerCase().contains(name))
                                 System.out.println(user);
 
-                        System.out.println("Enter user id to block: ");
+                        Utility.println("Enter user id to block: ", 4);
                         int uid = scanner.nextInt();
                         scanner.nextLine();
 
@@ -811,7 +854,7 @@ public class Utility {
                         for (User user : blockedUsers.toArray())
                             System.out.println(user);
 
-                        System.out.println("Enter user id to unblock: ");
+                        Utility.println("Enter user id to unblock: ", 4);
                         int uid = scanner.nextInt();
 
                         try {
@@ -850,7 +893,7 @@ public class Utility {
 
                 System.out.println("Any other -> Cancel");
 
-                System.out.print("Enter your choice: ");
+                Utility.print("Enter your choice: ", 4);
 
                 String choice2 = scanner.next();
                 scanner.nextLine();
@@ -861,7 +904,7 @@ public class Utility {
 
                         System.out.println("Delete account");
 
-                        System.out.println("Enter your password to confirm: ");
+                        Utility.println("Enter your password to confirm: ", 4);
                         String password = scanner.next();
                         scanner.nextLine();
 
@@ -887,7 +930,7 @@ public class Utility {
 
                         System.out.println("Deactivate account");
 
-                        System.out.println("Enter your password to confirm: ");
+                        Utility.println("Enter your password to confirm: ", 4);
                         String password = scanner.next();
                         scanner.nextLine();
 
@@ -1053,7 +1096,7 @@ public class Utility {
         System.out.println("Enter 1. -> Try again");
         System.out.println("Any other. -> Go back");
 
-        System.out.print("Enter your choice: ");
+        Utility.print("Enter your choice: ", 4);
         char choice = scanner.next().charAt(0);
         scanner.nextLine();
         return choice == '1';

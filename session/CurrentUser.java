@@ -142,7 +142,7 @@ public class CurrentUser {
         System.out.println("Any other. -> Go back");
 
 
-        System.out.print("Enter your choice: ");
+        Utility.print("Enter your choice: ", 4);
         char choice1 = scanner.next().charAt(0);
         scanner.nextLine();
 
@@ -159,7 +159,7 @@ public class CurrentUser {
             while (true) {
 
                 System.out.println("Enter comma-separated indices of hobbies to add to your new list.");
-                System.out.println("Example: 1,2,3");
+                Utility.println("Example: 1,2,3", 4);
 
                 String input = scanner.nextLine().replace(" ", "");
                 String[] parts = input.split(",");
@@ -215,7 +215,7 @@ public class CurrentUser {
         System.out.println("Any other. -> Go back");
 
 
-        System.out.print("Enter your choice: ");
+        Utility.print("Enter your choice: ", 4);
         char choice2 = scanner.next().charAt(0);
         scanner.nextLine();
 
@@ -234,7 +234,7 @@ public class CurrentUser {
             while (true) {
 
                 System.out.println("Enter comma-separated ids of songs to add to your new list.");
-                System.out.println("Example: 1,2,3");
+                Utility.println("Example: 1,2,3", 4);
                 String input = scanner.nextLine().replace(" ", "");
                 String[] parts = input.split(",");
 
@@ -298,7 +298,7 @@ public class CurrentUser {
             System.out.println("8. Edit password.");
             System.out.println("Any other -> Go back.");
 
-            System.out.print("Enter your choice: ");
+            Utility.print("Enter your choice: ", 4);
 
             String choice = scanner.nextLine();
 
@@ -308,7 +308,7 @@ public class CurrentUser {
                     String name;
                     while (true) {
 
-                        System.out.print("Enter new name: ");
+                        Utility.print("Enter new name: ", 4);
                         name = scanner.nextLine();
                         if (name.length() > 40) {
                             System.out.println("Name too long. Try a shorter name");
@@ -337,7 +337,7 @@ public class CurrentUser {
 
                     while (true) {
 
-                        System.out.print("Enter new bio: ");
+                        Utility.print("Enter new bio: ", 4);
                         bio = scanner.nextLine();
                         if (bio.length() > 100) {
                             System.out.println("Bio too long. Try a shorter bio");
@@ -365,7 +365,7 @@ public class CurrentUser {
                     char gender;
                     while (true) {
 
-                        System.out.print("Enter your gender (m/f): ");
+                        Utility.print("Enter your gender (m/f): ", 4);
                         gender = scanner.next().toLowerCase().charAt(0);
                         scanner.nextLine();
 
@@ -391,7 +391,7 @@ public class CurrentUser {
                 case "4": {
                     int age;
                     while (true) {
-                        System.out.print("Enter your age: ");
+                        Utility.print("Enter your age: ", 4);
                         age = scanner.nextInt();
                         scanner.nextLine();
                         if (age < 18 || age > 100) {
@@ -414,7 +414,7 @@ public class CurrentUser {
 
                     long phone;
                     while (true) {
-                        System.out.print("Enter your phone: ");
+                        Utility.print("Enter your phone: ", 4);
                         phone = scanner.nextLong();
                         scanner.nextLine();
 
@@ -440,7 +440,7 @@ public class CurrentUser {
                 case "6": {
                     String city;
                     while (true) {
-                        System.out.print("Enter your city: ");
+                        Utility.print("Enter your city: ", 4);
                         city = scanner.nextLine();
                         if (city.length() > 20) {
                             System.out.println("City too long. Try a shorter city");
@@ -466,7 +466,7 @@ public class CurrentUser {
 
                     String email;
                     while (true) {
-                        System.out.print("Enter your email: ");
+                        Utility.print("Enter your email: ", 4);
                         email = scanner.nextLine();
 
                         if (email.length() > 30) {
@@ -495,7 +495,7 @@ public class CurrentUser {
                     String password = "";
 
                     while (true) {
-                        System.out.println("Enter current password: ");
+                        Utility.println("Enter current password: ", 4);
                         password = scanner.nextLine();
 
                         try {
@@ -523,7 +523,7 @@ public class CurrentUser {
                     String newPassword;
 
                     while (true) {
-                        System.out.print("Enter your new password: ");
+                        Utility.print("Enter your new password: ", 4);
                         newPassword = scanner.nextLine();
                         if (newPassword.length() > 20) {
                             System.out.println("Password too long. Try a shorter password");

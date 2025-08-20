@@ -12,6 +12,10 @@ public class Project {
 
         Log.S("System Started");
 
+
+        for (int i = 0; i < 13; i++)
+            Utility.println(i + ". Color demo", i);
+
         // Database Initialization
         String url = "jdbc:postgresql://localhost:5432/Dating_Mania";
         String user = "postgres";
@@ -66,7 +70,7 @@ public class Project {
         if (CurrentUser.data == null)
             Utility.openLoginMenu();
         else {
-            System.out.println("Welcome back " + CurrentUser.data.getName() + "!");
+            Utility.println("Welcome back " + CurrentUser.data.getName() + ".", 3);
             Utility.openMainMenu();
         }
 

@@ -10,14 +10,19 @@ import logs.Log;
 
 public class Matchmaking {
 
-    public static PriorityQueue<UserMatch> matchMadeUsingHobby() {
-        PriorityQueue<UserMatch> queue = new PriorityQueue<>();
+    public static BST matchMadeUsingHobby() {
+
+        BST queue = new BST();
 
             try {
+
                 int myId = CurrentUser.data.getId();
                 char myGender = CurrentUser.data.getGender();
+
                 HobbyLinkedList myHobbiesList = DatabaseIO.getHobbiesFromUID(myId);
+
                 HashSet<Integer> myHobbyIds = new HashSet<>();
+
                 for (Hobby h : myHobbiesList.toArray()) {
                     myHobbyIds.add(h.getHobbyId());
                 }
@@ -45,8 +50,9 @@ public class Matchmaking {
                     int shared = common.size();
 
                     if (shared > 0) {
-                        queue.add(new UserMatch(user, shared));
+                        queue.insert(user, shared);
                     }
+
                 }
             }
             catch (Exception e) {
@@ -57,8 +63,8 @@ public class Matchmaking {
     }
 
 
-    public static PriorityQueue<UserMatch> matchMadeUsingSong() {
-        PriorityQueue<UserMatch> queue = new PriorityQueue<>();
+    public static BST matchMadeUsingSong() {
+        BST queue = new BST();
 
         try {
             int myId = CurrentUser.data.getId();
@@ -90,7 +96,7 @@ public class Matchmaking {
                 int shared = common.size();
 
                 if (shared > 0) {
-                    queue.add(new UserMatch(user, shared));
+                    queue.insert(user, shared);
                 }
             }
         } catch (Exception e) {

@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import db.DatabaseIO;
+import ds.BST;
 import ds.HobbyLinkedList;
 import ds.MatchLinkedList;
 import ds.SongLinkedList;
@@ -521,7 +522,7 @@ public class Utility {
 
                     case "1": {
 
-                        PriorityQueue<UserMatch> matches = Matchmaking.matchMadeUsingHobby();
+                        BST matches = Matchmaking.matchMadeUsingHobby();
 
                         if (matches.isEmpty()) {
                             System.out.println("No matches found based on shared hobbies.");
@@ -529,8 +530,7 @@ public class Utility {
                             Scanner scanner = new Scanner(System.in);
 
                             while (!matches.isEmpty()) {
-                                UserMatch match = matches.poll();
-                                User potentialMatch = match.getUser();
+                                User potentialMatch = matches.pollMax();
 
                                 try {
                                     // Display profile using your util.Profile class
@@ -588,7 +588,7 @@ public class Utility {
 
                     case "2":  {
 
-                        PriorityQueue<UserMatch> matches = Matchmaking.matchMadeUsingSong();
+                        BST matches = Matchmaking.matchMadeUsingSong();
 
                         if (matches.isEmpty()) {
                             System.out.println("No matches found based on shared songs.");
@@ -597,8 +597,7 @@ public class Utility {
                             Scanner scanner = new Scanner(System.in);
 
                             while (!matches.isEmpty()) {
-                                UserMatch match = matches.poll();
-                                User potentialMatch = match.getUser();
+                                User potentialMatch = matches.pollMax();
 
                                 try {
                                     SongLinkedList theirSongs = DatabaseIO.getSongsFromUID(potentialMatch.getId());

@@ -72,12 +72,12 @@ public class Utility {
             case '1':
                 if (login()) {
                     System.out.println("Welcome back " + CurrentUser.data.getName() + ".");
-                    Log.S("model.User logged in successfully");
+                    Log.S("User logged in successfully");
                     openMainMenu();
                 }
                 else {
                     System.out.println("Login aborted.");
-                    Log.S("model.User login aborted");
+                    Log.S("User login aborted");
                     openLoginMenu();
                 }
 
@@ -86,12 +86,12 @@ public class Utility {
             case '2':
                 if (register()) {
                     System.out.println("Registration successful! Welcome, \n" + CurrentUser.data.getName() + ".");
-                    Log.S("model.User registered successfully");
+                    Log.S("User registered successfully");
                     openMainMenu();
                 }
                 else {
                     System.out.println("Registration aborted.");
-                    Log.S("model.User registration aborted");
+                    Log.S("User registration aborted");
                     openLoginMenu();
                 }
 
@@ -99,7 +99,7 @@ public class Utility {
 
             case '3':
                 System.out.println("Exiting...");
-                Log.S("model.User exited manually");
+                Log.S("User exited manually");
                 System.exit(0);
 
                 break;
@@ -434,7 +434,7 @@ public class Utility {
 
         System.out.println(" 3. View your matches");
         System.out.println(" 4. Create new match");
-        System.out.println(" 5. model.Match requests");
+        System.out.println(" 5. Match requests");
         System.out.println(" 6. Open my profile");
         System.out.println(" 7. Block / unblock user");
         System.out.println(" 8. Delete / Deactivate account");
@@ -506,10 +506,10 @@ public class Utility {
 
             case "4": {
 
-                System.out.println("BY model.Hobby / model.Song");
+                System.out.println("BY Hobby / Song");
 
-                System.out.println("1. model.Match by model.Hobby");
-                System.out.println("2. model.Match by model.Song");
+                System.out.println("1. Match by Hobby");
+                System.out.println("2. Match by Song");
 
                 System.out.println("Any other -> Cancel");
 
@@ -533,7 +533,7 @@ public class Utility {
                                 User potentialMatch = matches.pollMax();
 
                                 try {
-                                    // Display profile using your util.Profile class
+                                    // Display profile using your Profile class
                                     HobbyLinkedList theirHobbies = DatabaseIO.getHobbiesFromUID(potentialMatch.getId());
 
                                     Profile.displayHobbies(potentialMatch, theirHobbies);
@@ -554,7 +554,7 @@ public class Utility {
                                         case "r":
                                             try {
                                                 DatabaseIO.sendMatchRequest(potentialMatch.getId(), "hobby");
-                                                System.out.println("✅ model.Match request sent to " + potentialMatch.getName() + "!");
+                                                System.out.println("✅ Match request sent to " + potentialMatch.getName() + "!");
                                                 System.out.println();
                                             } catch (Exception e) {
                                                 System.out.println("❌ Failed to send request. Please try again later.");
@@ -621,7 +621,7 @@ public class Utility {
                                         case "r":
                                             try {
                                                 DatabaseIO.sendMatchRequest(potentialMatch.getId(), "song");
-                                                System.out.println("✅ model.Match request sent to " + potentialMatch.getName() + "!");
+                                                System.out.println("✅ Match request sent to " + potentialMatch.getName() + "!");
                                                 System.out.println();
                                             } catch (Exception e) {
                                                 System.out.println("❌ Failed to send request. Please try again later.");
@@ -669,7 +669,7 @@ public class Utility {
 
             case "5": {
 
-                System.out.println("model.Match requests: ");
+                System.out.println("Match requests: ");
 
                 MatchLinkedList matches;
                 try {
@@ -733,7 +733,7 @@ public class Utility {
             case "6": {
 
 
-                System.out.println("My util.Profile");
+                System.out.println("My Profile");
                 Profile.display(CurrentUser.data, CurrentUser.hobbies, CurrentUser.songs);
 
                 System.out.println("1. Edit profile");
@@ -767,7 +767,7 @@ public class Utility {
 
                     case "1": {
 
-                        System.out.println("Block model.User");
+                        System.out.println("Block User");
 
                         System.out.println("Enter user's name to block: ");
                         String name = scanner.next();

@@ -74,43 +74,6 @@ public class BST {
 
 
 
-    void inOrder() {
-        inOrder(root);
-        System.out.println();
-    }
-
-    void inOrder(Node root) {
-
-        if (root == null)
-            return;
-
-        inOrder(root.left);
-        System.out.print(root.score + " ");
-        inOrder(root.right);
-
-    }
-
-
-    boolean find(int score)  {
-        return findElement(root, score);
-    }
-
-
-    boolean findElement(Node root, int score) {
-
-        if (root == null)
-            return false;
-
-        if (score < root.score)
-            return findElement(root.left, score);
-
-        else if (score > root.score)
-            return findElement(root.right, score);
-
-        else
-            return true;
-
-    }
 
     public boolean isEmpty() {
         return root == null;

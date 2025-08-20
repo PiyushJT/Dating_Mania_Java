@@ -9,7 +9,7 @@ public class Profile {
 
     public static void display(User user, HobbyLinkedList hobbies, SongLinkedList songs) {
         System.out.println("===============================================");
-        System.out.println("         util.Profile of " + user.getName());
+        System.out.println("         Profile of " + user.getName());
         System.out.println("===============================================");
         System.out.println("Bio: ");
         System.out.println("  " + user.getBio());
@@ -21,7 +21,7 @@ public class Profile {
             System.out.println("  - " + h.getHobbyName());
         }
         System.out.println();
-        System.out.println("model.Song interests:");
+        System.out.println("Song interests:");
         for (Song s : songs.toArray()) {
             System.out.println("  - " +s.getSongName()+" BY "+s.getArtistName());
         }
@@ -31,7 +31,7 @@ public class Profile {
     public static void displayHobbies(User user, HobbyLinkedList hobbies) {
 
         System.out.println("===============================================");
-        System.out.println("         util.Profile of " + user.getName());
+        System.out.println("         Profile of " + user.getName());
         System.out.println("===============================================");
         System.out.println("Bio: ");
         System.out.println("  " + user.getBio());
@@ -52,7 +52,7 @@ public class Profile {
     {
 
          System.out.println("===============================================");
-        System.out.println("         util.Profile of " + user.getName());
+        System.out.println("         Profile of " + user.getName());
         System.out.println("===============================================");
         System.out.println("Bio: ");
         System.out.println("  " + user.getBio());

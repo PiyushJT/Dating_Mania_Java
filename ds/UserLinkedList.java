@@ -32,42 +32,6 @@ public class UserLinkedList extends AbstractLinkedList {
         }
 
     }
-
-    @Override
-    public void delete() {
-
-        UserNode n = head;
-
-        if (head == null)
-            return;
-
-        if (head.next == null) {
-            head = null;
-            return;
-        }
-
-        while (n.next.next != null)
-            n = n.next;
-        n.next = null;
-
-    }
-
-    @Override
-    public void display() {
-
-
-        UserNode n = head;
-
-        System.out.println();
-        while (n != null) {
-            System.out.print(n.data + " ");
-            n = n.next;
-        }
-        System.out.println();
-
-
-    }
-
     @Override
     public int length() {
 

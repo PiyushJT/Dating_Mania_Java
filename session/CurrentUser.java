@@ -206,7 +206,7 @@ public class CurrentUser {
 
             System.out.println("Your song interests are:");
 
-            for (Song song : (Song[]) CurrentUser.songs.toArray())
+            for (Song song : CurrentUser.songs.toArray())
                 System.out.println(song);
 
         }
@@ -284,7 +284,7 @@ public class CurrentUser {
 
     public static void editProfile() {
 
-        System.out.println("Edit util.Profile");
+        System.out.println("Edit Profile");
 
 
         while (true) {

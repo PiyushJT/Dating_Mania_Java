@@ -34,17 +34,17 @@ public class Project {
 
         }
         catch (ClassNotFoundException e) {
-            System.out.println("JDBC Driver not found.");
+            Utility.println("JDBC Driver not found.", 7);
             Log.E("JDBC Driver not found.");
             return;
         }
         catch (SQLException e) {
-            System.out.println("Connection failed.");
+            Utility.println("Connection failed.", 7);
             Log.E("Connection failed.");
             return;
         }
         catch (Exception e) {
-            System.out.println("Database was unable to load! :(");
+            Utility.println("Database was unable to load! :(", 7);
             Log.E("Database was unable to load! :(");
             return;
         }
@@ -56,7 +56,7 @@ public class Project {
             Log.DB("All Users loaded successfully!");
         }
         catch (SQLException e) {
-            System.out.println("Database was unable to load! :(");
+            Utility.println("Database was unable to load! :(", 7);
             Log.E("Users not loaded");
             return;
         }

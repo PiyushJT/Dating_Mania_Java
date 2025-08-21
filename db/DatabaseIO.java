@@ -12,6 +12,7 @@ import model.Song;
 import model.User;
 import session.CurrentUser;
 import ds.*;
+import util.Utility;
 
 public class DatabaseIO {
 
@@ -884,10 +885,10 @@ public class DatabaseIO {
 
         int rows = stmt.executeUpdate();
         if (rows > 0) {
-            System.out.println("Request sent successfully from " + CurrentUser.data.getId() + " to " + receiverId);
+            Utility.println("Request sent successfully from " + CurrentUser.data.getId() + " to " + receiverId, 0);
         }
         else {
-            System.out.println("Request failed to send.");
+            Utility.println("Request failed to send.", 7);
         }
 
     }

@@ -103,7 +103,6 @@ public class Utility {
     public static void openLoginMenu() {
 
 
-
         Utility.printLines(2);
         println("\t\tMenu", 5);
         Utility.printLines(1);
@@ -139,12 +138,12 @@ public class Utility {
 
             case '2':
                 if (register()) {
-                    System.out.println("Registration successful! Welcome, \n" + CurrentUser.data.getName() + ".");
+                    Utility.println("Registration successful! Welcome, " + CurrentUser.data.getName() + ".", 3);
                     Log.S("User registered successfully");
                     openMainMenu();
                 }
                 else {
-                    System.out.println("Registration aborted.");
+                    Utility.println("Registration aborted.", 7);
                     Log.S("User registration aborted");
                     openLoginMenu();
                 }
@@ -160,7 +159,7 @@ public class Utility {
                 break;
 
             default:
-                System.out.println("Invalid choice.");
+                Utility.println("Invalid choice.", 7);
                 openLoginMenu();
 
                 break;
@@ -183,18 +182,18 @@ public class Utility {
             scanner.nextLine();
 
             if (!isEmailValid(email)) {
-                System.out.println("Invalid email format. Try again");
+                Utility.println("Invalid email format. Try again", 7);
                 continue;
             }
 
             try {
                 if (DatabaseIO.isEmailPhoneDupe(email)) {
-                    System.out.println("Email already exists. Try again");
+                    Utility.println("Email already exists. Try again", 7);
                     continue;
                 }
             }
             catch (SQLException e) {
-                System.out.println("Error checking for duplicate email. Trying again");
+                Utility.println("Error checking for duplicate email. Trying again", 7);
                 continue;
             }
 
@@ -212,19 +211,19 @@ public class Utility {
             scanner.nextLine();
 
             if (!isPhoneValid(strPhone)) {
-                System.out.println("Invalid phone number. Try again");
+                Utility.println("Invalid phone number. Try again", 7);
                 continue;
             }
             phone = Long.parseLong(strPhone);
 
             try {
                 if (DatabaseIO.isEmailPhoneDupe(phone + "")) {
-                    System.out.println("Phone already exists. Try again");
+                    Utility.println("Phone already exists. Try again", 7);
                     continue;
                 }
             }
             catch (SQLException e) {
-                System.out.println("Error checking for duplicate phone. Trying again");
+                Utility.println("Error checking for duplicate phone. Trying again", 7);
                 continue;
             }
 
@@ -240,11 +239,11 @@ public class Utility {
             Utility.print("Enter your name: ", 4);
             name = scanner.nextLine();
             if (name.length() > 40) {
-                System.out.println("Name too long. Try a shorter name");
+                Utility.println("Name too long. Try a shorter name", 7);
                 continue;
             }
             if (name.equals("")) {
-                System.out.println("Name cannot be empty. Try again");
+                Utility.println("Name cannot be empty. Try again", 7);
                 continue;
             }
             break;
@@ -257,11 +256,11 @@ public class Utility {
             Utility.print("Enter bio: ", 4);
             bio = scanner.nextLine();
             if (bio.length() > 100) {
-                System.out.println("Bio too long. Try a shorter bio");
+                Utility.println("Bio too long. Try a shorter bio", 7);
                 continue;
             }
             if (bio.equals("")) {
-                System.out.println("bio cannot be empty. Try again");
+                Utility.println("bio cannot be empty. Try again", 7);
                 continue;
             }
             break;
@@ -277,7 +276,7 @@ public class Utility {
             scanner.nextLine();
 
             if (gender != 'm' && gender != 'f') {
-                System.out.println("Invalid input. Try again");
+                Utility.println("Invalid input. Try again", 7);
                 continue;
             }
 
@@ -293,7 +292,7 @@ public class Utility {
             scanner.nextLine();
 
             if (age < 18 || age > 100) {
-                System.out.println("Your age is not suitable for this app. Try again");
+                Utility.println("Your age is not suitable for this app. Try again", 7);
                 continue;
             }
             break;
@@ -309,7 +308,7 @@ public class Utility {
             city = scanner.nextLine();
 
             if (city.isEmpty()) {
-                System.out.println("City cannot be empty. Try again");
+                Utility.println("City cannot be empty. Try again", 7);
                 continue;
             }
             break;
@@ -326,7 +325,7 @@ public class Utility {
             scanner.nextLine();
 
             if (!isPasswordValid(password)) {
-                System.out.println("Invalid password format. Try again");
+                Utility.println("Invalid password format. Try again", 7);
                 continue;
             }
             break;
@@ -376,6 +375,7 @@ public class Utility {
         while (true) {
 
             // Getting user input
+            Utility.printLines(1);
             Utility.print("Enter email / phone: ", 4);
             emailPhone = scanner.next();
             scanner.nextLine();
@@ -390,6 +390,8 @@ public class Utility {
                             ||
                             !isPasswordValid(password)
             ) {
+
+                Utility.printLines(1);
                 Utility.println("Invalid Credentials", 0);
 
                 // if user chooses to try again, loop continues
@@ -400,9 +402,12 @@ public class Utility {
             }
             if( !DatabaseIO.isAccountActive(emailPhone) ) {
 
-                System.out.println(("This Account is deactivated."));
-                System.out.println("Enter y to reactivate your account.");
-                Utility.println("Enter anything else to cancel and go back", 4);
+                Utility.println("This Account is deactivated.", 7);
+
+                Utility.println("y. -> Reactivate your account.", 5);
+                Utility.println("Any other -> Cancel and go back", 5);
+
+                Utility.print("Enter your choice: ", 4);
 
                 String choice = scanner.next();
                 scanner.nextLine();
@@ -430,9 +435,9 @@ public class Utility {
             if (CurrentUser.data == null || CurrentUser.data.isDeleted()) {
 
                 if (CurrentUser.data != null)
-                    System.out.println("Account not found.");
+                    Utility.println("Account not found.", 7);
                 else
-                    System.out.println("Wrong Credentials.");
+                    Utility.println("Wrong Credentials.", 7);
 
                 if (tryAgain())
                     return login();
@@ -603,12 +608,12 @@ public class Utility {
                                     HobbyLinkedList theirHobbies = DatabaseIO.getHobbiesFromUID(potentialMatch.getId());
 
                                     Profile.display(potentialMatch, theirHobbies);
-                                    System.out.println();
                                 } catch (Exception e) {
                                     Utility.println("⚠️ Couldn't load full profile for this user.", 6);
                                     continue;
                                 }
 
+                                Utility.printLines(1);
                                 Utility.println("Swipe [r] to match ✅, [l] to skip ⛔, or [q] to quit:", 5);
                                 Utility.println("r. Send match request", 5);
                                 Utility.println("l. Skip user", 5);
@@ -624,7 +629,6 @@ public class Utility {
                                             try {
                                                 DatabaseIO.sendMatchRequest(potentialMatch.getId(), "hobby");
                                                 Utility.println("✅ Match request sent to " + potentialMatch.getName() + "!", 1);
-                                                System.out.println();
                                             } catch (Exception e) {
                                                 Utility.println("❌ Failed to send request. Please try again later.", 0);
                                             }
@@ -632,8 +636,9 @@ public class Utility {
                                             break;
 
                                         case "l":
+                                            Utility.printLines(1);
                                             Utility.println("⛔ Skipped " + potentialMatch.getName() + ".", 6);
-                                            System.out.println();
+                                            Utility.printLines(1);
                                             validInput = true;
                                             break;
 
@@ -672,13 +677,13 @@ public class Utility {
                                     SongLinkedList theirSongs = DatabaseIO.getSongsFromUID(potentialMatch.getId());
 
                                     Profile.display(potentialMatch, theirSongs);
-                                    System.out.println();
                                 }
                                 catch (Exception e) {
                                     Utility.println("⚠️ Couldn't load full profile for this user.", 0);
                                     continue;
                                 }
 
+                                Utility.printLines(1);
                                 Utility.println("Swipe [r] to match ✅, [l] to skip ⛔, or [q] to quit:", 5);
                                 Utility.println("r. Send match request", 5);
                                 Utility.println("l. Skip user", 5);
@@ -694,7 +699,7 @@ public class Utility {
                                             try {
                                                 DatabaseIO.sendMatchRequest(potentialMatch.getId(), "song");
                                                 Utility.println("✅ Match request sent to " + potentialMatch.getName() + "!", 6);
-                                                System.out.println();
+                                                Utility.printLines(1);
                                             } catch (Exception e) {
                                                 Utility.println("❌ Failed to send request. Please try again later.", 6);
                                             }
@@ -703,7 +708,7 @@ public class Utility {
 
                                         case "l":
                                             Utility.println("⛔ Skipped " + potentialMatch.getName() + ".", 6);
-                                            System.out.println();
+                                            Utility.printLines(1);
                                             validInput = true;
                                             break;
 
@@ -1052,7 +1057,7 @@ public class Utility {
 
             case "10": {
 
-                System.out.println("🚪 Exiting...");
+                Utility.println("Exiting...", 6);
                 System.exit(0);
 
 
@@ -1060,7 +1065,7 @@ public class Utility {
 
             default: {
 
-                System.out.println("❌ Invalid input.");
+                Utility.println("❌ Invalid input.", 7);
                 openMainMenu();
                 break;
 

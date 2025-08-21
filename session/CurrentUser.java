@@ -176,12 +176,12 @@ public class CurrentUser {
                         ind[i] = Integer.parseInt(parts[i].trim());
 
                         if (ind[i] > 20 || ind[i] < 1) {
-                            System.out.println("Invalid index. Try again.");
+                            Utility.println("Invalid index. Try again.", 7);
                             continue outer; // <-- This skips current outer loop iteration
                         }
 
                     } catch (NumberFormatException e) {
-                        System.out.println("Invalid input. Try again.");
+                        Utility.println("Invalid input. Try again.", 7);
                         continue outer; // <-- This also skips to next outer loop iteration
                     }
                 }
@@ -255,7 +255,7 @@ public class CurrentUser {
             for (int i = 0; i < quizSize; i++) {
                 Song song = shuffledSongs.get(i);
 
-                System.out.println();
+                Utility.printLines(1);
                 Utility.println("🎧 Now playing: ", 6);
                 Utility.println(song.toString(), 6);
 
@@ -351,11 +351,11 @@ public class CurrentUser {
                         Utility.print("Enter new name: ", 4);
                         name = scanner.nextLine();
                         if (name.length() > 40) {
-                            System.out.println("Name too long. Try a shorter name");
+                            Utility.println("Name too long. Try a shorter name", 7);
                             continue;
                         }
                         if (name.isEmpty()) {
-                            System.out.println("Name cannot be empty. Try again");
+                            Utility.println("Name cannot be empty. Try again", 7);
                             continue;
                         }
                         break;
@@ -380,11 +380,11 @@ public class CurrentUser {
                         Utility.print("Enter new bio: ", 4);
                         bio = scanner.nextLine();
                         if (bio.length() > 100) {
-                            System.out.println("Bio too long. Try a shorter bio");
+                            Utility.println("Bio too long. Try a shorter bio", 7);
                             continue;
                         }
                         if (bio.isEmpty()) {
-                            System.out.println("bio cannot be empty. Try again");
+                            Utility.println("bio cannot be empty. Try again", 7);
                             continue;
                         }
                         break;
@@ -410,7 +410,7 @@ public class CurrentUser {
                         scanner.nextLine();
 
                         if (gender != 'm' && gender != 'f') {
-                            System.out.println("Your gender is not suitable for this app. Try again");
+                            Utility.println("Your gender is not suitable for this app. Try again", 7);
                             continue;
                         }
 
@@ -435,7 +435,7 @@ public class CurrentUser {
                         age = scanner.nextInt();
                         scanner.nextLine();
                         if (age < 18 || age > 100) {
-                            System.out.println("Your age is not suitable for this app. Try again");
+                            Utility.println("Your age is not suitable for this app. Try again", 7);
                             continue;
                         }
                         break;

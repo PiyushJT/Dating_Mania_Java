@@ -146,11 +146,11 @@ public class CurrentUser {
 
 
         Utility.print("Enter your choice: ", 4);
-        char choice1 = scanner.next().charAt(0);
+        String choice1 = scanner.next();
         scanner.nextLine();
 
 
-        if (choice1 == '1') {
+        if (choice1.equals("1")) {
 
             Utility.printLines(2);
             for (int i = 1; i <= Hobby.hobbies.size(); i++)
@@ -227,11 +227,11 @@ public class CurrentUser {
 
 
         Utility.print("Enter your choice: ", 4);
-        char choice2 = scanner.next().charAt(0);
+        String  choice2 = scanner.next();
         scanner.nextLine();
 
 
-        if (choice2 == '1') {
+        if (choice2.equals("1")) {
 
             // Shuffle songs in SongLinkedList and take first 10
             SongLinkedList shuffledSongs = new SongLinkedList();
@@ -402,14 +402,14 @@ public class CurrentUser {
                 }
 
                 case "3": {
-                    char gender;
+                    String gender;
                     while (true) {
 
                         Utility.print("Enter your gender (m/f): ", 4);
-                        gender = scanner.next().toLowerCase().charAt(0);
+                        gender = scanner.next().toLowerCase();
                         scanner.nextLine();
 
-                        if (gender != 'm' && gender != 'f') {
+                        if ( !(gender.equals("m") || gender.equals("f")) ) {
                             Utility.println("Your gender is not suitable for this app. Try again", 7);
                             continue;
                         }
@@ -418,7 +418,7 @@ public class CurrentUser {
 
                     }
                     try {
-                        DatabaseIO.updateGender(gender + "");
+                        DatabaseIO.updateGender(gender);
                     }
                     catch (SQLException e) {
                         break;
@@ -432,8 +432,18 @@ public class CurrentUser {
                     int age;
                     while (true) {
                         Utility.print("Enter your age: ", 4);
-                        age = scanner.nextInt();
+
+                        String ageS = scanner.next();
                         scanner.nextLine();
+
+                        try {
+                            age = Integer.parseInt(ageS);
+                        }
+                        catch (NumberFormatException e) {
+                            Utility.println("Invalid Age", 7);
+                            continue;
+                        }
+
                         if (age < 18 || age > 100) {
                             Utility.println("Your age is not suitable for this app. Try again", 7);
                             continue;
@@ -458,10 +468,20 @@ public class CurrentUser {
                     long phone;
                     while (true) {
                         Utility.print("Enter your phone: ", 4);
-                        phone = scanner.nextLong();
+                        String phoneS = scanner.next();
                         scanner.nextLine();
 
-                        if (phone < 1000000000 || phone > 9999999999L) {
+                        try {
+
+                            phone = Long.parseLong(phoneS);
+
+                            if (phone < 1000000000 || phone > 9999999999L) {
+                                Utility.println("Invalid Phone", 7);
+                                continue;
+                            }
+
+                        }
+                        catch (NumberFormatException e) {
                             Utility.println("Invalid Phone", 7);
                             continue;
                         }

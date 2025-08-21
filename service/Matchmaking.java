@@ -17,7 +17,7 @@ public class Matchmaking {
             try {
 
                 int myId = CurrentUser.data.getId();
-                char myGender = CurrentUser.data.getGender();
+                String myGender = CurrentUser.data.getGender();
 
                 HobbyLinkedList myHobbiesList = DatabaseIO.getHobbiesFromUID(myId);
 
@@ -33,7 +33,7 @@ public class Matchmaking {
                     // Skip self and same gender or inactive
                     if (user.getId() == myId)
                         continue;
-                    if (!user.isActive() || user.getGender() == myGender)
+                    if (!user.isActive() || user.getGender().equals(myGender))
                         continue;
                     if (DatabaseIO.amIBlockedBy(user.getId()))
                         continue;
@@ -71,7 +71,7 @@ public class Matchmaking {
 
         try {
             int myId = CurrentUser.data.getId();
-            char myGender = CurrentUser.data.getGender();
+            String myGender = CurrentUser.data.getGender();
             SongLinkedList mySongsList = DatabaseIO.getSongsFromUID(myId);
             HashSet<Integer> mySongIds = new HashSet<>();
             for (Song s :  mySongsList.toArray())

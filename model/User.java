@@ -14,7 +14,7 @@ public class User {
     int userId;
     String name;
     String bio;
-    char gender;
+    String gender;
     int age;
     long phone;
     String email;
@@ -30,7 +30,7 @@ public class User {
     // Constructor
     public User(
             int userId, String name, String bio,
-            char gender, int age, long phone,
+            String gender, int age, long phone,
             String email, String city, boolean isActive,
             long lastActive, boolean isDeleted,
             long createdAt, long updatedAt
@@ -63,7 +63,7 @@ public class User {
         int id = rs.getInt("user_id");
         String name = rs.getString("name");
         String bio = rs.getString("bio");
-        char gender = rs.getString("gender").charAt(0);
+        String gender = rs.getString("gender");
         int age = rs.getInt("age");
         long phone = rs.getLong("phone");
         String email = rs.getString("email");
@@ -100,7 +100,7 @@ public class User {
         return bio;
     }
 
-    public char getGender() {
+    public String getGender() {
         return gender;
     }
 

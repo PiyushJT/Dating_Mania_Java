@@ -38,6 +38,9 @@ public class Matchmaking {
                     if (DatabaseIO.amIBlockedBy(user.getId()))
                         continue;
 
+                    // todo: if already sent / received -> continue
+
+
                     // Get hobbies for this user
                     HobbyLinkedList theirHobbies = DatabaseIO.getHobbiesFromUID(user.getId());
                     HashSet<Integer> theirHobbyIds = new HashSet<>();
@@ -82,6 +85,11 @@ public class Matchmaking {
                     continue;
                 if (!user.isActive() || user.getGender() == myGender)
                     continue;
+                if (DatabaseIO.amIBlockedBy(user.getId()))
+                    continue;
+
+
+                // todo: if already sent / received -> continue
 
                 // Get songs for this user
                 SongLinkedList theirSong = DatabaseIO.getSongsFromUID(user.getId());

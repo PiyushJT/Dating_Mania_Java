@@ -60,6 +60,7 @@ public class Utility {
                 "\u001B[93m", // 2 yellow
                 "\u001B[94m", // 3 blue
                 "\u001B[97m", // 4 white
+                "\u001B[34m", // 5 Blue
 
         };
 
@@ -76,6 +77,7 @@ public class Utility {
                 "\u001B[93m", // 2 yellow
                 "\u001B[94m", // 3 blue
                 "\u001B[97m", // 4 white
+                "\u001B[34m", // 5 Blue
 
                 "\u001B[30m", // Black
                 "\u001B[31m", // Red
@@ -98,9 +100,13 @@ public class Utility {
     // Function to open login menu
     public static void openLoginMenu() {
 
-        System.out.println("1. Login");
-        System.out.println("2. Register (Don't have an account)");
-        System.out.println("3. Exit");
+
+        println("\t\tMenu", 5);
+        Utility.printLines(1);
+
+        Utility.println("1. Login", 5);
+        Utility.println("2. Register (Don't have an account)", 5);
+        Utility.println("3. Exit", 5);
 
         Utility.print("Enter your choice: ", 4);
 
@@ -114,6 +120,7 @@ public class Utility {
             case '1':
                 if (login()) {
                     Utility.println("Welcome back " + CurrentUser.data.getName() + ".", 3);
+                    Utility.printLines(2);
                     Log.S("User logged in successfully");
                     openMainMenu();
                 }
@@ -464,24 +471,24 @@ public class Utility {
     public static void openMainMenu() {
 
         if(CurrentUser.hobbies.isEmpty())
-            System.out.println(" 1. Register your hobbies");
+            Utility.println(" 1. Register your hobbies", 5);
         else
-            System.out.println(" 1. Update hobbies");
+            Utility.println(" 1. Update hobbies", 5);
 
 
         if(CurrentUser.songs.isEmpty())
-            System.out.println(" 2. Take the song quiz");
+            Utility.println(" 2. Take the song quiz", 5);
         else
-            System.out.println(" 2. Retake song quiz");
+            Utility.println(" 2. Retake song quiz", 5);
 
-        System.out.println(" 3. View your matches");
-        System.out.println(" 4. Create new match");
-        System.out.println(" 5. Match requests");
-        System.out.println(" 6. Open my profile");
-        System.out.println(" 7. Block / unblock user");
-        System.out.println(" 8. Delete / Deactivate account");
-        System.out.println(" 9. Log out");
-        System.out.println("10. Exit");
+        Utility.println(" 3. View your matches", 5);
+        Utility.println(" 4. Create new match", 5);
+        Utility.println(" 5. Match requests", 5);
+        Utility.println(" 6. Open my profile", 5);
+        Utility.println(" 7. Block / unblock user", 5);
+        Utility.println(" 8. Delete / Deactivate account", 5);
+        Utility.println(" 9. Log out", 5);
+        Utility.println("10. Exit", 5);
 
         Utility.print("Enter your choice: ", 4);
 

@@ -124,23 +124,25 @@ public class CurrentUser {
 
     public static void updateHobbies() {
 
-        System.out.println("HOBBIES!");
-        System.out.println();
+        Utility.printLines(2);
+        Utility.println("YOUR HOBBIES", 6);
 
-        if (CurrentUser.hobbies.isEmpty()) {
-            System.out.println("You have no hobbies.");
-        }
+        Utility.printLines(1);
+        if (CurrentUser.hobbies.isEmpty())
+            Utility.println("You have no hobbies.", 6);
         else {
 
-            System.out.println("Your hobbies are:");
+            Utility.println("Your hobbies are:", 6);
 
-            for (Hobby hobby : (Hobby[]) CurrentUser.hobbies.toArray())
-                System.out.println("- " + hobby.getHobbyName());
+            for (Hobby hobby : CurrentUser.hobbies.toArray())
+                Utility.println("- " + hobby.getHobbyName(), 6);
 
         }
+        Utility.printLines(1);
 
-        System.out.println("Enter 1. -> Edit hobbies");
-        System.out.println("Any other. -> Go back");
+
+        Utility.println("Enter 1. -> Edit hobbies", 5);
+        Utility.println("Any other. -> Go back", 5);
 
 
         Utility.print("Enter your choice: ", 4);
@@ -150,8 +152,9 @@ public class CurrentUser {
 
         if (choice1 == '1') {
 
+            Utility.printLines(2);
             for (int i = 1; i <= Hobby.hobbies.size(); i++)
-                System.out.println(i + ". " + Hobby.hobbies.get(i));
+                Utility.println(i + ". " + Hobby.hobbies.get(i), 6);
 
 
             int[] ind;
@@ -159,7 +162,8 @@ public class CurrentUser {
             outer:
             while (true) {
 
-                System.out.println("Enter comma-separated indices of hobbies to add to your new list.");
+                Utility.printLines(1);
+                Utility.println("Enter comma-separated indices of hobbies to add to your new list.", 4);
                 Utility.println("Example: 1,2,3", 4);
 
                 String input = scanner.nextLine().replace(" ", "");
@@ -197,102 +201,32 @@ public class CurrentUser {
     }
 
 
-   /* public static void updateSongs() {
+    public static void takeSongQuiz() {
 
-        System.out.println("Update song interests");
+        SongLinkedList allSongs = Song.songs;
 
-        if (CurrentUser.songs.isEmpty()) {
-            System.out.println("You have no song Interests.");
-        } else {
+        Utility.printLines(2);
+        Utility.println("YOUR SONG INTERESTS", 6);
 
-            System.out.println("Your song interests are:");
+        Utility.printLines(1);
+        if (CurrentUser.songs.isEmpty())
+            Utility.println("You have no song Interests.", 6);
+
+        else {
+
+            Utility.println("Your song interests are:", 6);
 
             for (Song song : CurrentUser.songs.toArray())
                 System.out.println(song);
 
         }
 
-        System.out.println("Enter 1. -> Edit song interests");
-        System.out.println("Any other. -> Go back");
+        Utility.printLines(1);
+        Utility.println("Enter 1. -> Take the Song quiz", 5);
+        Utility.println("Any other. -> Go back", 5);
 
 
         Utility.print("Enter your choice: ", 4);
-        char choice2 = scanner.next().charAt(0);
-        scanner.nextLine();
-
-
-        if (choice2 == '1') {
-
-
-
-            for (int i = 0; i < Song.songs.length(); i++)
-                System.out.println(Song.songs.get(i));
-
-
-            int[] ind;
-
-            outer:
-            while (true) {
-
-                System.out.println("Enter comma-separated ids of songs to add to your new list.");
-                Utility.println("Example: 1,2,3", 4);
-                String input = scanner.nextLine().replace(" ", "");
-                String[] parts = input.split(",");
-
-                ind = new int[parts.length];
-
-                for (int i = 0; i < parts.length; i++) {
-                    try {
-                        ind[i] = Integer.parseInt(parts[i].trim());
-
-                        if (ind[i] > 30 || ind[i] < 1) {
-                            System.out.println("Invalid index. Try again.");
-                            continue outer; // <-- This skips current outer loop iteration
-                        }
-
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid input. Try again.");
-                        continue outer; // <-- This also skips to next outer loop iteration
-                    }
-                }
-
-                break; // all inputs were valid, exit the outer loop
-            }
-
-
-            try {
-                DatabaseIO.addSongsToDB(ind);
-            }
-            catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
-
-        }
-
-    }*/
-
-    public static void takeSongQuiz() {
-        //Scanner scanner = new Scanner(System.in);
-        SongLinkedList allSongs = Song.songs;
-
-        System.out.println("Current Song List🎧");
-
-        if (CurrentUser.songs.isEmpty()) {
-            System.out.println("You have no song Interests.");
-        } else {
-
-            System.out.println("Your song interests are:");
-
-            for (Song song : (Song[]) CurrentUser.songs.toArray())
-                System.out.println(song);
-
-        }
-
-        System.out.println("Enter 1. -> 🎶take the Song quiz!🎧");
-        System.out.println("Any other. -> Go back");
-
-
-        System.out.print("Enter your choice: ");
         char choice2 = scanner.next().charAt(0);
         scanner.nextLine();
 
@@ -312,37 +246,43 @@ public class CurrentUser {
             int quizSize = Math.min(10, shuffledSongs.length());
 
             SongLinkedList likedSongs = new SongLinkedList();
-            System.out.println("🎶 Swipe right (r) to like 👍, left (l) to skip 👎, or 'q' to quit 🚪 the quiz.");
+
+            Utility.printLines(2);
+            Utility.println("Swipe right (r) to like 👍, left (l) to skip 👎, or 'q' to quit 🚪 the quiz.", 6);
 
             // Iterate over shuffledSongs using index-based access
+
             for (int i = 0; i < quizSize; i++) {
-                Song song = shuffledSongs.get(i);  // Assuming get() is implemented
+                Song song = shuffledSongs.get(i);
 
                 System.out.println();
-                System.out.println("🎧 Now playing: " + song.getSongName() + " by " + song.getArtistName());
+                Utility.println("🎧 Now playing: ", 6);
+                Utility.println(song.toString(), 6);
 
                 boolean validInput = false;
                 while (!validInput) {
-                    System.out.print("➡️ Swipe choice (r/l/q): ");
+
+                    Utility.printLines(1);
+                    Utility.print("Swipe choice (r/l/q): ", 4);
                     String choice = scanner.nextLine().trim().toLowerCase();
 
                     switch (choice) {
                         case "r":
                             likedSongs.insert(song);
-                            System.out.println("💖 Added to your liked songs!");
+                            Utility.println("💖 Added to your liked songs!", 6);
                             validInput = true;
                             break;
                         case "l":
-                            System.out.println("⛔ Skipped.");
+                            Utility.println("⛔ Skipped.", 6);
                             validInput = true;
                             break;
                         case "q":
-                            System.out.println("🚪 Exiting quiz early.");
+                            Utility.println("🚪 Exiting quiz early.", 6);
                             i = quizSize; // exit loop
                             validInput = true;
                             break;
                         default:
-                            System.out.println("❓ Invalid input! Please enter 'r', 'l' or 'q'.");
+                            Utility.println("❓ Invalid input! Please enter 'r', 'l' or 'q'.", 6);
                             break;
                     }
                 }
@@ -358,9 +298,9 @@ public class CurrentUser {
 
                 CurrentUser.songs = likedSongs;
 
-                System.out.println("\n🎉 Your song preferences have been updated based on your quiz choices! 🎉");
+                Utility.println("\n🎉 Your song preferences have been updated based on your quiz choices! 🎉", 6);
             } catch (Exception e) {
-                System.out.println("⚠️ Failed to update your song interests. Please try again later.");
+                Utility.println("⚠️ Failed to update your song interests. Please try again later.", 6);
                 e.printStackTrace();
             }
         }
@@ -381,19 +321,22 @@ public class CurrentUser {
 
     public static void editProfile() {
 
-        System.out.println("Edit Profile");
+        Utility.printLines(2);
+        Utility.println("EDIT PROFILE", 6);
 
 
         while (true) {
-            System.out.println("1. Edit name.");
-            System.out.println("2. Edit bio.");
-            System.out.println("3. Edit gender.");
-            System.out.println("4. Edit age.");
-            System.out.println("5. Edit phone.");
-            System.out.println("6. Edit city.");
-            System.out.println("7. Edit email.");
-            System.out.println("8. Edit password.");
-            System.out.println("Any other -> Go back.");
+
+            Utility.printLines(1);
+            Utility.println("1. Edit name", 5);
+            Utility.println("2. Edit bio", 5);
+            Utility.println("3. Edit gender", 5);
+            Utility.println("4. Edit age", 5);
+            Utility.println("5. Edit phone", 5);
+            Utility.println("6. Edit city", 5);
+            Utility.println("7. Edit email", 5);
+            Utility.println("8. Edit password", 5);
+            Utility.println("Any other -> Go back", 5);
 
             Utility.print("Enter your choice: ", 4);
 
@@ -498,7 +441,10 @@ public class CurrentUser {
                         break;
                     }
                     try {
-                        DatabaseIO.updateAge(age);
+                        if (DatabaseIO.updateAge(age))
+                            Utility.println("Update Successful", 1);
+                        else
+                            Utility.println("Update Failed", 0);
                     }
                     catch (SQLException e) {
                         break;
@@ -516,19 +462,19 @@ public class CurrentUser {
                         scanner.nextLine();
 
                         if (phone < 1000000000 || phone > 9999999999L) {
-                            System.out.println("Your phone number is not suitable for this app. Try again");
+                            Utility.println("Invalid Phone", 7);
                             continue;
                         }
                         break;
                     }
                     try {
                         if (DatabaseIO.updatePhone(phone + ""))
-                            System.out.println("Update Successful");
+                            Utility.println("Update Successful", 1);
                         else
-                            System.out.println("Update Failed");
+                            Utility.println("Update Failed", 7);
                     }
                     catch (SQLException e) {
-                        System.out.println("Update Failed");
+                        Utility.println("Update Failed", 0);
                         break;
                     }
 
@@ -540,11 +486,11 @@ public class CurrentUser {
                         Utility.print("Enter your city: ", 4);
                         city = scanner.nextLine();
                         if (city.length() > 20) {
-                            System.out.println("City too long. Try a shorter city");
+                            Utility.println("City too long. Try a shorter city", 7);
                             continue;
                         }
                         if (city.isEmpty()) {
-                            System.out.println("City cannot be empty. Try again");
+                            Utility.println("City cannot be empty. Try again", 7);
                             continue;
                         }
                         break;
@@ -567,11 +513,11 @@ public class CurrentUser {
                         email = scanner.nextLine();
 
                         if (email.length() > 30) {
-                            System.out.println("Email too long. Try a shorter email");
+                            Utility.println("Email too long. Try a shorter email", 7);
                             continue;
                         }
                         if (email.equals("")) {
-                            System.out.println("Email cannot be empty. Try again");
+                            Utility.println("Email cannot be empty. Try again", 7);
                             continue;
                         }
                         break;
@@ -589,7 +535,7 @@ public class CurrentUser {
                 case "8": {
 
 
-                    String password = "";
+                    String password;
 
                     while (true) {
                         Utility.println("Enter current password: ", 4);
@@ -602,13 +548,13 @@ public class CurrentUser {
                             )
                                 break;
                             else {
-                                System.out.println("Incorrect Password.");
+                                Utility.println("Incorrect Password.", 0);
                                 if (!Utility.tryAgain())
                                     break;
                             }
                         }
                         catch (Exception e) {
-                            System.out.println("Incorrect Password.");
+                            Utility.println("Incorrect Password.", 0);
 
                             if (!Utility.tryAgain())
                                 break;
@@ -623,23 +569,23 @@ public class CurrentUser {
                         Utility.print("Enter your new password: ", 4);
                         newPassword = scanner.nextLine();
                         if (newPassword.length() > 20) {
-                            System.out.println("Password too long. Try a shorter password");
+                            Utility.println("Password too long. Try a shorter password", 7);
                             continue;
                         }
                         if (newPassword.equals("")) {
-                            System.out.println("Password cannot be empty. Try again");
+                            Utility.println("Password cannot be empty. Try again", 7);
                             continue;
                         }
                         break;
                     }
                     try {
                         if(DatabaseIO.updatePassword(newPassword))
-                            System.out.println("Update Successful");
+                            Utility.println("Update Successful", 1);
                         else
-                            System.out.println("Update Failed");
+                            Utility.println("Update Failed", 7);
                     }
                     catch (SQLException e) {
-                        System.out.println("Update Failed");
+                        Utility.println("Update Failed", 7);
                         break;
                     }
 

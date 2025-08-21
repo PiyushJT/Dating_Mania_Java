@@ -8,62 +8,85 @@ import model.User;
 public class Profile {
 
     public static void display(User user, HobbyLinkedList hobbies, SongLinkedList songs) {
-        System.out.println("===============================================");
-        System.out.println("👤 Profile of " + user.getName());
-        System.out.println("===============================================");
-        System.out.println("📖 Bio: ");
-        System.out.println("  " + user.getBio());
-        System.out.println("⚧ Gender: " + user.getGender() + "  |  🎂 Age: " + user.getAge());
-        System.out.println("🏙️ City: " + user.getCity());
-        System.out.println();
-        System.out.println("🎨 Hobbies:");
-        for (Hobby h : hobbies.toArray()) {
-            System.out.println("  - " + h.getHobbyName());
-        }
-        System.out.println();
-        System.out.println("🎶 Song interests:");
-        for (Song s : songs.toArray()) {
-            System.out.println("  - " + s.getSongName() + " BY " + s.getArtistName());
-        }
-        System.out.println("===============================================");
+
+        Utility.printLines(2);
+
+        Utility.println("===============================================", 8);
+        Utility.println(user.getName().toUpperCase(), 6);
+        Utility.println("===============================================", 8);
+
+        Utility.println("Bio: ", 6);
+        Utility.println("  " + user.getBio(), 6);
+        Utility.println("Gender: " + user.getGender() + "  |  🎂 Age: " + user.getAge(), 6);
+        Utility.println("City: " + user.getCity(), 6);
+
+        Utility.printLines(1);
+
+        Utility.println("Hobbies:", 6);
+        for (Hobby h : hobbies.toArray())
+            Utility.println("  - " + h.getHobbyName(), 6);
+
+        Utility.printLines(1);
+
+        Utility.println("Song interests:", 6);
+
+        for (Song s : songs.toArray())
+            Utility.println("  - " + s.getSongName() + " BY " + s.getArtistName(), 6);
+
+
+        Utility.println("===============================================", 8);
+
+
     }
 
-        public static void displayHobbies(User user, HobbyLinkedList hobbies) {
+        public static void display(User user, HobbyLinkedList hobbies) {
 
-            System.out.println("===============================================");
-            System.out.println("👤 Profile of " + user.getName());
-            System.out.println("===============================================");
-            System.out.println("📖 Bio: ");
-            System.out.println("  " + user.getBio());
-            System.out.println("⚧ Gender: " + user.getGender() + "  |  🎂 Age: " + user.getAge());
-            System.out.println("🏙️ City: " + user.getCity());
-            System.out.println();
-            System.out.println("🎨 Hobbies:");
-            for (Hobby h : hobbies.toArray()) {
-                System.out.println("  - " + h.getHobbyName());
-            }
-            System.out.println();
+            Utility.printLines(2);
+
+            Utility.println("===============================================", 8);
+            Utility.println(user.getName().toUpperCase(), 6);
+            Utility.println("===============================================", 8);
+
+            Utility.println("Bio: ", 6);
+            Utility.println("  " + user.getBio(), 6);
+            Utility.println("Gender: " + user.getGender() + "  |  🎂 Age: " + user.getAge(), 6);
+            Utility.println("City: " + user.getCity(), 6);
+
+            Utility.printLines(1);
+
+            Utility.println("Hobbies:", 6);
+            for (Hobby h : hobbies.toArray())
+                Utility.println("  - " + h.getHobbyName(), 6);
+
+
+            Utility.println("===============================================", 8);
 
         }
 
 
-    public static void displaySongs(User user, SongLinkedList songs)
+    public static void display(User user, SongLinkedList songs)
     {
 
-        System.out.println("===============================================");
-        System.out.println("👤 Profile of " + user.getName());
-        System.out.println("===============================================");
-        System.out.println("📖 Bio: ");
-        System.out.println("  " + user.getBio());
-        System.out.println("⚧ Gender: " + user.getGender() + "  |  🎂 Age: " + user.getAge());
-        System.out.println("🏙️ City: " + user.getCity());
-        System.out.println();
-        System.out.println("🎶 Songs:");
-        for (Song s : songs.toArray()) {
-            System.out.println("  - " + s.getSongName());
-        }
-        System.out.println();
+        Utility.printLines(2);
 
+        Utility.println("===============================================", 8);
+        Utility.println(user.getName().toUpperCase(), 6);
+        Utility.println("===============================================", 8);
+
+        Utility.println("Bio: ", 6);
+        Utility.println("  " + user.getBio(), 6);
+        Utility.println("Gender: " + user.getGender() + "  |  🎂 Age: " + user.getAge(), 6);
+        Utility.println("City: " + user.getCity(), 6);
+
+        Utility.printLines(1);
+
+        Utility.println("Song interests:", 6);
+
+        for (Song s : songs.toArray())
+            Utility.println("  - " + s.getSongName() + " BY " + s.getArtistName(), 6);
+
+
+        Utility.println("===============================================", 8);
 
 
     }

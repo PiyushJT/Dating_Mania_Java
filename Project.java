@@ -72,7 +72,6 @@ public class Project {
         else {
             Utility.printLines(2);
             Utility.println("Welcome back " + CurrentUser.data.getName() + ".", 3);
-            Utility.printLines(2);
             Utility.openMainMenu();
         }
 

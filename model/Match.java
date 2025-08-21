@@ -83,7 +83,7 @@ public class Match {
 
         String sentAt = Utility.getDateString(this.sentAt);
 
-        return String.format("%-2d %-25s %-10s %-22s", senderUserId, sender.getName(), matchedOn, sentAt);
+        return String.format("%-2d %-15s %-10s %-22s", senderUserId, sender.getName(), matchedOn, sentAt);
 
     }
 

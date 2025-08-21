@@ -82,11 +82,10 @@ public class Utility {
                 "\u001B[34m", // 5 Blue
                 "\u001B[32m", // 6 Green
                 "\u001B[31m", // 7 Red
+                "\u001B[33m", // 8 Yellow
 
                 "\u001B[30m", // Black
                 "\u001B[31m", // Red
-                "\u001B[33m", // Yellow
-                "\u001B[34m", // Blue
                 "\u001B[35m", // Purple
                 "\u001B[36m", // Cyan
                 "\u001B[37m"  // White
@@ -127,7 +126,6 @@ public class Utility {
 
                     Utility.printLines(2);
                     Utility.println("Welcome back " + CurrentUser.data.getName() + ".", 3);
-                    Utility.printLines(2);
                     Log.S("User logged in successfully");
                     openMainMenu();
                 }
@@ -478,28 +476,29 @@ public class Utility {
 
     public static void openMainMenu() {
 
+        Utility.printLines(2);
         println("\t\tMenu", 5);
         Utility.printLines(1);
 
         if(CurrentUser.hobbies.isEmpty())
-            Utility.println(" 1. Register your hobbies", 5);
+            Utility.println(" 1. ⚽️ Register your hobbies", 5);
         else
-            Utility.println(" 1. Update hobbies", 5);
+            Utility.println(" 1. ⚽️ View your hobbies", 5);
 
 
         if(CurrentUser.songs.isEmpty())
-            Utility.println(" 2. Take the song quiz", 5);
+            Utility.println(" 2. 🎧 Take the song quiz", 5);
         else
-            Utility.println(" 2. Retake song quiz", 5);
+            Utility.println(" 2. 🎧 View your song", 5);
 
-        Utility.println(" 3. View your matches", 5);
-        Utility.println(" 4. Create new match", 5);
-        Utility.println(" 5. Match requests", 5);
-        Utility.println(" 6. Open my profile", 5);
-        Utility.println(" 7. Block / unblock user", 5);
-        Utility.println(" 8. Delete / Deactivate account", 5);
-        Utility.println(" 9. Log out", 5);
-        Utility.println("10. Exit", 5);
+        Utility.println(" 3. ❤️ View your matches", 5);
+        Utility.println(" 4. 👋 Create new match", 5);
+        Utility.println(" 5. 💌 Match requests", 5);
+        Utility.println(" 6. 🙎🏼‍♂️ Open my profile", 5);
+        Utility.println(" 7. 🚫 Block / unblock user", 5);
+        Utility.println(" 8. 🗑️ Delete / Deactivate account", 5);
+        Utility.println(" 9. 🔓 Log out", 5);
+        Utility.println("10. 🏃🏼 Exit", 5);
 
         Utility.print("Enter your choice: ", 4);
 
@@ -531,16 +530,15 @@ public class Utility {
 
                 printLines(2);
 
-
                 UserLinkedList matches = new UserLinkedList();
+
                 try {
                     matches = DatabaseIO.getMatches();
-                    System.out.println("💞 match count: " +
-                            ""+matches.length());
-                    printLines(1);
+                    Utility.println("Match count: " + matches.length(), 6);
                 }
                 catch (SQLException e) {
                     Log.E("Error getting matches: " + e.getMessage());
+                    openMainMenu();
                 }
 
                 if(!matches.isEmpty()) {
@@ -558,15 +556,11 @@ public class Utility {
                             Log.E("Error getting user: " + e.getMessage());
                         }
 
-                        printLines(2);
-
                     }
+
                 }
                 else
-                {
-                    System.out.println("💕 Get to matching and connect with some new people! 🌟");
-                    printLines(1);
-                }
+                    Utility.println("Get to matching and connect with some new people!", 6);
 
 
                 openMainMenu();
@@ -576,12 +570,14 @@ public class Utility {
 
             case "4": {
 
-                System.out.println("BY Hobby / Song");
+                Utility.printLines(2);
 
-                System.out.println("1. Match by Hobby");
-                System.out.println("2. Match by Song");
+                Utility.println("BY Hobby / Song", 6);
 
-                System.out.println("Any other -> Cancel");
+                Utility.printLines(1);
+                Utility.println("1. Match by Hobby", 5);
+                Utility.println("2. Match by Song", 5);
+                Utility.println("Any other -> Cancel", 5);
 
                 Utility.print("Enter your choice: ", 4);
 
@@ -595,7 +591,7 @@ public class Utility {
                         BST matches = Matchmaking.matchMadeUsingHobby();
 
                         if (matches.isEmpty()) {
-                            System.out.println("No matches found based on shared hobbies.");
+                            Utility.println("No matches found based on shared hobbies.", 6);
                         } else {
                             Scanner scanner = new Scanner(System.in);
 
@@ -606,46 +602,49 @@ public class Utility {
                                     // Display profile using your Profile class
                                     HobbyLinkedList theirHobbies = DatabaseIO.getHobbiesFromUID(potentialMatch.getId());
 
-                                    Profile.displayHobbies(potentialMatch, theirHobbies);
+                                    Profile.display(potentialMatch, theirHobbies);
                                     System.out.println();
                                 } catch (Exception e) {
-                                    System.out.println("⚠️ Couldn't load full profile for this user.");
+                                    Utility.println("⚠️ Couldn't load full profile for this user.", 6);
                                     continue;
                                 }
 
-                                System.out.println("Swipe [r] to match ✅, [l] to skip ⛔, or [q] to quit:");
+                                Utility.println("Swipe [r] to match ✅, [l] to skip ⛔, or [q] to quit:", 5);
+                                Utility.println("r. Send match request", 5);
+                                Utility.println("l. Skip user", 5);
+                                Utility.println("q. Quit matchmaking", 5);
 
                                 boolean validInput = false;
                                 while (!validInput) {
-                                    System.out.print("Your choice (r/l/q): ");
+                                    Utility.print("Your choice (r/l/q): ", 4);
                                     String input = scanner.nextLine().trim().toLowerCase();
 
                                     switch (input) {
                                         case "r":
                                             try {
                                                 DatabaseIO.sendMatchRequest(potentialMatch.getId(), "hobby");
-                                                System.out.println("✅ Match request sent to " + potentialMatch.getName() + "!");
+                                                Utility.println("✅ Match request sent to " + potentialMatch.getName() + "!", 1);
                                                 System.out.println();
                                             } catch (Exception e) {
-                                                System.out.println("❌ Failed to send request. Please try again later.");
+                                                Utility.println("❌ Failed to send request. Please try again later.", 0);
                                             }
                                             validInput = true;
                                             break;
 
                                         case "l":
-                                            System.out.println("⛔ Skipped " + potentialMatch.getName() + ".");
+                                            Utility.println("⛔ Skipped " + potentialMatch.getName() + ".", 6);
                                             System.out.println();
                                             validInput = true;
                                             break;
 
                                         case "q":
-                                            System.out.println("🚪 Exiting matchmaking.");
+                                            Utility.println("🚪 Exiting matchmaking.", 6);
                                             matches.clear(); // clear remaining matches to exit loop
                                             validInput = true;
                                             break;
 
                                         default:
-                                            Utility.println("❓ Invalid input! Please enter [r], [l], or [q].", 4);
+                                            Utility.println("Invalid input", 0);
                                             break;
                                     }
                                 }
@@ -661,7 +660,7 @@ public class Utility {
                         BST matches = Matchmaking.matchMadeUsingSong();
 
                         if (matches.isEmpty()) {
-                            System.out.println("No matches found based on shared songs.");
+                            Utility.println("No matches found based on shared songs.", 6);
                         }
                         else {
                             Scanner scanner = new Scanner(System.in);
@@ -672,41 +671,44 @@ public class Utility {
                                 try {
                                     SongLinkedList theirSongs = DatabaseIO.getSongsFromUID(potentialMatch.getId());
 
-                                    Profile.displaySongs(potentialMatch, theirSongs);
+                                    Profile.display(potentialMatch, theirSongs);
                                     System.out.println();
                                 }
                                 catch (Exception e) {
-                                    System.out.println("⚠️ Couldn't load full profile for this user.");
+                                    Utility.println("⚠️ Couldn't load full profile for this user.", 0);
                                     continue;
                                 }
 
-                                System.out.println("Swipe [r] to match ✅, [l] to skip ⛔, or [q] to quit:");
+                                Utility.println("Swipe [r] to match ✅, [l] to skip ⛔, or [q] to quit:", 5);
+                                Utility.println("r. Send match request", 5);
+                                Utility.println("l. Skip user", 5);
+                                Utility.println("q. Quit matchmaking", 5);
 
                                 boolean validInput = false;
                                 while (!validInput) {
-                                    System.out.print("Your choice (r/l/q): ");
+                                    Utility.print("Your choice (r/l/q): ", 4);
                                     String input = scanner.nextLine().trim().toLowerCase();
 
                                     switch (input) {
                                         case "r":
                                             try {
                                                 DatabaseIO.sendMatchRequest(potentialMatch.getId(), "song");
-                                                System.out.println("✅ Match request sent to " + potentialMatch.getName() + "!");
+                                                Utility.println("✅ Match request sent to " + potentialMatch.getName() + "!", 6);
                                                 System.out.println();
                                             } catch (Exception e) {
-                                                System.out.println("❌ Failed to send request. Please try again later.");
+                                                Utility.println("❌ Failed to send request. Please try again later.", 6);
                                             }
                                             validInput = true;
                                             break;
 
                                         case "l":
-                                            System.out.println("⛔ Skipped " + potentialMatch.getName() + ".");
+                                            Utility.println("⛔ Skipped " + potentialMatch.getName() + ".", 6);
                                             System.out.println();
                                             validInput = true;
                                             break;
 
                                         case "q":
-                                            System.out.println("🚪 Exiting matchmaking.");
+                                            Utility.println("🚪 Exiting matchmaking.", 6);
                                             matches.clear(); // clear remaining matches to exit loop
                                             validInput = true;
                                             break;
@@ -744,7 +746,7 @@ public class Utility {
                 try {
                     matches = DatabaseIO.getMatchesByUid(CurrentUser.data.getUserId());
                     printLines(1);
-                    System.out.println("⏳ Pending Match Requests: "+ matches.length());
+                    Utility.println("⏳ Pending Match Requests: "+ matches.length(), 6);
                     printLines(1);
                 }
                 catch (SQLException e) {
@@ -752,55 +754,62 @@ public class Utility {
                     break;
                 }
 
-                for (int i = 0; i < matches.length(); i++)
-                    System.out.println(matches.get(i));
+                if (!matches.isEmpty()) {
 
-                if(!matches.isEmpty()){
-                outer: while (true) {
-                    System.out.print("👉 Select a match to accept ✅ or reject ❌: ");
+                    Utility.println("===============================================", 8);
+                    for (int i = 0; i < matches.length(); i++)
+                        Utility.println(matches.get(i).toString(), 6);
+                    Utility.println("===============================================", 8);
 
-                    String choice2 = scanner.next();
-                    scanner.nextLine();
+                    outer:
+                    while (true) {
+                        Utility.printLines(1);
+                        Utility.print("👉 Select id to accept ✅ or reject ❌: ", 4);
 
-                    for (Match match : matches.toArray()) {
+                        String choice2 = scanner.next();
+                        scanner.nextLine();
 
-                        if (choice2.equals(match.getSenderUserId() + "")) {
+                        for (Match match : matches.toArray()) {
 
-                            System.out.println("🤝 Accept match?");
-                            System.out.println("Enter 'y' to accept ✅");
-                            Utility.println("Enter anything else to reject ❌: ", 4);
-                            String ch = scanner.next();
+                            if (choice2.equals(match.getSenderUserId() + "")) {
+
+                                Utility.printLines(1);
+                                Utility.println("y -> to accept ✅", 6);
+                                Utility.println("Anything else -> to reject ❌: ", 6);
+                                Utility.println("Enter your choice: ", 4);
+                                String ch = scanner.next();
 
 
-                            try {
+                                try {
 
-                                if (ch.equalsIgnoreCase("y"))
-                                    DatabaseIO.acceptMatch(match);
-                                else
-                                    DatabaseIO.rejectMatch(match);
+                                    if (ch.equalsIgnoreCase("y"))
+                                        DatabaseIO.acceptMatch(match);
+                                    else
+                                        DatabaseIO.rejectMatch(match);
 
-                            } catch (SQLException e) {
-                                Log.E("Error accepting / Rejecting match: " + e.getMessage());
+                                } catch (SQLException e) {
+                                    Log.E("Error accepting / Rejecting match: " + e.getMessage());
+                                }
+
+                                break outer;
+
                             }
-
-                            break outer;
 
                         }
 
-                    }
+                        Utility.printLines(1);
+                        Utility.println("Invalid choice.", 0);
 
-                    System.out.println("❓ Invalid choice. Please try again!");
-
-                    if (!Utility.tryAgain()) {
-                        break;
+                        if (!Utility.tryAgain()) {
+                            break;
+                        }
                     }
-                }
 
                 }
 
                 else
                 {
-                    System.out.println("💕 Get to matching and connect with some new people! 🌟");
+                    Utility.println("Get to matching and connect with some new people! 🌟", 6);
                     printLines(1);
                 }
                 Utility.openMainMenu();
@@ -811,13 +820,13 @@ public class Utility {
             case "6": {
 
 
-                System.out.println("👤 My Profile");
                 Profile.display(CurrentUser.data, CurrentUser.hobbies, CurrentUser.songs);
 
-                System.out.println("1. ✏️ Edit profile");
-                System.out.println("Any other ➡️ Go Back");
+                Utility.printLines(2);
+                Utility.println("1. -> Edit profile", 5);
+                Utility.println("Any other -> Go Back", 5);
 
-                Utility.print("📝 Enter your choice: ", 4);
+                Utility.print("Enter your choice: ", 4);
                 String choice2 = scanner.nextLine();
 
                 if (choice2.equals("1"))
@@ -831,13 +840,15 @@ public class Utility {
 
             case "7": {
 
-                System.out.println("🚫 Block / Unblock User");
+                Utility.printLines(2);
+                Utility.println("Block / Unblock User", 6);
 
-                System.out.println("1. 🛑 Block");
-                System.out.println("2. 🔓 Unblock");
-                Utility.println("↩️ Any other -> Back", 4);
+                Utility.printLines(1);
+                Utility.println("1. 🛑 Block", 5);
+                Utility.println("2. 🔓 Unblock", 5);
+                Utility.println("Any other -> Back", 5);
 
-                Utility.print("📝 Enter your choice: ", 4);
+                Utility.print("Enter your choice: ", 4);
                 String choice2 = scanner.next();
                 scanner.nextLine();
 
@@ -845,22 +856,31 @@ public class Utility {
 
                     case "1": {
 
-                        System.out.println("🛑 Block User");
+                        Utility.println("🛑 Block User", 6);
 
-                        Utility.println("Enter user's name to block: ", 4);
+                        Utility.printLines(1);
+                        Utility.print("Enter user's name to block: ", 4);
                         String name = scanner.next();
                         scanner.nextLine();
 
+                        Utility.println("===============================================", 8);
                         for (User user : User.users.toArray())
                             if (user.getName().toLowerCase().contains(name))
-                                System.out.println(user);
+                                Utility.println(user.toString(), 6);
+                        Utility.println("===============================================", 8);
 
-                        Utility.println("Enter user id to block: ", 4);
-                        int uid = scanner.nextInt();
+                        Utility.printLines(1);
+                        Utility.print("Enter user id to block: ", 4);
+                        String id = scanner.next();
                         scanner.nextLine();
 
                         try {
+                            int uid = Integer.parseInt(id);
+
                             DatabaseIO.blockUser(uid);
+                        }
+                        catch (NumberFormatException e) {
+                            Utility.println("Invalid user id.", 7);
                         }
                         catch (SQLException e) {
                             Log.E("Error blocking user: " + e.getMessage());
@@ -871,7 +891,8 @@ public class Utility {
 
                     case "2": {
 
-                        System.out.println("🔓 Unblock user");
+                        Utility.printLines(2);
+                        Utility.println("🔓 Unblock user", 6);
 
                         UserLinkedList blockedUsers;
 
@@ -886,16 +907,24 @@ public class Utility {
                         if (blockedUsers.isEmpty())
                             break;
 
+                        Utility.println("===============================================", 8);
                         for (User user : blockedUsers.toArray())
-                            System.out.println(user);
+                            Utility.println(user.toString(), 6);
+                        Utility.println("===============================================", 8);
 
-                        Utility.println("Enter user id to unblock: ", 4);
-                        int uid = scanner.nextInt();
+                        Utility.printLines(1);
+                        Utility.print("Enter user id to unblock: ", 4);
+                        String id = scanner.next();
 
                         try {
+                            int uid = Integer.parseInt(id);
+
                             DatabaseIO.unblockUser(uid);
                         }
-                        catch (Exception e) {
+                        catch (NumberFormatException e) {
+                            Utility.println("Invalid user id.", 7);
+                        }
+                        catch (SQLException e) {
                             Log.E("Error unblocking user: " + e.getMessage());
                         }
 
@@ -905,7 +934,7 @@ public class Utility {
 
                     default: {
 
-                        System.out.println("Process canceled");
+                        Utility.println("Process canceled", 6);
                         break;
 
                     }
@@ -921,14 +950,15 @@ public class Utility {
 
             case "8": {
 
-                System.out.println("🗑️ Delete / Deactivate Account");
+                Utility.printLines(2);
+                Utility.println("🗑️ Delete / Deactivate Account", 6);
 
-                System.out.println("1. ❌ Delete Account");
-                System.out.println("2. ⏸️ Deactivate Account");
+                Utility.printLines(1);
+                Utility.println("1. Delete Account", 5);
+                Utility.println("2. Deactivate Account", 5);
+                Utility.println("Any other -> Cancel", 5);
 
-                System.out.println("↩️ Any other -> Cancel");
-
-                Utility.print("📝 Enter your choice: ", 4);
+                Utility.print("Enter your choice: ", 4);
 
                 String choice2 = scanner.next();
                 scanner.nextLine();
@@ -937,9 +967,10 @@ public class Utility {
 
                     case "1": {
 
-                        System.out.println("❌ Delete account");
+                        Utility.printLines(2);
+                        Utility.println("DELETE ACCOUNT PERMANENTLY ??", 0);
 
-                        Utility.println("Enter your password to confirm: ", 4);
+                        Utility.print("Enter your password to confirm: ", 4);
                         String password = scanner.next();
                         scanner.nextLine();
 
@@ -947,13 +978,13 @@ public class Utility {
                             if (DatabaseIO.deleteUser(password)) {
                                 CurrentUser.logOut();
 
-                                System.out.println("Account deleted successfully.");
+                                Utility.println("Account deleted successfully.", 1);
                             }
                             else
-                                System.out.println("Wrong password.");
+                                Utility.println("Wrong password.", 7);
                         }
                         catch (Exception e) {
-                            System.out.println("Some error occurred..");
+                            Utility.println("Some error occurred..", 7);
                             openMainMenu();
                             return;
                         }
@@ -963,7 +994,8 @@ public class Utility {
 
                     case "2":  {
 
-                        System.out.println("⏸️ Deactivate account");
+                        Utility.printLines(2);
+                        Utility.println("Deactivate account", 6);
 
                         Utility.println("Enter your password to confirm: ", 4);
                         String password = scanner.next();
@@ -973,14 +1005,14 @@ public class Utility {
                             if (DatabaseIO.deactivateUser(password)) {
                                 CurrentUser.logOut();
 
-                                System.out.println("Account deactivated successfully.");
-                                System.out.println("Log in again to activate your account.");
+                                Utility.println("Account deactivated successfully.", 6);
+                                Utility.println("Log in again to activate your account.", 6);
                             }
                             else
-                                System.out.println("Wrong password.");
+                                Utility.println("Wrong password.", 6);
                         }
                         catch (Exception e) {
-                            System.out.println("Some error occurred..");
+                            Utility.println("Some error occurred..", 6);
                             openMainMenu();
                             return;
                         }
@@ -1008,7 +1040,7 @@ public class Utility {
 
             case "9": {
 
-                Utility.println("Logging out...", 2);
+                Utility.println("👋 Logging out...", 2);
                 CurrentUser.logOut();
 
                 openLoginMenu();
@@ -1028,7 +1060,7 @@ public class Utility {
 
             default: {
 
-                System.out.println("Invalid choice.");
+                System.out.println("❌ Invalid input.");
                 openMainMenu();
                 break;
 
@@ -1128,8 +1160,8 @@ public class Utility {
 
     // Function to get user input for try again (multiple uses)
     public static boolean tryAgain() {
-        Utility.println("1. -> Try again", 7);
-        Utility.println("Any other. -> Go back", 7);
+        Utility.println("1. -> Try again", 5);
+        Utility.println("Any other. -> Go back", 5);
 
         Utility.print("Enter your choice: ", 4);
         char choice = scanner.next().charAt(0);

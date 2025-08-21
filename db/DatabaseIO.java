@@ -385,8 +385,6 @@ public class DatabaseIO {
 
         String pass = rs.getString("password");
 
-        System.out.println(pass);
-
         if (!pass.equals(password))
             return false;
 
@@ -659,16 +657,14 @@ public class DatabaseIO {
             UPDATE
                 auth
             SET
-                password = ?,
-                updated_at = ?
+                password = ?
             WHERE
-                user_id = ?;
+                user_id = ?
         """;
 
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, password);
-        pst.setTimestamp(2, now());
-        pst.setInt(3, CurrentUser.data.getUserId());
+        pst.setInt(2, CurrentUser.data.getUserId());
 
         int r = pst.executeUpdate();
 

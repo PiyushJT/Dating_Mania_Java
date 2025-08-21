@@ -698,6 +698,21 @@ public class DatabaseIO {
 
     }
 
+    public static boolean hasExistingMatch(int Sender_uid, int Receiver_uid) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM matches WHERE " +
+                "(Sender_user_id = ? AND Receiver_user_id = ?) OR (Sender_user_id = ? AND Receiver_user_id = ?)";
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setInt(1, Sender_uid);
+        ps.setInt(2, Receiver_uid);
+        ps.setInt(3, Receiver_uid);
+        ps.setInt(4, Sender_uid);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) > 0;
+        }
+        return false;
+    }
+
 
     public static MatchLinkedList getMatchesByUid(int uid) throws SQLException {
 

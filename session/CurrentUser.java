@@ -480,24 +480,35 @@ public class CurrentUser {
                                 continue;
                             }
 
+                            if (DatabaseIO.isEmailPhoneDupe(phone + "")) {
+                                Utility.println("Phone already exists.", 7);
+
+                                if (Utility.tryAgain())
+                                    continue;
+                                else
+                                    break;
+                            }
+
                         }
-                        catch (NumberFormatException e) {
+                        catch (Exception e) {
                             Utility.println("Invalid Phone", 7);
                             continue;
                         }
-                        break;
-                    }
-                    try {
-                        if (DatabaseIO.updatePhone(phone + ""))
-                            Utility.println("Update Successful", 1);
-                        else
-                            Utility.println("Update Failed", 7);
-                    }
-                    catch (SQLException e) {
-                        Utility.println("Update Failed", 0);
-                        break;
+
+                        try {
+                            if (DatabaseIO.updatePhone(phone + "")) {
+                                Utility.println("Update Successful", 1);
+                            }
+                            else
+                                Utility.println("Update Failed", 7);
+                        }
+                        catch (SQLException e) {
+                            Utility.println("Update Failed", 0);
+                            break;
+                        }
                     }
 
+                    break;
                 }
 
                 case "6": {
@@ -529,6 +540,7 @@ public class CurrentUser {
 
                     String email;
                     while (true) {
+
                         Utility.print("Enter your email: ", 4);
                         email = scanner.nextLine();
 
@@ -536,12 +548,30 @@ public class CurrentUser {
                             Utility.println("Email too long. Try a shorter email", 7);
                             continue;
                         }
-                        if (email.equals("")) {
+                        if (email.isEmpty()) {
                             Utility.println("Email cannot be empty. Try again", 7);
+                            continue;
+                        }
+
+                        try {
+
+                            if (DatabaseIO.isEmailPhoneDupe(email)) {
+                                Utility.println("Email already exists.", 7);
+
+                                if (Utility.tryAgain())
+                                    continue;
+                                else
+                                    break;
+                            }
+                        }
+                        catch (Exception e) {
+                            Utility.println("Invalid Email", 7);
                             continue;
                         }
                         break;
                     }
+
+
                     try {
                         DatabaseIO.updateEmail(email);
                     }

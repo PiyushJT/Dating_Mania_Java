@@ -33,7 +33,7 @@ public class Matchmaking {
                     // Skip self and same gender or inactive
                     if (user.getId() == myId)
                         continue;
-                    if (!user.isActive() || user.getGender().equals(myGender))
+                    if (!user.isActive() || user.getGender().equalsIgnoreCase(myGender))
                         continue;
                     if (DatabaseIO.amIBlockedBy(user.getId()))
                         continue;
@@ -83,7 +83,7 @@ public class Matchmaking {
                 // Skip self and same gender or inactive
                 if (user.getId() == myId)
                     continue;
-                if (!user.isActive() || user.getGender() == myGender)
+                if (!user.isActive() || user.getGender().equalsIgnoreCase(myGender))
                     continue;
                 if (DatabaseIO.amIBlockedBy(user.getId()))
                     continue;

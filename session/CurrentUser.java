@@ -124,7 +124,8 @@ public class CurrentUser {
 
     public static void updateHobbies() {
 
-        System.out.println("Update hobbies");
+        System.out.println("HOBBIES!");
+        System.out.println();
 
         if (CurrentUser.hobbies.isEmpty()) {
             System.out.println("You have no hobbies.");
@@ -196,7 +197,7 @@ public class CurrentUser {
     }
 
 
-    public static void updateSongs() {
+   /* public static void updateSongs() {
 
         System.out.println("Update song interests");
 
@@ -268,7 +269,7 @@ public class CurrentUser {
 
         }
 
-    }
+    }*/
 
     public static void takeSongQuiz() {
         //Scanner scanner = new Scanner(System.in);

@@ -70,7 +70,9 @@ public class Project {
         if (CurrentUser.data == null)
             Utility.openLoginMenu();
         else {
+            Utility.printLines(2);
             Utility.println("Welcome back " + CurrentUser.data.getName() + ".", 3);
+            Utility.printLines(2);
             Utility.openMainMenu();
         }
 

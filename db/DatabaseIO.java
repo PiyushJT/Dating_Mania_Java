@@ -458,8 +458,6 @@ public class DatabaseIO {
 
         String pass = rs.getString("password");
 
-        System.out.println(pass);
-
         if (!pass.equals(password))
             return false;
 

@@ -61,6 +61,8 @@ public class Utility {
                 "\u001B[94m", // 3 blue
                 "\u001B[97m", // 4 white
                 "\u001B[34m", // 5 Blue
+                "\u001B[32m", // 6 Green
+                "\u001B[31m", // 7 Red
 
         };
 
@@ -78,10 +80,11 @@ public class Utility {
                 "\u001B[94m", // 3 blue
                 "\u001B[97m", // 4 white
                 "\u001B[34m", // 5 Blue
+                "\u001B[32m", // 6 Green
+                "\u001B[31m", // 7 Red
 
                 "\u001B[30m", // Black
                 "\u001B[31m", // Red
-                "\u001B[32m", // Green
                 "\u001B[33m", // Yellow
                 "\u001B[34m", // Blue
                 "\u001B[35m", // Purple
@@ -101,6 +104,8 @@ public class Utility {
     public static void openLoginMenu() {
 
 
+
+        Utility.printLines(2);
         println("\t\tMenu", 5);
         Utility.printLines(1);
 
@@ -119,6 +124,8 @@ public class Utility {
 
             case '1':
                 if (login()) {
+
+                    Utility.printLines(2);
                     Utility.println("Welcome back " + CurrentUser.data.getName() + ".", 3);
                     Utility.printLines(2);
                     Log.S("User logged in successfully");
@@ -147,9 +154,11 @@ public class Utility {
                 break;
 
             case '3':
-                System.out.println("Exiting...");
+                Utility.printLines(2);
+                Utility.println("Exiting...", 6);
                 Log.S("User exited manually");
                 System.exit(0);
+
 
                 break;
 
@@ -384,7 +393,7 @@ public class Utility {
                             ||
                             !isPasswordValid(password)
             ) {
-                System.out.println("Invalid Credentials");
+                Utility.println("Invalid Credentials", 0);
 
                 // if user chooses to try again, loop continues
                 if (tryAgain())
@@ -448,7 +457,7 @@ public class Utility {
         }
         // Invalid email or password
         catch (Exception e) {
-            System.out.println("Invalid Credentials.");
+            Utility.println("Invalid Credentials.", 0);
 
             if (tryAgain())
                 return login();
@@ -469,6 +478,9 @@ public class Utility {
 
 
     public static void openMainMenu() {
+
+        println("\t\tMenu", 5);
+        Utility.printLines(1);
 
         if(CurrentUser.hobbies.isEmpty())
             Utility.println(" 1. Register your hobbies", 5);
@@ -979,7 +991,7 @@ public class Utility {
 
             case "9": {
 
-                System.out.println("Logging out...");
+                Utility.println("Logging out...", 2);
                 CurrentUser.logOut();
 
                 openLoginMenu();
@@ -1099,8 +1111,8 @@ public class Utility {
 
     // Function to get user input for try again (multiple uses)
     public static boolean tryAgain() {
-        System.out.println("Enter 1. -> Try again");
-        System.out.println("Any other. -> Go back");
+        Utility.println("1. -> Try again", 7);
+        Utility.println("Any other. -> Go back", 7);
 
         Utility.print("Enter your choice: ", 4);
         char choice = scanner.next().charAt(0);

@@ -166,9 +166,11 @@ public class CurrentUser {
 
                 Utility.printLines(1);
                 Utility.println("Enter comma-separated indices of hobbies to add to your new list.", 4);
+                Utility.println("Enter 0 to abort! ", 4);
                 Utility.println("Example: 1,2,3", 4);
 
                 String input = scanner.nextLine().replace(" ", "");
+
                 String[] parts = input.split(",");
 
                 ind = new int[parts.length];
@@ -624,7 +626,7 @@ public class CurrentUser {
                             Utility.println("Password too long. Try a shorter password", 7);
                             continue;
                         }
-                        if (newPassword.equals("")) {
+                        if (newPassword.isEmpty()) {
                             Utility.println("Password cannot be empty. Try again", 7);
                             continue;
                         }

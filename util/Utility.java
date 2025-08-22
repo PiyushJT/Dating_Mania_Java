@@ -623,7 +623,7 @@ public class Utility {
                         }
                     }
 
-                    // --- Unmatch Option ---
+                    //  Unmatch Option
                     Utility.printLines(1);
                     Utility.println("🚪 If you wish to unmatch, enter the user ID.", 5);
                     Utility.println("Enter 0 to go back.", 5);
@@ -953,61 +953,79 @@ public class Utility {
                         Utility.println("🛑 Block User", 6);
 
                         Utility.printLines(1);
-                        Utility.print("Enter user's name to block: ", 4);
+                        Utility.println("Enter user's name to block ", 4);
+                        Utility.println("Enter 0 to abort blocking ", 4);
+
                         String name = scanner.next();
                         scanner.nextLine();
 
-                        UserLinkedList foundUsers = new UserLinkedList();
+                        if(!Objects.equals(name, "0")) {
+
+                            UserLinkedList foundUsers = new UserLinkedList();
+                            boolean looper = true;
 
 
-                        outer: while (true) {
+                            outer:
+                            while (looper) {
 
-                            Utility.printLines(1);
-                            Utility.println("===============================================", 8);
-                            for (User user : User.users.toArray())
-                                if (user.getName().toLowerCase().contains(name)) {
+                                Utility.printLines(1);
+                                Utility.println("===============================================", 8);
+                                for (User user : User.users.toArray())
+                                    if (user.getName().toLowerCase().contains(name)) {
 
-                                    if (user.getUserId() == CurrentUser.data.getUserId())
-                                        continue;
+                                        if (user.getUserId() == CurrentUser.data.getUserId())
+                                            continue;
 
-                                    foundUsers.insert(user);
-                                    Utility.println(user.toString(), 6);
-                                }
-                            Utility.println("===============================================", 8);
-
-                            Utility.printLines(1);
-                            Utility.print("Enter user id to block: ", 4);
-                            String id = scanner.next();
-                            scanner.nextLine();
-
-
-                            try {
-                                int uid = Integer.parseInt(id);
-
-                                for (User users : foundUsers.toArray())
-                                    if (users.getUserId() == uid) {
-                                        if (DatabaseIO.blockUser(uid))
-                                            Utility.println("User blocked successfully.", 1);
-                                        else
-                                            Utility.println("Error blocking user.", 0);
-                                        break outer;
+                                        foundUsers.insert(user);
+                                        Utility.println(user.toString(), 6);
                                     }
+                                Utility.println("===============================================", 8);
 
-                                Utility.println("Invalid user id.", 7);
-                                if (!tryAgain())
-                                    break;
+                                Utility.printLines(1);
+                                Utility.println("Enter user id to block: ", 4);
+                                Utility.println("Enter 0 to abort blocking ", 4);
 
+                                String id = scanner.next();
+                                scanner.nextLine();
+
+                                if(!Objects.equals(id, "0")) {
+                                    try {
+                                        int uid = Integer.parseInt(id);
+
+                                        for (User users : foundUsers.toArray())
+                                            if (users.getUserId() == uid) {
+                                                if (DatabaseIO.blockUser(uid))
+                                                    Utility.println("User blocked successfully.", 1);
+                                                else
+                                                    Utility.println("Error blocking user.", 0);
+                                                break outer;
+                                            }
+
+                                        Utility.println("Invalid user id.", 7);
+                                        if (!tryAgain())
+                                            break;
+
+                                    } catch (NumberFormatException e) {
+                                        Utility.println("Invalid user id.", 7);
+                                        if (!tryAgain())
+                                            break;
+                                    } catch (SQLException e) {
+                                        Log.E("Error blocking user: " + e.getMessage());
+                                        if (!tryAgain())
+                                            break;
+                                    }
+                                }
+                                else
+                                {
+                                    Utility.println("Blocking process aborted!",0);
+                                    looper =false;
+                                }
                             }
-                            catch (NumberFormatException e) {
-                                Utility.println("Invalid user id.", 7);
-                                if (!tryAgain())
-                                    break;
-                            }
-                            catch (SQLException e) {
-                                Log.E("Error blocking user: " + e.getMessage());
-                                if (!tryAgain())
-                                    break;
-                            }
+                        }
+
+                        else
+                        {
+                            Utility.println("Blocking process aborted!",0);
                         }
 
                         break;
@@ -1028,8 +1046,10 @@ public class Utility {
                             break;
                         }
 
-                        if (blockedUsers.isEmpty())
+                        if (blockedUsers.isEmpty()) {
+                            Utility.println("Your block list is empty", 0);
                             break;
+                        }
 
                         Utility.println("===============================================", 8);
                         for (User user : blockedUsers.toArray())
@@ -1037,20 +1057,26 @@ public class Utility {
                         Utility.println("===============================================", 8);
 
                         Utility.printLines(1);
-                        Utility.print("Enter user id to unblock: ", 4);
+                        Utility.println("Enter user id to unblock: ", 4);
+                        Utility.println("Enter 0 to abort unblocking ", 4);
                         String id = scanner.next();
 
-                        try {
-                            int uid = Integer.parseInt(id);
+                        if(!Objects.equals(id, "0")) {
+                            try {
+                                int uid = Integer.parseInt(id);
 
-                            DatabaseIO.unblockUser(uid);
+                                DatabaseIO.unblockUser(uid);
+                            } catch (NumberFormatException e) {
+                                Utility.println("Invalid user id.", 7);
+                            } catch (SQLException e) {
+                                Log.E("Error unblocking user: " + e.getMessage());
+                            }
                         }
-                        catch (NumberFormatException e) {
-                            Utility.println("Invalid user id.", 7);
+                        else
+                        {
+                            Utility.println("Blocking process aborted!",0);
                         }
-                        catch (SQLException e) {
-                            Log.E("Error unblocking user: " + e.getMessage());
-                        }
+
 
                         break;
                     }
@@ -1093,56 +1119,73 @@ public class Utility {
 
                         Utility.printLines(2);
                         Utility.println("DELETE ACCOUNT PERMANENTLY ??", 0);
+                        Utility.println("1. Delete Account", 3);
+                        Utility.println("Any other -> Cancel", 3);
 
-                        Utility.print("Enter your password to confirm: ", 4);
-                        String password = scanner.next();
-                        scanner.nextLine();
+                        int confirmation = scanner.nextInt();
+                        if(confirmation==1) {
 
-                        try {
-                            if (DatabaseIO.deleteUser(password)) {
-                                CurrentUser.logOut();
+                            Utility.print("Enter your password to confirm: ", 4);
+                            String password = scanner.next();
+                            scanner.nextLine();
 
-                                Utility.println("Account deleted successfully.", 1);
+                            try {
+                                if (DatabaseIO.deleteUser(password)) {
+                                    CurrentUser.logOut();
+
+                                    Utility.println("Account deleted successfully.", 1);
+                                } else
+                                    Utility.println("Wrong password.", 7);
+                            } catch (Exception e) {
+                                Utility.println("Some error occurred..", 7);
+                                openMainMenu();
+                                return;
                             }
-                            else
-                                Utility.println("Wrong password.", 7);
                         }
-                        catch (Exception e) {
-                            Utility.println("Some error occurred..", 7);
-                            openMainMenu();
-                            return;
+                        else {
+                            printLines(1);
+                            Utility.println("Deletion aborted!",0);
                         }
-
                         break;
                     }
 
                     case "2":  {
 
                         Utility.printLines(2);
-                        Utility.println("Deactivate account", 6);
+                        Utility.println("Are you sure you want to Deactivate your account??", 0);
+                        Utility.println("1. Deactivate Account", 3);
+                        Utility.println("Any other -> Cancel", 3);
 
-                        Utility.println("Enter your password to confirm: ", 4);
-                        String password = scanner.next();
-                        scanner.nextLine();
+                        int confirmation = scanner.nextInt();
+                        if(confirmation==1) {
 
-                        try {
-                            if (DatabaseIO.deactivateUser(password)) {
-                                CurrentUser.logOut();
 
-                                Utility.println("Account deactivated successfully.", 6);
-                                Utility.println("Log in again to activate your account.", 6);
+                            Utility.println("Enter your password to confirm: ", 4);
+                            String password = scanner.next();
+                            scanner.nextLine();
+
+                            try {
+                                if (DatabaseIO.deactivateUser(password)) {
+                                    CurrentUser.logOut();
+
+                                    Utility.println("Account deactivated successfully.", 6);
+                                    Utility.println("Log in again to activate your account.", 6);
+                                } else
+                                    Utility.println("Wrong password.", 6);
+                            } catch (Exception e) {
+                                Utility.println("Some error occurred..", 6);
+                                openMainMenu();
+                                return;
                             }
-                            else
-                                Utility.println("Wrong password.", 6);
                         }
-                        catch (Exception e) {
-                            Utility.println("Some error occurred..", 6);
-                            openMainMenu();
-                            return;
+                        else {
+                            printLines(1);
+                            Utility.println("Delactivation aborted!",0);
                         }
 
                         break;
                     }
+
 
                     default: {
                         openMainMenu();

@@ -949,6 +949,7 @@ public class Utility {
 
                     case "1": {
 
+                        Utility.printLines(1);
                         Utility.println("🛑 Block User", 6);
 
                         Utility.printLines(1);
@@ -956,27 +957,57 @@ public class Utility {
                         String name = scanner.next();
                         scanner.nextLine();
 
-                        Utility.println("===============================================", 8);
-                        for (User user : User.users.toArray())
-                            if (user.getName().toLowerCase().contains(name))
-                                Utility.println(user.toString(), 6);
-                        Utility.println("===============================================", 8);
+                        UserLinkedList foundUsers = new UserLinkedList();
 
-                        Utility.printLines(1);
-                        Utility.print("Enter user id to block: ", 4);
-                        String id = scanner.next();
-                        scanner.nextLine();
 
-                        try {
-                            int uid = Integer.parseInt(id);
+                        outer: while (true) {
 
-                            DatabaseIO.blockUser(uid);
-                        }
-                        catch (NumberFormatException e) {
-                            Utility.println("Invalid user id.", 7);
-                        }
-                        catch (SQLException e) {
-                            Log.E("Error blocking user: " + e.getMessage());
+                            Utility.printLines(1);
+                            Utility.println("===============================================", 8);
+                            for (User user : User.users.toArray())
+                                if (user.getName().toLowerCase().contains(name)) {
+
+                                    if (user.getUserId() == CurrentUser.data.getUserId())
+                                        continue;
+
+                                    foundUsers.insert(user);
+                                    Utility.println(user.toString(), 6);
+                                }
+                            Utility.println("===============================================", 8);
+
+                            Utility.printLines(1);
+                            Utility.print("Enter user id to block: ", 4);
+                            String id = scanner.next();
+                            scanner.nextLine();
+
+
+                            try {
+                                int uid = Integer.parseInt(id);
+
+                                for (User users : foundUsers.toArray())
+                                    if (users.getUserId() == uid) {
+                                        if (DatabaseIO.blockUser(uid))
+                                            Utility.println("User blocked successfully.", 1);
+                                        else
+                                            Utility.println("Error blocking user.", 0);
+                                        break outer;
+                                    }
+
+                                Utility.println("Invalid user id.", 7);
+                                if (!tryAgain())
+                                    break;
+
+                            }
+                            catch (NumberFormatException e) {
+                                Utility.println("Invalid user id.", 7);
+                                if (!tryAgain())
+                                    break;
+                            }
+                            catch (SQLException e) {
+                                Log.E("Error blocking user: " + e.getMessage());
+                                if (!tryAgain())
+                                    break;
+                            }
                         }
 
                         break;

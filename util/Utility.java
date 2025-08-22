@@ -640,7 +640,7 @@ public class Utility {
                                 Utility.println("⚠️ Could not unmatch (are you actually matched with this user?)", 7);
                             }
                         } catch (NumberFormatException e) {
-                            Utility.println("❓ Invalid input! Please enter a number.", 7);
+                            Utility.println("Invalid input", 7);
                         } catch (SQLException e) {
                             Log.E("Error unmatching user: " + e.getMessage());
                             Utility.println("❌ Database error while unmatching.", 7);

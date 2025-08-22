@@ -34,7 +34,11 @@ public class Matchmaking {
                     // Skip self and same gender or inactive
                     if (user.getId() == myId)
                         continue;
-                    if (!user.isActive() || user.getGender().equalsIgnoreCase(myGender))
+                    if (!user.isActive())
+                        continue;
+                    if (user.isDeleted())
+                        continue;
+                    if(user.getGender().equalsIgnoreCase(myGender))
                         continue;
                     if (DatabaseIO.amIBlockedBy(user.getId()))
                         continue;
@@ -44,7 +48,6 @@ public class Matchmaking {
                         continue;
 
 
-                    // todo: if already sent / received -> continue
 
 
                     // Get hobbies for this user
@@ -89,7 +92,11 @@ public class Matchmaking {
                 // Skip self and same gender or inactive
                 if (user.getId() == myId)
                     continue;
-                if (!user.isActive() || user.getGender().equalsIgnoreCase(myGender))
+                if (!user.isActive())
+                    continue;
+                if (user.isDeleted())
+                    continue;
+                if(user.getGender().equalsIgnoreCase(myGender))
                     continue;
                 if (DatabaseIO.amIBlockedBy(user.getId()))
                     continue;
@@ -98,7 +105,6 @@ public class Matchmaking {
                 if (DatabaseIO.hasExistingMatch(myId, user.getId()))
                     continue;
 
-                // todo: if already sent / received -> continue
 
                 // Get songs for this user
                 SongLinkedList theirSong = DatabaseIO.getSongsFromUID(user.getId());

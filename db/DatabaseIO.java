@@ -878,7 +878,6 @@ public class DatabaseIO {
 
     }
 
-    // update is_deleted
     public static void sendMatchRequest(int receiverId, String by) throws SQLException {
         String sql = """
                 INSERT INTO

@@ -1054,10 +1054,8 @@ public class DatabaseIO {
 
         if (rs.next()) {
 
-
             System.out.println("User Already Block");
-            return false;
-            /*String updateQuery = """
+            String updateQuery = """
                 UPDATE
                     block
                 SET
@@ -1074,7 +1072,7 @@ public class DatabaseIO {
 
             int r = pst2.executeUpdate();
 
-            return r == 1;*/
+            return r == 1;
 
         }
 

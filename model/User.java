@@ -53,7 +53,7 @@ public class User {
 
     // Pretty print
     public String toString() {
-        return String.format("%-3d %-20s %-2c %-3d", userId, name, gender, age);
+        return String.format("%-3d %-20s %-2s %-3d", userId, name, gender, age);
     }
 
 

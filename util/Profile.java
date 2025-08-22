@@ -12,7 +12,7 @@ public class Profile {
         Utility.printLines(2);
 
         Utility.println("===============================================", 8);
-        Utility.println(user.getName().toUpperCase(), 6);
+        Utility.println(user.getName().toUpperCase() +" || User ID : "+ user.getUserId(),6);
         Utility.println("===============================================", 8);
 
         Utility.println("Bio: ", 6);

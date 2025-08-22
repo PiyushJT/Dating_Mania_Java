@@ -260,7 +260,7 @@ public class Utility {
                 Utility.println("Bio too long. Try a shorter bio", 7);
                 continue;
             }
-            if (bio.equals("")) {
+            if (bio.isEmpty()) {
                 Utility.println("bio cannot be empty. Try again", 7);
                 continue;
             }
@@ -551,6 +551,7 @@ public class Utility {
 
             }
 
+            /*
             case "3": {
 
 
@@ -593,6 +594,66 @@ public class Utility {
                 break;
 
             }
+            */
+            case "3": {
+                printLines(2);
+
+                UserLinkedList matches = new UserLinkedList();
+
+                try {
+                    matches = DatabaseIO.getMatchedUsers();
+                    Utility.println("Match count: " + matches.length(), 6);
+                }
+                catch (SQLException e) {
+                    Log.E("Error getting matches: " + e.getMessage());
+                    openMainMenu();
+                }
+
+                if (!matches.isEmpty()) {
+                    for (User user : matches.toArray()) {
+                        int uid = user.getId();
+                        try {
+                            Profile.display(
+                                    DatabaseIO.getUserFromUid(uid),
+                                    DatabaseIO.getHobbiesFromUID(uid),
+                                    DatabaseIO.getSongsFromUID(uid)
+                            );
+                        } catch (SQLException e) {
+                            Log.E("Error getting user: " + e.getMessage());
+                        }
+                    }
+
+                    // --- Unmatch Option ---
+                    Utility.printLines(1);
+                    Utility.println("🚪 If you wish to unmatch, enter the user ID.", 5);
+                    Utility.println("Enter 0 to go back.", 5);
+                    Utility.print("Enter user ID to unmatch: ", 4);
+
+                    String input = scanner.nextLine().trim();
+
+                    if (!input.equals("0")) {
+                        try {
+                            int unmatchUid = Integer.parseInt(input);
+                            if (DatabaseIO.unmatchUser(unmatchUid)) {
+                                Utility.println("❌ You have unmatched with user ID: " + unmatchUid, 6);
+                            } else {
+                                Utility.println("⚠️ Could not unmatch (are you actually matched with this user?)", 7);
+                            }
+                        } catch (NumberFormatException e) {
+                            Utility.println("Invalid input", 7);
+                        } catch (SQLException e) {
+                            Log.E("Error unmatching user: " + e.getMessage());
+                            Utility.println("❌ Database error while unmatching.", 7);
+                        }
+                    }
+                } else {
+                    Utility.println("Get to matching and connect with some new people!", 6);
+                }
+
+                openMainMenu();
+                break;
+            }
+
 
             case "4": {
 
@@ -886,78 +947,71 @@ public class Utility {
 
                 switch (choice2) {
 
-                    // 🛑 Block
                     case "1": {
 
+                        Utility.printLines(1);
                         Utility.println("🛑 Block User", 6);
+
                         Utility.printLines(1);
                         Utility.print("Enter user's name to block: ", 4);
-                        String name = scanner.nextLine().trim().toLowerCase();
-
-                        // find matching users
-                        UserLinkedList matchingUsers = new UserLinkedList();
-                        for (User user : User.users.toArray())
-                            if (user.getName().toLowerCase().contains(name))
-                                matchingUsers.insert(user);
-
-                        if (matchingUsers.toArray().length == 0) {
-                            Utility.println("No users found with that name.", 7);
-                            break;
-                        }
-
-                        Utility.println("===============================================", 8);
-                        for (User user : matchingUsers.toArray()) {
-                            Utility.println(
-                                    String.format("ID: %d | Name: %s | Age: %d | City: %s",
-                                            user.getUserId(),
-                                            user.getName(),
-                                            user.getAge(),
-                                            user.getCity()
-                                    ),
-                                    6
-                            );
-                        }
-                        Utility.println("===============================================", 8);
-
-                        Utility.printLines(1);
-                        Utility.print("Enter user id to block: ", 4);
-                        String idStr = scanner.next();
+                        String name = scanner.next();
                         scanner.nextLine();
 
-                        try {
-                            int uid = Integer.parseInt(idStr);
+                        UserLinkedList foundUsers = new UserLinkedList();
 
-                            if (uid == CurrentUser.data.getUserId()) {
-                                Utility.println("You cannot block yourself.", 7);
-                                break;
+
+                        outer: while (true) {
+
+                            Utility.printLines(1);
+                            Utility.println("===============================================", 8);
+                            for (User user : User.users.toArray())
+                                if (user.getName().toLowerCase().contains(name)) {
+
+                                    if (user.getUserId() == CurrentUser.data.getUserId())
+                                        continue;
+
+                                    foundUsers.insert(user);
+                                    Utility.println(user.toString(), 6);
+                                }
+                            Utility.println("===============================================", 8);
+
+                            Utility.printLines(1);
+                            Utility.print("Enter user id to block: ", 4);
+                            String id = scanner.next();
+                            scanner.nextLine();
+
+
+                            try {
+                                int uid = Integer.parseInt(id);
+
+                                for (User users : foundUsers.toArray())
+                                    if (users.getUserId() == uid) {
+                                        if (DatabaseIO.blockUser(uid))
+                                            Utility.println("User blocked successfully.", 1);
+                                        else
+                                            Utility.println("Error blocking user.", 0);
+                                        break outer;
+                                    }
+
+                                Utility.println("Invalid user id.", 7);
+                                if (!tryAgain())
+                                    break;
+
                             }
-
-                            User userToBlock = null;
-                            for (User user : matchingUsers.toArray())
-                                if (user.getUserId() == uid)
-                                    userToBlock = user;
-
-                            if (userToBlock == null) {
-                                Utility.println("Invalid user id selected.", 7);
-                                break;
+                            catch (NumberFormatException e) {
+                                Utility.println("Invalid user id.", 7);
+                                if (!tryAgain())
+                                    break;
                             }
-
-                            boolean blocked = DatabaseIO.blockUser(uid);
-                            if (blocked)
-                                Utility.println("User blocked successfully.", 0);
-                            else
-                                Utility.println("User is already blocked.", 7);
-
-                        } catch (NumberFormatException e) {
-                            Utility.println("Invalid user id.", 7);
-                        } catch (SQLException e) {
-                            Log.E("Error blocking user: " + e.getMessage());
+                            catch (SQLException e) {
+                                Log.E("Error blocking user: " + e.getMessage());
+                                if (!tryAgain())
+                                    break;
+                            }
                         }
 
                         break;
                     }
-
-
 
                     case "2": {
 
@@ -1004,7 +1058,7 @@ public class Utility {
 
                     default: {
 
-                        Utility.println("Enter Valid Input", 6);
+                        Utility.println("Process canceled", 6);
                         break;
 
                     }

@@ -53,6 +53,8 @@ public class CurrentUser {
             reader.close();
 
             data = DatabaseIO.getUserFromUid(user_id);
+
+            DatabaseIO.updateLastActive(user_id);
             Log.S("Current User loaded successfully!");
         }
         catch (NumberFormatException e) {

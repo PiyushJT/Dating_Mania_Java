@@ -493,6 +493,15 @@ public class Utility {
 
     public static void openMainMenu() {
 
+
+        int matchReq = 0;
+        try {
+            matchReq = DatabaseIO.getMatchesByUid(CurrentUser.data.getUserId()).length();
+        }
+        catch (SQLException e) {
+            Log.E("Error getting matches: " + e.getMessage());
+        }
+
         Utility.printLines(2);
         println("\t\tMenu", 5);
         Utility.printLines(1);
@@ -510,7 +519,7 @@ public class Utility {
 
         Utility.println(" 3. ❤️ View your matches", 5);
         Utility.println(" 4. 👋 Create new match", 5);
-        Utility.println(" 5. 💌 Match requests", 5);
+        Utility.println(" 5. 💌 Match requests [" + matchReq + "]", 5);
         Utility.println(" 6. 🙎🏼‍♂️ Open my profile", 5);
         Utility.println(" 7. 🚫 Block / unblock user", 5);
         Utility.println(" 8. 🗑️ Delete / Deactivate account", 5);
@@ -781,18 +790,24 @@ public class Utility {
                     outer:
                     while (true) {
                         Utility.printLines(1);
-                        Utility.print("👉 Select id to accept ✅ or reject ❌: ", 4);
+                        Utility.println("Enter id to accept ✅ or reject ❌: ", 5);
+                        Utility.println("Enter 0 to go back: ", 5);
+                        Utility.println("Enter your choice: ", 4);
 
                         String choice2 = scanner.next();
                         scanner.nextLine();
+
+                        if (choice2.equalsIgnoreCase("0"))
+                            break;
+
 
                         for (Match match : matches.toArray()) {
 
                             if (choice2.equals(match.getSenderUserId() + "")) {
 
                                 Utility.printLines(1);
-                                Utility.println("y -> to accept ✅", 6);
-                                Utility.println("Anything else -> to reject ❌: ", 6);
+                                Utility.println("y -> to accept ✅", 5);
+                                Utility.println("Anything else -> to reject ❌: ", 5);
                                 Utility.println("Enter your choice: ", 4);
                                 String ch = scanner.next();
 

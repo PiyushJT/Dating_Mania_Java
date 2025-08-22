@@ -260,7 +260,7 @@ public class Utility {
                 Utility.println("Bio too long. Try a shorter bio", 7);
                 continue;
             }
-            if (bio.equals("")) {
+            if (bio.isEmpty()) {
                 Utility.println("bio cannot be empty. Try again", 7);
                 continue;
             }
@@ -551,6 +551,7 @@ public class Utility {
 
             }
 
+            /*
             case "3": {
 
 
@@ -593,6 +594,66 @@ public class Utility {
                 break;
 
             }
+            */
+            case "3": {
+                printLines(2);
+
+                UserLinkedList matches = new UserLinkedList();
+
+                try {
+                    matches = DatabaseIO.getMatchedUsers();
+                    Utility.println("Match count: " + matches.length(), 6);
+                }
+                catch (SQLException e) {
+                    Log.E("Error getting matches: " + e.getMessage());
+                    openMainMenu();
+                }
+
+                if (!matches.isEmpty()) {
+                    for (User user : matches.toArray()) {
+                        int uid = user.getId();
+                        try {
+                            Profile.display(
+                                    DatabaseIO.getUserFromUid(uid),
+                                    DatabaseIO.getHobbiesFromUID(uid),
+                                    DatabaseIO.getSongsFromUID(uid)
+                            );
+                        } catch (SQLException e) {
+                            Log.E("Error getting user: " + e.getMessage());
+                        }
+                    }
+
+                    // --- Unmatch Option ---
+                    Utility.printLines(1);
+                    Utility.println("🚪 If you wish to unmatch, enter the user ID.", 5);
+                    Utility.println("Enter 0 to go back.", 5);
+                    Utility.print("Enter user ID to unmatch: ", 4);
+
+                    String input = scanner.nextLine().trim();
+
+                    if (!input.equals("0")) {
+                        try {
+                            int unmatchUid = Integer.parseInt(input);
+                            if (DatabaseIO.unmatchUser(unmatchUid)) {
+                                Utility.println("❌ You have unmatched with user ID: " + unmatchUid, 6);
+                            } else {
+                                Utility.println("⚠️ Could not unmatch (are you actually matched with this user?)", 7);
+                            }
+                        } catch (NumberFormatException e) {
+                            Utility.println("❓ Invalid input! Please enter a number.", 7);
+                        } catch (SQLException e) {
+                            Log.E("Error unmatching user: " + e.getMessage());
+                            Utility.println("❌ Database error while unmatching.", 7);
+                        }
+                    }
+                } else {
+                    Utility.println("Get to matching and connect with some new people!", 6);
+                }
+
+                openMainMenu();
+                break;
+            }
+
 
             case "4": {
 

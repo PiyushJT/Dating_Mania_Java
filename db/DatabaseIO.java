@@ -1,7 +1,6 @@
 package db;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 
 import ds.SongLinkedList;
@@ -938,6 +937,27 @@ public class DatabaseIO {
         pst.executeUpdate();
 
     }
+
+    public static boolean unmatchUser(int otherUserId) throws SQLException {
+        String sql = """
+        UPDATE matches
+        SET is_deleted = true
+        WHERE (
+                (sender_user_id = ? AND receiver_user_id = ?)
+             OR (sender_user_id = ? AND receiver_user_id = ?)
+              )
+          AND is_deleted = false;
+    """;
+        PreparedStatement pst = connection.prepareStatement(sql);
+        int myId = CurrentUser.data.getId();
+        pst.setInt(1, myId);
+        pst.setInt(2, otherUserId);
+        pst.setInt(3, otherUserId);
+        pst.setInt(4, myId);
+        int rows = pst.executeUpdate();
+        return rows > 0;
+    }
+
 
 
 

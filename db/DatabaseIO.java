@@ -46,11 +46,6 @@ public class DatabaseIO {
     }
 
 
-    public static Timestamp now() {
-        return Timestamp.valueOf(LocalDateTime.now());
-    }
-
-
     // function to get user from uid
     public static User getUserFromUid(int user_id) throws SQLException {
 
@@ -94,7 +89,6 @@ public class DatabaseIO {
         """;
 
         PreparedStatement pst = connection.prepareStatement(sql);
-        //pst.setTimestamp(1, now());
         pst.setInt(1, uid);
 
         pst.executeUpdate();
@@ -162,10 +156,7 @@ public class DatabaseIO {
         userStmt.setString(6, user.getEmail());
         userStmt.setString(7, user.getCity());
         userStmt.setBoolean(8, true); // is_active
-        //   userStmt.setTimestamp(9, now()); // last_active
         userStmt.setBoolean(9, false); // is_deleted
-        //  userStmt.setTimestamp(11, now()); // created_at
-        // userStmt.setTimestamp(12, now()); // updated_at
 
         userStmt.executeUpdate();
 
@@ -520,7 +511,6 @@ public class DatabaseIO {
 
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, value);
-        //pst.setTimestamp(2, now());
         pst.setInt(2, CurrentUser.data.getUserId());
 
         int r = pst.executeUpdate();
@@ -544,7 +534,6 @@ public class DatabaseIO {
 
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, value);
-        //pst.setTimestamp(2, now());
         pst.setInt(2, CurrentUser.data.getUserId());
 
         int r = pst.executeUpdate();
@@ -568,7 +557,6 @@ public class DatabaseIO {
 
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, value);
-        //pst.setTimestamp(2, now());
         pst.setInt(2, CurrentUser.data.getUserId());
 
         int r = pst.executeUpdate();
@@ -592,7 +580,6 @@ public class DatabaseIO {
 
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, value);
-        //pst.setTimestamp(2, now());
         pst.setInt(2, CurrentUser.data.getUserId());
 
         int r = pst.executeUpdate();
@@ -616,7 +603,6 @@ public class DatabaseIO {
 
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, value);
-        //pst.setTimestamp(2, now());
         pst.setInt(2, CurrentUser.data.getUserId());
 
         int r = pst.executeUpdate();
@@ -640,7 +626,6 @@ public class DatabaseIO {
 
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, value);
-        //pst.setTimestamp(2, now());
         pst.setInt(2, CurrentUser.data.getUserId());
 
         int r = pst.executeUpdate();
@@ -689,7 +674,6 @@ public class DatabaseIO {
 
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setInt(1, value);
-        //pst.setTimestamp(2, now());
         pst.setInt(2, CurrentUser.data.getUserId());
 
         int r = pst.executeUpdate();
@@ -698,19 +682,28 @@ public class DatabaseIO {
 
     }
 
+    // check is_deleted
     public static boolean hasExistingMatch(int Sender_uid, int Receiver_uid) throws SQLException {
-        String sql = "SELECT COUNT(*) FROM matches WHERE " +
-                "(Sender_user_id = ? AND Receiver_user_id = ?) OR (Sender_user_id = ? AND Receiver_user_id = ?)";
+        String sql = """
+                    SELECT
+                        1
+                    FROM
+                        matches
+                    WHERE
+                        (Sender_user_id = ? AND Receiver_user_id = ?)
+                        OR
+                        (Sender_user_id = ? AND Receiver_user_id = ?)
+                        AND
+                        is_deleted = false
+                """;
         PreparedStatement ps = connection.prepareStatement(sql);
         ps.setInt(1, Sender_uid);
         ps.setInt(2, Receiver_uid);
         ps.setInt(3, Receiver_uid);
         ps.setInt(4, Sender_uid);
         ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            return rs.getInt(1) > 0;
-        }
-        return false;
+
+        return rs.next();
     }
 
 
@@ -749,7 +742,7 @@ public class DatabaseIO {
     }
 
 
-    public static UserLinkedList getMatches() throws SQLException {
+    public static UserLinkedList getMatchedUsers() throws SQLException {
 
         UserLinkedList list = new UserLinkedList();
 
@@ -886,6 +879,7 @@ public class DatabaseIO {
 
     }
 
+    // update is_deleted
     public static void sendMatchRequest(int receiverId, String by) throws SQLException {
         String sql = """
                 INSERT INTO
@@ -921,7 +915,6 @@ public class DatabaseIO {
                 receiver_user_id = ?;
         """;
         PreparedStatement pst = connection.prepareStatement(update);
-        //pst.setTimestamp(1, now());
         pst.setInt(1, match.getSenderUserId());
         pst.setInt(2, match.getReceiverUserId());
         pst.executeUpdate();
@@ -1087,7 +1080,6 @@ public class DatabaseIO {
         PreparedStatement pst = connection.prepareStatement(insertQuery);
         pst.setInt(1, CurrentUser.data.getUserId());
         pst.setInt(2, uid);
-        //pst.setTimestamp(3, now());
         pst.setBoolean(3, false);
         int r = pst.executeUpdate();
 

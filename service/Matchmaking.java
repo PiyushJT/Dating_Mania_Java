@@ -10,15 +10,6 @@ import logs.Log;
 
 public class Matchmaking {
 
-    // check if already matched
-    static boolean alreadyMatched(int myId, int otherId) {
-        try {
-            return DatabaseIO.hasExistingMatch(myId, otherId); // DB level check
-        } catch (Exception e) {
-            Log.E("Error checking existing match: " + e.getMessage());
-            return false; // default: block duplicate match
-        }
-    }
 
     public static BST matchMadeUsingHobby() {
 
@@ -49,7 +40,7 @@ public class Matchmaking {
                         continue;
 
                     // Skip if already matched
-                    if (alreadyMatched(myId, user.getId()))
+                    if (DatabaseIO.hasExistingMatch(myId, user.getId()))
                         continue;
 
 
@@ -104,7 +95,7 @@ public class Matchmaking {
                     continue;
 
                 // Skip if already matched
-                if (alreadyMatched(myId, user.getId()))
+                if (DatabaseIO.hasExistingMatch(myId, user.getId()))
                     continue;
 
                 // todo: if already sent / received -> continue

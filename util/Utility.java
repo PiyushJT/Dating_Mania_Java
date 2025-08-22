@@ -550,7 +550,7 @@ public class Utility {
                 UserLinkedList matches = new UserLinkedList();
 
                 try {
-                    matches = DatabaseIO.getMatches();
+                    matches = DatabaseIO.getMatchedUsers();
                     Utility.println("Match count: " + matches.length(), 6);
                 }
                 catch (SQLException e) {

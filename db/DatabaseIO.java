@@ -1054,6 +1054,12 @@ public class DatabaseIO {
 
         if (rs.next()) {
 
+            boolean isDeleted = rs.getBoolean("is_deleted");
+            if (!isDeleted) {
+                System.out.println("User Alredy Blocked");
+                return false;
+            }
+
             System.out.println("User Already Block");
             String updateQuery = """
                 UPDATE

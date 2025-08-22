@@ -886,40 +886,78 @@ public class Utility {
 
                 switch (choice2) {
 
+                    // 🛑 Block
                     case "1": {
 
                         Utility.println("🛑 Block User", 6);
-
                         Utility.printLines(1);
                         Utility.print("Enter user's name to block: ", 4);
-                        String name = scanner.next();
-                        scanner.nextLine();
+                        String name = scanner.nextLine().trim().toLowerCase();
 
-                        Utility.println("===============================================", 8);
+                        // find matching users
+                        UserLinkedList matchingUsers = new UserLinkedList();
                         for (User user : User.users.toArray())
                             if (user.getName().toLowerCase().contains(name))
-                                Utility.println(user.toString(), 6);
+                                matchingUsers.insert(user);
+
+                        if (matchingUsers.toArray().length == 0) {
+                            Utility.println("No users found with that name.", 7);
+                            break;
+                        }
+
+                        Utility.println("===============================================", 8);
+                        for (User user : matchingUsers.toArray()) {
+                            Utility.println(
+                                    String.format("ID: %d | Name: %s | Age: %d | City: %s",
+                                            user.getUserId(),
+                                            user.getName(),
+                                            user.getAge(),
+                                            user.getCity()
+                                    ),
+                                    6
+                            );
+                        }
                         Utility.println("===============================================", 8);
 
                         Utility.printLines(1);
                         Utility.print("Enter user id to block: ", 4);
-                        String id = scanner.next();
+                        String idStr = scanner.next();
                         scanner.nextLine();
 
                         try {
-                            int uid = Integer.parseInt(id);
+                            int uid = Integer.parseInt(idStr);
 
-                            DatabaseIO.blockUser(uid);
-                        }
-                        catch (NumberFormatException e) {
+                            if (uid == CurrentUser.data.getUserId()) {
+                                Utility.println("You cannot block yourself.", 7);
+                                break;
+                            }
+
+                            User userToBlock = null;
+                            for (User user : matchingUsers.toArray())
+                                if (user.getUserId() == uid)
+                                    userToBlock = user;
+
+                            if (userToBlock == null) {
+                                Utility.println("Invalid user id selected.", 7);
+                                break;
+                            }
+
+                            boolean blocked = DatabaseIO.blockUser(uid);
+                            if (blocked)
+                                Utility.println("User blocked successfully.", 0);
+                            else
+                                Utility.println("User is already blocked.", 7);
+
+                        } catch (NumberFormatException e) {
                             Utility.println("Invalid user id.", 7);
-                        }
-                        catch (SQLException e) {
+                        } catch (SQLException e) {
                             Log.E("Error blocking user: " + e.getMessage());
                         }
 
                         break;
                     }
+
+
 
                     case "2": {
 
@@ -966,7 +1004,7 @@ public class Utility {
 
                     default: {
 
-                        Utility.println("Process canceled", 6);
+                        Utility.println("Enter Valid Input", 6);
                         break;
 
                     }

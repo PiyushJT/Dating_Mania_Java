@@ -5,16 +5,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import db.DatabaseIO;
-import ds.BST;
-import ds.HobbyLinkedList;
-import ds.MatchLinkedList;
-import ds.SongLinkedList;
-import ds.UserLinkedList;
+import db.*;
+import ds.*;
+import logs.*;
 import model.*;
-import service.Matchmaking;
-import session.CurrentUser;
-import logs.Log;
+import service.*;
+import session.*;
 
 public class Utility {
 

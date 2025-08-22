@@ -2,7 +2,7 @@ package model;
 
 import java.sql.*;
 
-import ds.UserLinkedList;
+import ds.*;
 import util.*;
 
 public class User {

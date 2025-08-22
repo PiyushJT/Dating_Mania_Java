@@ -2,9 +2,9 @@ package model;
 
 import java.sql.*;
 
-import db.DatabaseIO;
-import logs.Log;
-import util.Utility;
+import db.*;
+import logs.*;
+import util.*;
 
 public class Match {
 

@@ -1,10 +1,10 @@
 import java.sql.*;
 
-import db.DatabaseIO;
-import logs.Log;
-import model.User;
-import session.CurrentUser;
-import util.Utility;
+import db.*;
+import logs.*;
+import model.*;
+import session.*;
+import util.*;
 
 public class Project {
 

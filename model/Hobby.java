@@ -3,7 +3,7 @@ package model;
 import java.sql.*;
 import java.util.HashMap;
 
-import db.DatabaseIO;
+import db.*;
 
 public class Hobby {
 

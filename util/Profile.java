@@ -1,9 +1,7 @@
 package util;
 
 import ds.*;
-import model.Hobby;
-import model.Song;
-import model.User;
+import model.*;
 
 public class Profile {
 

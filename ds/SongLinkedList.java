@@ -1,8 +1,8 @@
 package ds;
 
-import model.Song;
-
 import java.util.Random;
+
+import model.Song;
 
 public class SongLinkedList extends AbstractLinkedList {
 

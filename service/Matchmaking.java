@@ -2,11 +2,11 @@ package service;
 
 import java.util.*;
 
+import db.*;
 import ds.*;
+import logs.*;
 import model.*;
-import session.CurrentUser;
-import db.DatabaseIO;
-import logs.Log;
+import session.*;
 
 public class Matchmaking {
 

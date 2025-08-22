@@ -4,12 +4,11 @@ import java.io.*;
 import java.sql.*;
 import java.util.*;
 
-import ds.HobbyLinkedList;
-import ds.SongLinkedList;
+import db.*;
+import ds.*;
+import logs.*;
 import model.*;
-import db.DatabaseIO;
-import logs.Log;
-import util.Utility;
+import util.*;
 
 public class CurrentUser {
 

@@ -3,15 +3,11 @@ package db;
 import java.sql.*;
 import java.util.HashMap;
 
-import ds.SongLinkedList;
-import logs.Log;
-import model.Hobby;
-import model.Match;
-import model.Song;
-import model.User;
-import session.CurrentUser;
 import ds.*;
-import util.Utility;
+import logs.*;
+import model.*;
+import session.*;
+import util.*;
 
 public class DatabaseIO {
 
@@ -681,7 +677,6 @@ public class DatabaseIO {
 
     }
 
-    // check is_deleted
     public static boolean hasExistingMatch(int Sender_uid, int Receiver_uid) throws SQLException {
         String sql = """
                     SELECT

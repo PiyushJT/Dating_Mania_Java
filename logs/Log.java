@@ -3,7 +3,8 @@ package logs;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import util.Utility;
+
+import util.*;
 
 public class Log {
 

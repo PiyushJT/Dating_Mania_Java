@@ -1,8 +1,8 @@
 package model;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import ds.SongLinkedList;
+import java.sql.*;
+
+import ds.*;
 
 
 public class Song {

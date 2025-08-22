@@ -87,15 +87,15 @@ public class DatabaseIO {
             UPDATE
                 users
             SET
-                last_active = ?
+                last_active = NOW()
             WHERE
                 user_id = ?;
 
         """;
 
         PreparedStatement pst = connection.prepareStatement(sql);
-        pst.setTimestamp(1, now());
-        pst.setInt(2, uid);
+        //pst.setTimestamp(1, now());
+        pst.setInt(1, uid);
 
         pst.executeUpdate();
 
@@ -149,7 +149,7 @@ public class DatabaseIO {
         String userInsert = """
             INSERT INTO
                 users (name, bio, gender, age, phone, email, city, is_active, last_active, is_deleted, created_at, updated_at)
-            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, NOW(), NOW());
         """;
 
         PreparedStatement userStmt = connection.prepareStatement(userInsert);
@@ -162,10 +162,10 @@ public class DatabaseIO {
         userStmt.setString(6, user.getEmail());
         userStmt.setString(7, user.getCity());
         userStmt.setBoolean(8, true); // is_active
-        userStmt.setTimestamp(9, now()); // last_active
-        userStmt.setBoolean(10, false); // is_deleted
-        userStmt.setTimestamp(11, now()); // created_at
-        userStmt.setTimestamp(12, now()); // updated_at
+        //   userStmt.setTimestamp(9, now()); // last_active
+        userStmt.setBoolean(9, false); // is_deleted
+        //  userStmt.setTimestamp(11, now()); // created_at
+        // userStmt.setTimestamp(12, now()); // updated_at
 
         userStmt.executeUpdate();
 
@@ -513,15 +513,15 @@ public class DatabaseIO {
                 users
             SET
                 name = ?,
-                updated_at = ?
+                updated_at = NOW()
             WHERE
                 user_id = ?;
         """;
 
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, value);
-        pst.setTimestamp(2, now());
-        pst.setInt(3, CurrentUser.data.getUserId());
+        //pst.setTimestamp(2, now());
+        pst.setInt(2, CurrentUser.data.getUserId());
 
         int r = pst.executeUpdate();
 
@@ -537,15 +537,15 @@ public class DatabaseIO {
                 users
             SET
                 bio = ?,
-                updated_at = ?
+                updated_at = NOW()
             WHERE
                 user_id = ?;
         """;
 
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, value);
-        pst.setTimestamp(2, now());
-        pst.setInt(3, CurrentUser.data.getUserId());
+        //pst.setTimestamp(2, now());
+        pst.setInt(2, CurrentUser.data.getUserId());
 
         int r = pst.executeUpdate();
 
@@ -561,15 +561,15 @@ public class DatabaseIO {
                 users
             SET
                 gender = ?,
-                updated_at = ?
+                updated_at = NOW()
             WHERE
                 user_id = ?;
         """;
 
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, value);
-        pst.setTimestamp(2, now());
-        pst.setInt(3, CurrentUser.data.getUserId());
+        //pst.setTimestamp(2, now());
+        pst.setInt(2, CurrentUser.data.getUserId());
 
         int r = pst.executeUpdate();
 
@@ -585,15 +585,15 @@ public class DatabaseIO {
                 users
             SET
                 phone = ?,
-                updated_at = ?
+                updated_at = NOW()
             WHERE
                 user_id = ?;
         """;
 
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, value);
-        pst.setTimestamp(2, now());
-        pst.setInt(3, CurrentUser.data.getUserId());
+        //pst.setTimestamp(2, now());
+        pst.setInt(2, CurrentUser.data.getUserId());
 
         int r = pst.executeUpdate();
 
@@ -609,15 +609,15 @@ public class DatabaseIO {
                 users
             SET
                 city = ?,
-                updated_at = ?
+                updated_at = NOW()
             WHERE
                 user_id = ?;
         """;
 
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, value);
-        pst.setTimestamp(2, now());
-        pst.setInt(3, CurrentUser.data.getUserId());
+        //pst.setTimestamp(2, now());
+        pst.setInt(2, CurrentUser.data.getUserId());
 
         int r = pst.executeUpdate();
 
@@ -633,15 +633,15 @@ public class DatabaseIO {
                 users
             SET
                 email = ?,
-                updated_at = ?
+                updated_at = NOW()
             WHERE
                 user_id = ?;
         """;
 
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setString(1, value);
-        pst.setTimestamp(2, now());
-        pst.setInt(3, CurrentUser.data.getUserId());
+        //pst.setTimestamp(2, now());
+        pst.setInt(2, CurrentUser.data.getUserId());
 
         int r = pst.executeUpdate();
 
@@ -682,15 +682,15 @@ public class DatabaseIO {
                 users
             SET
                 age = ?,
-                updated_at = ?
+                updated_at = NOW()
             WHERE
                 user_id = ?;
         """;
 
         PreparedStatement pst = connection.prepareStatement(query);
         pst.setInt(1, value);
-        pst.setTimestamp(2, now());
-        pst.setInt(3, CurrentUser.data.getUserId());
+        //pst.setTimestamp(2, now());
+        pst.setInt(2, CurrentUser.data.getUserId());
 
         int r = pst.executeUpdate();
 
@@ -914,16 +914,16 @@ public class DatabaseIO {
                 matches
             SET
                 is_accepted = true,
-                accepted_at = ?
+                accepted_at = NOW()
             WHERE
                 sender_user_id = ?
                 AND
                 receiver_user_id = ?;
         """;
         PreparedStatement pst = connection.prepareStatement(update);
-        pst.setTimestamp(1, now());
-        pst.setInt(2, match.getSenderUserId());
-        pst.setInt(3, match.getReceiverUserId());
+        //pst.setTimestamp(1, now());
+        pst.setInt(1, match.getSenderUserId());
+        pst.setInt(2, match.getReceiverUserId());
         pst.executeUpdate();
 
     }
@@ -1081,14 +1081,14 @@ public class DatabaseIO {
             INSERT INTO
                 block
             VALUES
-                (?, ?, ?, ?);
+                (?, ?, NOW(), ?);
         """;
 
         PreparedStatement pst = connection.prepareStatement(insertQuery);
         pst.setInt(1, CurrentUser.data.getUserId());
         pst.setInt(2, uid);
-        pst.setTimestamp(3, now());
-        pst.setBoolean(4, false);
+        //pst.setTimestamp(3, now());
+        pst.setBoolean(3, false);
         int r = pst.executeUpdate();
 
         return r == 1;

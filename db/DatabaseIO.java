@@ -1029,8 +1029,13 @@ public class DatabaseIO {
     }
 
 
+
+
     public static boolean blockUser(int uid) throws SQLException {
 
+        if(uid == CurrentUser.data.getUserId()){
+            return false;
+        }
         String existsQuery = """
             SELECT
                 *
@@ -1049,7 +1054,10 @@ public class DatabaseIO {
 
         if (rs.next()) {
 
-            String updateQuery = """
+
+            System.out.println("User Already Block");
+            return false;
+            /*String updateQuery = """
                 UPDATE
                     block
                 SET
@@ -1066,7 +1074,7 @@ public class DatabaseIO {
 
             int r = pst2.executeUpdate();
 
-            return r == 1;
+            return r == 1;*/
 
         }
 
@@ -1083,6 +1091,7 @@ public class DatabaseIO {
         pst.setBoolean(3, false);
         int r = pst.executeUpdate();
 
+        System.out.println("User Blocked Successfully");
         return r == 1;
 
     }

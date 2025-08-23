@@ -29,7 +29,7 @@ public class Matchmaking {
                 }
 
                 // Get all users
-                UserLinkedList users = DatabaseIO.getUsers();
+                UserLinkedList users = DatabaseIO.getAllUsers();
                 for (User user : users.toArray()) {
                     // Skip self and same gender or inactive
                     if (user.getId() == myId)
@@ -87,7 +87,7 @@ public class Matchmaking {
                 mySongIds.add(s.getSongId());
 
             // Get all users
-            UserLinkedList users = DatabaseIO.getUsers();
+            UserLinkedList users = DatabaseIO.getAllUsers();
             for (User user : users.toArray()) {
                 // Skip self and same gender or inactive
                 if (user.getId() == myId)

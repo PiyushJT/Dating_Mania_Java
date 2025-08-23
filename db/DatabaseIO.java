@@ -7,14 +7,71 @@ import ds.*;
 import logs.*;
 import model.*;
 import session.*;
-import util.*;
 
 public class DatabaseIO {
 
     public static Connection connection;
 
+
+    public static int getActiveUserCount() throws SQLException {
+
+        String sql = """
+            SELECT
+                COUNT(*)
+            FROM
+                users
+            WHERE
+                is_active = true
+                AND
+                is_deleted = false;
+        """;
+
+        PreparedStatement pst = connection.prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
+
+        if (rs.next())
+            return rs.getInt(1);
+
+        return 0;
+
+    }
+
+    public static boolean addNewIntoHobby(String hobbyName) throws SQLException {
+
+        String sql = """
+            INSERT INTO
+                hobbies (hobby_name)
+            VALUES (?);
+        """;
+
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setString(1, hobbyName);
+
+        return pst.executeUpdate() > 0;
+
+    }
+
+    public static boolean addNewIntoSong(String name, String url, String artist, int typeId) throws SQLException {
+
+        String sql = """
+            INSERT INTO
+                songs (song_name, song_url, artist_name, type_id)
+            VALUES (?, ?, ?, ?);
+        """;
+
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setString(1, name);
+        pst.setString(2, url);
+        pst.setString(3, artist);
+        pst.setInt(4, typeId);
+
+        return pst.executeUpdate() > 0;
+    }
+
+
+
     // function to get all users from database
-    public static UserLinkedList getUsers() throws SQLException {
+    public static UserLinkedList getAllUsers() throws SQLException {
 
         // base list
         UserLinkedList users = new UserLinkedList();
@@ -130,36 +187,6 @@ public class DatabaseIO {
 
     }
 
-    public static int getActiveUserCount() throws SQLException {
-        String sql = "SELECT COUNT(*) FROM users WHERE is_active = true AND is_deleted = false";
-        PreparedStatement pst = connection.prepareStatement(sql);
-        ResultSet rs = pst.executeQuery();
-        if (rs.next()) {
-            return rs.getInt(1);
-        }
-        return 0;
-    }
-
-    public static boolean addNewIntoHobby(String hobbyName) throws SQLException {
-        String sql = "INSERT INTO hobbies (hobby_name) VALUES (?)";
-        PreparedStatement pst = connection.prepareStatement(sql);
-        pst.setString(1, hobbyName);
-        int rows = pst.executeUpdate();
-        return rows > 0;
-    }
-
-    public static boolean addNewIntoSong(String name, String url, String artist, int typeId) throws SQLException {
-        String sql = "INSERT INTO songs (song_name, song_url, artist_name, type_id) VALUES (?, ?, ?, ?)";
-        PreparedStatement pst = connection.prepareStatement(sql);
-        pst.setString(1, name);
-        pst.setString(2, url);
-        pst.setString(3, artist);
-        pst.setInt(4, typeId);
-        int rows = pst.executeUpdate();
-        return rows > 0;
-    }
-
-
 
     // function to register a new user
     public static void addUserToDB(User user, String password) throws SQLException {
@@ -249,7 +276,7 @@ public class DatabaseIO {
 
 
 
-    public static void addHobbiesToDB(int[] ind) throws SQLException {
+    public static void addHobbiesToDB(int[] hobbyIds) throws SQLException {
 
 
         String deleteQuery = """
@@ -275,11 +302,12 @@ public class DatabaseIO {
         pst = connection.prepareStatement(insertQuery);
         pst.setInt(1, CurrentUser.data.getUserId());
 
-        for (int i : ind) {
+        for (int i : hobbyIds) {
             pst.setInt(2, i);
             pst.executeUpdate();
         }
 
+        // get from parameter
         CurrentUser.hobbies = getHobbiesFromUID(CurrentUser.data.getUserId());
 
     }
@@ -327,55 +355,34 @@ public class DatabaseIO {
     }
 
 
-    public static void addSongsToDB(int[] ind) throws SQLException {
+    public static void clearSongsForUser(int userId) throws SQLException {
 
-        String deleteQuery = """
+        String sql = """
             DELETE FROM
                 user_song
             WHERE
-                user_id = ?;
+                user_id = ?
         """;
 
-        PreparedStatement pst = connection.prepareStatement(deleteQuery);
-        pst.setInt(1, CurrentUser.data.getUserId());
+        PreparedStatement stmt = connection.prepareStatement(sql);
+        stmt.setInt(1, userId);
+        stmt.executeUpdate();
 
-        pst.executeUpdate();
+    }
 
+    public static void addSongToUser(int userId, int songId) throws SQLException {
 
-        String insertQuery = """
+        String sql = """
             INSERT INTO
                 user_song (user_id, song_id)
             VALUES (?, ?);
         """;
 
+        PreparedStatement stmt = connection.prepareStatement(sql);
+        stmt.setInt(1, userId);
+        stmt.setInt(2, songId);
+        stmt.executeUpdate();
 
-        pst = connection.prepareStatement(insertQuery);
-        pst.setInt(1, CurrentUser.data.getUserId());
-
-        for (int i : ind) {
-            pst.setInt(2, i);
-            pst.executeUpdate();
-
-        }
-
-        CurrentUser.songs = getSongsFromUID(CurrentUser.data.getUserId());
-    }
-
-    public static void clearSongsForUser(int userId) throws SQLException {
-        String sql = "DELETE FROM user_song WHERE user_id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, userId);
-            stmt.executeUpdate();
-        }
-    }
-
-    public static void addSongToUser(int userId, int songId) throws SQLException {
-        String sql = "INSERT INTO user_song (user_id, song_id) VALUES (?, ?) ON CONFLICT DO NOTHING";
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, userId);
-            stmt.setInt(2, songId);
-            stmt.executeUpdate();
-        }
     }
 
 
@@ -707,39 +714,43 @@ public class DatabaseIO {
 
     }
 
-    public static boolean hasExistingMatch(int Sender_uid, int Receiver_uid) throws SQLException {
+    public static boolean hasExistingMatch(int senderUid, int receiverUid) throws SQLException {
+
         String sql = """
-                    SELECT
-                        1
-                    FROM
-                        matches
-                    WHERE
-                        (Sender_user_id = ? AND Receiver_user_id = ?)
-                        OR
-                        (Sender_user_id = ? AND Receiver_user_id = ?)
-                        AND
-                        is_deleted = false
-                """;
+            SELECT
+                1
+            FROM
+                matches
+            WHERE
+                (Sender_user_id = ? AND Receiver_user_id = ?)
+                OR
+                (Sender_user_id = ? AND Receiver_user_id = ?)
+                AND
+                is_deleted = false
+        """;
+
         PreparedStatement ps = connection.prepareStatement(sql);
-        ps.setInt(1, Sender_uid);
-        ps.setInt(2, Receiver_uid);
-        ps.setInt(3, Receiver_uid);
-        ps.setInt(4, Sender_uid);
+        ps.setInt(1, senderUid);
+        ps.setInt(2, receiverUid);
+        ps.setInt(3, receiverUid);
+        ps.setInt(4, senderUid);
         ResultSet rs = ps.executeQuery();
 
         return rs.next();
     }
 
 
-    public static MatchLinkedList getMatchesByUid(int uid) throws SQLException {
+    public static MatchLinkedList getNewMatchesByUid(int uid) throws SQLException {
 
 
         MatchLinkedList matches = new MatchLinkedList();
 
         // query
         String query = """
-            SELECT *
-            FROM matches
+            SELECT
+                *
+            FROM
+                matches
             WHERE
                 receiver_user_id = ?
                 AND
@@ -788,7 +799,7 @@ public class DatabaseIO {
                 M.is_deleted = false
             ORDER BY
                 accepted_at DESC;
-    """;
+        """;
 
         PreparedStatement pst = connection.prepareStatement(sentQuery);
         pst.setInt(1, CurrentUser.data.getId());
@@ -815,7 +826,7 @@ public class DatabaseIO {
                 M.is_deleted = false
             ORDER BY
                 accepted_at DESC;
-    """;
+        """;
 
 
         pst = connection.prepareStatement(receivedQuery);
@@ -879,14 +890,14 @@ public class DatabaseIO {
         try {
 
             String sql = """
-                    UPDATE
-                        users
-                    SET
-                        is_active = true
-                    WHERE
-                        email = ?
-                        OR
-                        phone = ?;
+                UPDATE
+                    users
+                SET
+                    is_active = true
+                WHERE
+                    email = ?
+                    OR
+                    phone = ?;
             """;
 
 
@@ -904,28 +915,25 @@ public class DatabaseIO {
     }
 
     public static void sendMatchRequest(int receiverId, String by) throws SQLException {
+
         String sql = """
                 INSERT INTO
                     matches
                 VALUES
                     (?, ?, null, null, NOW(), ?, false)
         """;
+
         PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setInt(1, CurrentUser.data.getId());
         stmt.setInt(2, receiverId);
         stmt.setString(3, by);
 
-        int rows = stmt.executeUpdate();
-        if (rows > 0) {
-            Utility.println("Request sent successfully from " + CurrentUser.data.getId() + " to " + receiverId, 0);
-        }
-        else {
-            Utility.println("Request failed to send.", 7);
-        }
+        stmt.executeUpdate();
 
     }
 
     public static void acceptMatch(Match match) throws SQLException {
+
         String update = """
             UPDATE
                 matches
@@ -937,6 +945,7 @@ public class DatabaseIO {
                 AND
                 receiver_user_id = ?;
         """;
+
         PreparedStatement pst = connection.prepareStatement(update);
         pst.setInt(1, match.getSenderUserId());
         pst.setInt(2, match.getReceiverUserId());
@@ -945,6 +954,7 @@ public class DatabaseIO {
     }
 
     public static void rejectMatch(Match match) throws SQLException {
+
         String update = """
             UPDATE
                 matches
@@ -955,6 +965,7 @@ public class DatabaseIO {
                 AND
                 receiver_user_id = ?;
         """;
+
         PreparedStatement pst = connection.prepareStatement(update);
         pst.setInt(1, match.getSenderUserId());
         pst.setInt(2, match.getReceiverUserId());
@@ -963,29 +974,38 @@ public class DatabaseIO {
     }
 
     public static boolean unmatchUser(int otherUserId) throws SQLException {
+
         String sql = """
-        UPDATE matches
-        SET is_deleted = true
-        WHERE (
-                (sender_user_id = ? AND receiver_user_id = ?)
-             OR (sender_user_id = ? AND receiver_user_id = ?)
-              )
-          AND is_deleted = false;
-    """;
+            UPDATE
+                matches
+            SET
+                is_deleted = true
+            WHERE
+                (
+                    (sender_user_id = ? AND receiver_user_id = ?)
+                    OR
+                    (sender_user_id = ? AND receiver_user_id = ?)
+                )
+                AND
+                is_deleted = false;
+        """;
+
         PreparedStatement pst = connection.prepareStatement(sql);
         int myId = CurrentUser.data.getId();
+
         pst.setInt(1, myId);
         pst.setInt(2, otherUserId);
         pst.setInt(3, otherUserId);
         pst.setInt(4, myId);
-        int rows = pst.executeUpdate();
-        return rows > 0;
+
+        return pst.executeUpdate() > 0;
+
     }
 
 
 
 
-    public static UserLinkedList getBlockedUsers(int uid) throws SQLException{
+    public static UserLinkedList getBlockedUsers() throws SQLException{
 
         UserLinkedList blockedUsers = new UserLinkedList();
 
@@ -1010,7 +1030,7 @@ public class DatabaseIO {
 
         // run query
         PreparedStatement pst = connection.prepareStatement(query);
-        pst.setInt(1, uid);
+        pst.setInt(1, CurrentUser.data.getUserId());
 
         // result
         ResultSet rs = pst.executeQuery();
@@ -1040,9 +1060,9 @@ public class DatabaseIO {
         PreparedStatement pst = connection.prepareStatement(update);
         pst.setInt(1, CurrentUser.data.getUserId());
         pst.setInt(2, uid);
-        int r = pst.executeUpdate();
 
-        return r == 1;
+        return pst.executeUpdate() == 1;
+
     }
 
 
@@ -1065,10 +1085,7 @@ public class DatabaseIO {
 
         ResultSet rs = pst1.executeQuery();
 
-        if (rs.next())
-            return true;
-
-        return false;
+        return rs.next();
 
     }
 
@@ -1137,17 +1154,17 @@ public class DatabaseIO {
         SongLinkedList list = new SongLinkedList();
 
         String query = """
-                        SELECT
-                            *
-                        FROM
-                            songs S
-                            INNER JOIN
-                            song_types ST
-                            ON
-                            S.type_id = ST.type_id
-                        ORDER BY
-                            S.song_id
-                """;
+            SELECT
+                *
+            FROM
+                songs S
+                INNER JOIN
+                song_types ST
+                ON
+                S.type_id = ST.type_id
+            ORDER BY
+                S.song_id
+        """;
 
 
         PreparedStatement pst1 = connection.prepareStatement(query);
@@ -1168,12 +1185,11 @@ public class DatabaseIO {
         HashMap<Integer, String> map = new HashMap<>();
 
         String query = """
-                        SELECT
-                            *
-                        FROM
-                            hobbies
-                """;
-
+            SELECT
+                *
+            FROM
+                hobbies
+        """;
 
         PreparedStatement pst1 = connection.prepareStatement(query);
         ResultSet rs = pst1.executeQuery();

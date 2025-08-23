@@ -81,12 +81,6 @@ public class Utility {
                 "\u001B[31m", // 7 Red
                 "\u001B[33m", // 8 Yellow
 
-                "\u001B[30m", // Black
-                "\u001B[31m", // Red
-                "\u001B[35m", // Purple
-                "\u001B[36m", // Cyan
-                "\u001B[37m"  // White
-
         };
 
         System.out.println(colors[color] + str + "\u001B[0m");
@@ -687,7 +681,7 @@ public static void addNewSong() {
 
         int matchReq = 0;
         try {
-            matchReq = DatabaseIO.getMatchesByUid(CurrentUser.data.getUserId()).length();
+            matchReq = DatabaseIO.getNewMatchesByUid(CurrentUser.data.getUserId()).length();
         }
         catch (SQLException e) {
             Log.E("Error getting matches: " + e.getMessage());
@@ -1024,7 +1018,7 @@ public static void addNewSong() {
 
                 MatchLinkedList matches;
                 try {
-                    matches = DatabaseIO.getMatchesByUid(CurrentUser.data.getUserId());
+                    matches = DatabaseIO.getNewMatchesByUid(CurrentUser.data.getUserId());
                     printLines(1);
                     Utility.println("⏳ Pending Match Requests: "+ matches.length(), 6);
                     printLines(1);
@@ -1133,7 +1127,7 @@ public static void addNewSong() {
                 // Fetch and display blocked users
                 UserLinkedList blockedUsers;
                 try {
-                    blockedUsers = DatabaseIO.getBlockedUsers(CurrentUser.data.getUserId());
+                    blockedUsers = DatabaseIO.getBlockedUsers();
 
                     if (blockedUsers.isEmpty()) {
                         Utility.println("You have no blocked users.", 6);
@@ -1249,7 +1243,7 @@ public static void addNewSong() {
                         Utility.printLines(1);
 
                         try {
-                            blockedUsers = DatabaseIO.getBlockedUsers(CurrentUser.data.getUserId());
+                            blockedUsers = DatabaseIO.getBlockedUsers();
                         }
                         catch (Exception e) {
                             Log.E("Error getting blocked users: " + e.getMessage());

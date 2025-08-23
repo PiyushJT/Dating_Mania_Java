@@ -110,7 +110,8 @@ public class Utility {
 
         Utility.println("1. Login", 5);
         Utility.println("2. Register (Don't have an account)", 5);
-        Utility.println("3. Exit", 5);
+        Utility.println("4. Admin Access", 5);
+        Utility.println("4. Exit", 5);
 
         Utility.print("Enter your choice: ", 4);
 
@@ -152,6 +153,10 @@ public class Utility {
                 break;
 
             case '3':
+                adminLogin();
+                break;
+
+            case '4':
                 Utility.printLines(2);
                 Utility.println("Exiting...", 6);
                 Log.S("User exited manually");
@@ -489,6 +494,272 @@ public class Utility {
         return true;
 
     }
+
+    public static void adminLogin() {
+        Utility.printLines(2);
+        Utility.println("ADMIN LOGIN", 8);
+        Utility.print("Enter admin password: ", 4);
+        String adminPass = scanner.nextLine();
+
+        if (adminPass.equals("ADMIN123")) {
+            Utility.println("Login successful.", 6);
+            openAdminMenu();
+        } else {
+            Utility.println("Incorrect password.", 0);
+            openLoginMenu();
+        }
+    }
+
+    public static void openAdminMenu() {
+        while (true) {
+            Utility.printLines(2);
+            Utility.println("=== ADMIN MENU ===", 8);
+            Utility.println("1. Get active user count", 6);
+            Utility.println("2. Add new hobby", 6);
+            Utility.println("3. Add new song", 6);
+            Utility.println("4. Log out", 6);
+            Utility.print("Enter choice: ", 4);
+
+            String choice = scanner.nextLine();
+
+            try {
+                switch (choice) {
+                    case "1":
+                        int activeCount = DatabaseIO.getActiveUserCount();
+                        Utility.println("Active users: " + activeCount, 6);
+                        break;
+
+                    case "2":
+                        addNewHobby();
+                        break;
+
+                    case "3":
+                        addNewSong();
+                        break;
+
+                    case "4":
+                        Utility.println("Logging out from admin...", 6);
+                        openLoginMenu();
+                        return;
+
+                    default:
+                        Utility.println("Invalid option. Try again.", 7);
+                }
+            } catch (Exception e) {
+                Utility.println("Error: " + e.getMessage(), 7);
+            }
+        }
+    }
+
+    public static void addNewHobby() {
+        boolean checker = true;
+        while (checker) {
+            Utility.println("Enter new hobby name: ", 4);
+            Utility.println("Enter 0 to abort addition ", 4);
+
+            String hobbyName = scanner.nextLine().trim();
+
+
+            if (hobbyName.isEmpty()) {
+                Utility.println("Hobby name cannot be empty. Try again.", 7);
+                continue;
+            }
+            if(hobbyName.equals("0")) {
+                Utility.println("Hobby addition aborted",0);
+                 checker =false;
+                break;
+            }
+
+            try {
+                // Fetch all existing hobbies (you can cache this as needed)
+                HashMap<Integer, String> existingHobbies = DatabaseIO.getAllHobbies();
+
+                boolean exists = existingHobbies.values().stream()
+                        .anyMatch(h -> h.equalsIgnoreCase(hobbyName));
+
+                if (exists) {
+                    Utility.println("This hobby already exists. Please try again.", 7);
+                    continue;
+                }
+
+                // Add hobby if unique
+                boolean success = DatabaseIO.addNewIntoHobby(hobbyName);
+                if (success) {
+                    Utility.println("Hobby added successfully.", 6);
+                } else {
+                    Utility.println("Failed to add hobby.", 7);
+                }
+                break; // exit loop on success or failure
+            } catch (SQLException e) {
+                Utility.println("Database error: " + e.getMessage(), 7);
+                break; // exit on DB error
+            }
+        }
+    }
+
+
+//    public static void addNewSong() {
+//        try {
+//            Utility.print("Enter song name: ", 4);
+//            Utility.print("Enter 0 to abort addition ", 4);
+//
+//
+//            String songName = scanner.nextLine().trim();
+//            if(songName.equals("0")) {
+//                Utility.println("Hobby addition aborted",0);
+//                return;
+//
+//            }
+//
+//            Utility.print("Enter song URL: ", 4);
+//            Utility.print("Enter 0 to abort addition ", 4);
+//            String songUrl = scanner.nextLine().trim();
+//            if(songUrl.equals("0")) {
+//                Utility.println("Hobby addition aborted",0);
+//                return;
+//
+//            }
+//
+//            Utility.print("Enter artist name: ", 4);
+//            Utility.print("Enter 0 to abort addition ", 4);
+//
+//            String artistName = scanner.nextLine().trim();
+//            if(artistName.equals("0")) {
+//                Utility.println("Hobby addition aborted",0);
+//                return;
+//
+//            }
+//
+//            int songType = 0;
+//            boolean checker= true ;
+//            while (checker) {
+//                try {
+//                    Utility.println("Please select a song type by entering the corresponding number (1 to 10):", 4);
+//                    Utility.println("1. Bollywood", 4);
+//                    Utility.println("2. Pop", 4);
+//                    Utility.println("3. Rock", 4);
+//                    Utility.println("4. Classical", 4);
+//                    Utility.println("5. Hip Hop", 4);
+//                    Utility.println("6. Electronic/EDM", 4);
+//                    Utility.println("7. Indie", 4);
+//                    Utility.println("8. Jazz", 4);
+//                    Utility.println("9. Regional/Folk", 4);
+//                    Utility.println("10. Devotional", 4);
+//                    Utility.print("Enter 0 to abort addition ", 4);
+//
+//                    songType = Integer.parseInt(scanner.nextLine());
+//                    if (songType == 0) {
+//                        Utility.println("Hobby addition aborted", 0);
+//                        checker = false;
+//                        break;
+//                    }
+//                    if (songType < 1 || songType > 10) {
+//                        Utility.println("Song type must be between 1 and 10.", 7);
+//                        continue;
+//                    }
+//
+//                } catch (NumberFormatException e) {
+//                    Utility.println("Invalid input. Please enter a number between 1 and 10.", 7);
+//                }
+//
+//
+//                boolean success = DatabaseIO.addNewIntoSong(songName, songUrl, artistName, songType);
+//                if (success) {
+//                    Utility.println("Song added successfully.", 6);
+//                    checker = false;
+//                } else {
+//                    Utility.println("Failed to add song.", 7);
+//                    checker = false;
+//                }
+//            }
+//        } catch (SQLException e) {
+//            Utility.println("Database error: " + e.getMessage(), 7);
+//        }
+//    }
+public static void addNewSong() {
+    try {
+        Utility.println("Enter song name: ", 4);
+        Utility.println("Enter 0 to abort addition ", 4);
+
+        String songName = scanner.nextLine().trim();
+        if (songName.equals("0")) {
+            Utility.println("Song addition aborted", 0);
+            return;
+        }
+
+        Utility.println("Enter song URL: ", 4);
+        Utility.println("Enter 0 to abort addition ", 4);
+        String songUrl = scanner.nextLine().trim();
+        if (songUrl.equals("0")) {
+            Utility.println("Song addition aborted", 0);
+            return;
+        }
+
+        Utility.println("Enter artist name: ", 4);
+        Utility.println("Enter 0 to abort addition ", 4);
+        String artistName = scanner.nextLine().trim();
+        if (artistName.equals("0")) {
+            Utility.println("Song addition aborted", 0);
+            return;
+        }
+
+        // Check for duplicates ignoring case for song name, artist, and URL
+        SongLinkedList existingSongs = Song.songs; // Cached list of songs
+        for (Song s : existingSongs.toArray()) {
+            if (s.getSongName().equalsIgnoreCase(songName) &&
+                    s.getArtistName().equalsIgnoreCase(artistName)) {
+                Utility.println("This song by this artist already exists. Please try again.", 7);
+                return;
+            }
+            if (s.getSongUrl().equalsIgnoreCase(songUrl)) {
+                Utility.println("This song URL already exists. Please try again.", 7);
+                return;
+            }
+        }
+
+        int songType;
+        boolean checker = true;
+        while (checker) {
+            try {
+                Utility.println("Please select a song type by entering the corresponding number (1 to 10):", 4);
+                Utility.println("1. Bollywood", 4);
+                Utility.println("2. Pop", 4);
+                Utility.println("3. Rock", 4);
+                Utility.println("4. Classical", 4);
+                Utility.println("5. Hip Hop", 4);
+                Utility.println("6. Electronic/EDM", 4);
+                Utility.println("7. Indie", 4);
+                Utility.println("8. Jazz", 4);
+                Utility.println("9. Regional/Folk", 4);
+                Utility.println("10. Devotional", 4);
+                Utility.print("Enter 0 to abort addition ", 4);
+
+                songType = Integer.parseInt(scanner.nextLine());
+                if (songType == 0) {
+                    Utility.println("Song addition aborted", 0);
+                    checker = false;
+                    break;
+                }
+                if (songType < 1 || songType > 10) {
+                    Utility.println("Song type must be between 1 and 10.", 7);
+                    continue;
+                }
+                boolean success = DatabaseIO.addNewIntoSong(songName, songUrl, artistName, songType);
+                if (success) {
+                    Utility.println("Song added successfully.", 6);
+                } else {
+                    Utility.println("Failed to add song.", 7);
+                }
+                checker = false;
+
+            } catch (NumberFormatException e) {
+                Utility.println("Invalid input. Please enter a number between 1 and 10.", 7);
+            }
+        }
+    } catch (SQLException e) {
+        Utility.println("Database error: " + e.getMessage(), 7);
+    }
+}
 
 
     public static void openMainMenu() {

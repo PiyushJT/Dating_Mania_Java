@@ -134,6 +134,36 @@ public class DatabaseIO {
 
     }
 
+    public static int getActiveUserCount() throws SQLException {
+        String sql = "SELECT COUNT(*) FROM users WHERE is_active = true AND is_deleted = false";
+        PreparedStatement pst = connection.prepareStatement(sql);
+        ResultSet rs = pst.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1);
+        }
+        return 0;
+    }
+
+    public static boolean addNewIntoHobby(String hobbyName) throws SQLException {
+        String sql = "INSERT INTO hobbies (hobby_name) VALUES (?)";
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setString(1, hobbyName);
+        int rows = pst.executeUpdate();
+        return rows > 0;
+    }
+
+    public static boolean addNewIntoSong(String name, String url, String artist, int typeId) throws SQLException {
+        String sql = "INSERT INTO songs (song_name, song_url, artist_name, type_id) VALUES (?, ?, ?, ?)";
+        PreparedStatement pst = connection.prepareStatement(sql);
+        pst.setString(1, name);
+        pst.setString(2, url);
+        pst.setString(3, artist);
+        pst.setInt(4, typeId);
+        int rows = pst.executeUpdate();
+        return rows > 0;
+    }
+
+
 
     // function to register a new user
     public static void addUserToDB(User user, String password) throws SQLException {

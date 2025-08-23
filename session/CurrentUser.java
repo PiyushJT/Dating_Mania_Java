@@ -4,12 +4,11 @@ import java.io.*;
 import java.sql.*;
 import java.util.*;
 
-import ds.HobbyLinkedList;
-import ds.SongLinkedList;
+import db.*;
+import ds.*;
+import logs.*;
 import model.*;
-import db.DatabaseIO;
-import logs.Log;
-import util.Utility;
+import util.*;
 
 public class CurrentUser {
 
@@ -166,9 +165,11 @@ public class CurrentUser {
 
                 Utility.printLines(1);
                 Utility.println("Enter comma-separated indices of hobbies to add to your new list.", 4);
+                Utility.println("Enter 0 to abort! ", 4);
                 Utility.println("Example: 1,2,3", 4);
 
                 String input = scanner.nextLine().replace(" ", "");
+
                 String[] parts = input.split(",");
 
                 ind = new int[parts.length];
@@ -235,17 +236,11 @@ public class CurrentUser {
 
         if (choice2.equals("1")) {
 
-            // Shuffle songs in SongLinkedList and take first 10
-            SongLinkedList shuffledSongs = new SongLinkedList();
-            for (int i = 0; i < allSongs.length(); i++) {
-                shuffledSongs.insert(allSongs.get(i));
-            }
-
             // Use your existing shuffleSongs method
-            shuffledSongs.shuffleSongs();
+            allSongs.shuffleSongs();
 
             // Limit to 10 songs max
-            int quizSize = Math.min(10, shuffledSongs.length());
+            int quizSize = Math.min(10, allSongs.length());
 
             SongLinkedList likedSongs = new SongLinkedList();
 
@@ -255,7 +250,7 @@ public class CurrentUser {
             // Iterate over shuffledSongs using index-based access
 
             for (int i = 0; i < quizSize; i++) {
-                Song song = shuffledSongs.get(i);
+                Song song = allSongs.get(i);
 
                 Utility.printLines(1);
                 Utility.println("🎧 Now playing: ", 6);
@@ -303,7 +298,6 @@ public class CurrentUser {
                 Utility.println("\n🎉 Your song preferences have been updated based on your quiz choices! 🎉", 6);
             } catch (Exception e) {
                 Utility.println("⚠️ Failed to update your song interests. Please try again later.", 6);
-                e.printStackTrace();
             }
         }
     }
@@ -364,7 +358,11 @@ public class CurrentUser {
                     }
 
                     try {
-                        DatabaseIO.updateName(name);
+                        if (DatabaseIO.updateName(name))
+                            Utility.println("Name updated Successfully", 1);
+                        else
+                            Utility.println("Name was not updated", 7);
+
                     }
                     catch (SQLException e) {
                         break;
@@ -393,7 +391,11 @@ public class CurrentUser {
                     }
 
                     try {
-                        DatabaseIO.updateBio(bio);
+                        if (DatabaseIO.updateBio(bio))
+                            Utility.println("Bio updated Successfully", 1);
+                        else
+                            Utility.println("Bio was not updated", 7);
+
                     }
                     catch (SQLException e) {
                         break;
@@ -420,7 +422,12 @@ public class CurrentUser {
 
                     }
                     try {
-                        DatabaseIO.updateGender(gender);
+
+                        if (DatabaseIO.updateGender(gender))
+                            Utility.println("Gender updated Successfully", 1);
+                        else
+                            Utility.println("Gender was not updated", 7);
+
                     }
                     catch (SQLException e) {
                         break;
@@ -529,7 +536,11 @@ public class CurrentUser {
                         break;
                     }
                     try {
-                        DatabaseIO.updateCity(city);
+                        if (DatabaseIO.updateCity(city))
+                            Utility.println("City updated Successfully", 1);
+                        else
+                            Utility.println("City was not updated", 7);
+
                     }
                     catch (SQLException e) {
                         break;
@@ -575,7 +586,11 @@ public class CurrentUser {
 
 
                     try {
-                        DatabaseIO.updateEmail(email);
+                        if (DatabaseIO.updateEmail(email))
+                            Utility.println("Email updated Successfully", 1);
+                        else
+                            Utility.println("Email was not updated", 7);
+
                     }
                     catch (SQLException e) {
                         break;
@@ -624,7 +639,7 @@ public class CurrentUser {
                             Utility.println("Password too long. Try a shorter password", 7);
                             continue;
                         }
-                        if (newPassword.equals("")) {
+                        if (newPassword.isEmpty()) {
                             Utility.println("Password cannot be empty. Try again", 7);
                             continue;
                         }

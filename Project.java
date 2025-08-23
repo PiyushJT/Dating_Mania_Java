@@ -1,10 +1,10 @@
 import java.sql.*;
 
-import db.DatabaseIO;
-import logs.Log;
-import model.User;
-import session.CurrentUser;
-import util.Utility;
+import db.*;
+import logs.*;
+import model.*;
+import session.*;
+import util.*;
 
 public class Project {
 
@@ -13,13 +13,10 @@ public class Project {
         Log.S("System Started");
 
 
-        for (int i = 0; i < 13; i++)
-            Utility.println(i + ". Color demo", i);
-
         // Database Initialization
         String url = "jdbc:postgresql://localhost:5432/Dating_Mania";
         String user = "postgres";
-        String password = "15manav@";
+        String password = "";
 
         // Connect to Database
         try {
@@ -52,7 +49,7 @@ public class Project {
 
         // Load All Users
         try {
-            User.users = DatabaseIO.getUsers();
+            User.users = DatabaseIO.getAllUsers();
             Log.DB("All Users loaded successfully!");
         }
         catch (SQLException e) {

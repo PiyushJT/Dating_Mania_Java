@@ -1,8 +1,8 @@
 package model;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import ds.SongLinkedList;
+import java.sql.*;
+
+import ds.*;
 
 
 public class Song {
@@ -50,6 +50,8 @@ public class Song {
     public String getArtistName() {
         return artistName;
     }
+
+    public String getSongUrl(){ return songUrl; }
 
     public static Song fromDB(ResultSet rs) throws SQLException {
 

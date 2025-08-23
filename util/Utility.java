@@ -115,14 +115,14 @@ public class Utility {
 
         Utility.print("Enter your choice: ", 4);
 
-        char choice = scanner.next().charAt(0);
-        scanner.nextLine();
+        String choice = scanner.nextLine().trim();
+
 
 
         // Switch statement to handle user input
         switch (choice) {
 
-            case '1':
+            case "1":
                 if (login()) {
 
                     Utility.printLines(2);
@@ -138,7 +138,7 @@ public class Utility {
 
                 break;
 
-            case '2':
+            case "2":
                 if (register()) {
                     Utility.println("Registration successful! Welcome, " + CurrentUser.data.getName() + ".", 3);
                     Log.S("User registered successfully");
@@ -152,11 +152,11 @@ public class Utility {
 
                 break;
 
-            case '3':
+            case "3":
                 adminLogin();
                 break;
 
-            case '4':
+            case "4":
                 Utility.printLines(2);
                 Utility.println("Exiting...", 6);
                 Log.S("User exited manually");
@@ -1131,9 +1131,27 @@ public static void addNewSong() {
             case "7": {
 
                 Utility.printLines(2);
-                Utility.println("Block / Unblock User", 6);
-
+                Utility.println("🛑 Block / 🔓 Unblock User", 6);
                 Utility.printLines(1);
+
+                // Fetch and display blocked users
+                UserLinkedList blockedUsers;
+                try {
+                    blockedUsers = DatabaseIO.getBlockedUsers(CurrentUser.data.getUserId());
+
+                    if (blockedUsers.isEmpty()) {
+                        Utility.println("You have no blocked users.", 6);
+                    } else {
+                        Utility.println("🛑Blocked Users:", 6);
+                        for (User user : blockedUsers.toArray()) {
+                            Utility.println(" - " + user.getName() + " (User ID: " + user.getUserId() + ")", 6);
+                        }
+                        printLines(1);
+                    }
+                } catch (SQLException e) {
+                    Utility.println("Error fetching blocked users: " + e.getMessage(), 7);
+                }
+
                 Utility.println("1. 🛑 Block", 5);
                 Utility.println("2. 🔓 Unblock", 5);
                 Utility.println("Any other -> Back", 5);
@@ -1232,8 +1250,7 @@ public static void addNewSong() {
 
                         Utility.printLines(2);
                         Utility.println("🔓 Unblock user", 6);
-
-                        UserLinkedList blockedUsers;
+                        Utility.printLines(1);
 
                         try {
                             blockedUsers = DatabaseIO.getBlockedUsers(CurrentUser.data.getUserId());
@@ -1248,10 +1265,10 @@ public static void addNewSong() {
                             break;
                         }
 
-                        Utility.println("===============================================", 8);
-                        for (User user : blockedUsers.toArray())
-                            Utility.println(user.toString(), 6);
-                        Utility.println("===============================================", 8);
+                        Utility.println("🛑Blocked Users:", 6);
+                        for (User user : blockedUsers.toArray()) {
+                            Utility.println(" - " + user.getName() + " (User ID: " + user.getUserId() + ")", 6);
+                        }
 
                         Utility.printLines(1);
                         Utility.println("Enter user id to unblock: ", 4);
@@ -1262,7 +1279,11 @@ public static void addNewSong() {
                             try {
                                 int uid = Integer.parseInt(id);
 
-                                DatabaseIO.unblockUser(uid);
+                                if(DatabaseIO.unblockUser(uid)){
+                                    Utility.println("User unblocked successfully.", 1);
+                                }
+                                else
+                                    Utility.println("Error blocking user.", 0);
                             } catch (NumberFormatException e) {
                                 Utility.println("Invalid user id.", 7);
                             } catch (SQLException e) {

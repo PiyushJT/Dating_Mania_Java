@@ -9,7 +9,7 @@ import util.*;
 public class Log {
 
     // log file
-    static File file = new File("logs/system_history.log");;
+    static File file = new File("logs/system_history.log");
     static BufferedWriter writer;
 
 

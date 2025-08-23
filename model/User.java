@@ -120,10 +120,6 @@ public class User {
         return city;
     }
 
-    public static UserLinkedList getUsers() {
-        return users;
-    }
-
     public int getUserId() {
         return userId;
     }
@@ -132,19 +128,8 @@ public class User {
         return isActive;
     }
 
-    public long getLastActive() {
-        return lastActive;
-    }
-
     public boolean isDeleted() {
         return isDeleted;
     }
 
-    public long getCreatedAt() {
-        return createdAt;
-    }
-
-    public long getUpdatedAt() {
-        return updatedAt;
-    }
 }

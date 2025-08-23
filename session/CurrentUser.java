@@ -298,7 +298,6 @@ public class CurrentUser {
                 Utility.println("\n🎉 Your song preferences have been updated based on your quiz choices! 🎉", 6);
             } catch (Exception e) {
                 Utility.println("⚠️ Failed to update your song interests. Please try again later.", 6);
-                e.printStackTrace();
             }
         }
     }

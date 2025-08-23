@@ -339,8 +339,6 @@ public class Utility {
 
         }
 
-
-        Exception exception = null;
         try {
 
             long now = getNowLong();
@@ -357,14 +355,9 @@ public class Utility {
             return true;
         }
         catch (Exception e) {
-            exception = e;
             Log.E("Registration error: " + e.getMessage());
 
             return false;
-        }
-        finally {
-            if (exception != null)
-                exception.printStackTrace();
         }
 
     }
@@ -545,8 +538,7 @@ public class Utility {
     }
 
     public static void addNewHobby() {
-        boolean checker = true;
-        while (checker) {
+        while (true) {
             Utility.println("Enter new hobby name: ", 4);
             Utility.println("Enter 0 to abort addition ", 4);
 
@@ -559,7 +551,6 @@ public class Utility {
             }
             if(hobbyName.equals("0")) {
                 Utility.println("Hobby addition aborted",0);
-                 checker =false;
                 break;
             }
 
@@ -651,7 +642,6 @@ public static void addNewSong() {
                 songType = Integer.parseInt(scanner.nextLine());
                 if (songType == 0) {
                     Utility.println("Song addition aborted", 0);
-                    checker = false;
                     break;
                 }
                 if (songType < 1 || songType > 10) {

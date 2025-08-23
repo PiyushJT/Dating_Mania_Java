@@ -40,27 +40,6 @@ public class Match {
 
     }
 
-    public Match(
-            int senderUserId, int receiverUserId,
-            long sentAt, String matchedOn
-    ) {
-
-        this.senderUserId = senderUserId;
-        this.receiverUserId = receiverUserId;
-        this.isAccepted = false;
-        this.sentAt = sentAt;
-        this.matchedOn = matchedOn;
-        this.isDeleted = false;
-
-        try {
-            this.sender = DatabaseIO.getUserFromUid(senderUserId);
-        }
-        catch (SQLException e) {
-            Log.E("Error getting sender user: " + e.getMessage());
-        }
-
-    }
-
 
     public static Match fromDB(ResultSet rs) throws SQLException {
 
@@ -93,29 +72,5 @@ public class Match {
 
     public int getReceiverUserId() {
         return receiverUserId;
-    }
-
-    public boolean isAccepted() {
-        return isAccepted;
-    }
-
-    public long getAcceptedAt() {
-        return acceptedAt;
-    }
-
-    public long getSentAt() {
-        return sentAt;
-    }
-
-    public String getMatchedOn() {
-        return matchedOn;
-    }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public User getSender() {
-        return sender;
     }
 }

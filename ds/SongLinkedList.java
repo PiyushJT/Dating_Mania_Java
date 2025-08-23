@@ -1,5 +1,7 @@
 package ds;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 import model.Song;
@@ -90,29 +92,36 @@ public class SongLinkedList extends AbstractLinkedList {
 
     }
 
+    // New method to convert linked list to ArrayList
+    private ArrayList<Song> toList() {
+        ArrayList<Song> list = new ArrayList<>();
+        SongNode n = head;
+
+        while (n != null) {
+            list.add(n.data);
+            n = n.next;
+        }
+
+        return list;
+    }
 
 
     public void shuffleSongs() {
-        // Convert linked list to array for easier shuffling
-        Song[] array = this.toArray();
+        // Convert linked list to ArrayList
+        ArrayList<Song> songList = new ArrayList<>(this.toList());
 
-        // Shuffle the array using Collections.shuffle logic
-        Random rnd = new Random();
-        for (int i = array.length - 1; i > 0; i--) {
-            int j = rnd.nextInt(i + 1);
-            Song temp = array[i];
-            array[i] = array[j];
-            array[j] = temp;
-        }
+        // Shuffle using Collections.shuffle
+        Collections.shuffle(songList);
 
         // Clear the current list
         this.clear();
 
-        // Re-insert songs in shuffled order back into linked list
-        for (Song s : array) {
+        // Re-insert songs in shuffled order
+        for (Song s : songList) {
             this.insert(s);
         }
     }
+
 
 
 }

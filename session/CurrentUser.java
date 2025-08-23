@@ -236,17 +236,11 @@ public class CurrentUser {
 
         if (choice2.equals("1")) {
 
-            // Shuffle songs in SongLinkedList and take first 10
-            SongLinkedList shuffledSongs = new SongLinkedList();
-            for (int i = 0; i < allSongs.length(); i++) {
-                shuffledSongs.insert(allSongs.get(i));
-            }
-
             // Use your existing shuffleSongs method
-            shuffledSongs.shuffleSongs();
+            allSongs.shuffleSongs();
 
             // Limit to 10 songs max
-            int quizSize = Math.min(10, shuffledSongs.length());
+            int quizSize = Math.min(10, allSongs.length());
 
             SongLinkedList likedSongs = new SongLinkedList();
 
@@ -256,7 +250,7 @@ public class CurrentUser {
             // Iterate over shuffledSongs using index-based access
 
             for (int i = 0; i < quizSize; i++) {
-                Song song = shuffledSongs.get(i);
+                Song song = allSongs.get(i);
 
                 Utility.printLines(1);
                 Utility.println("🎧 Now playing: ", 6);

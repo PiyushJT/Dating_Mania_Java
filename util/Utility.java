@@ -738,51 +738,8 @@ public static void addNewSong() {
 
             }
 
-            /*
             case "3": {
 
-
-                printLines(2);
-
-                UserLinkedList matches = new UserLinkedList();
-
-                try {
-                    matches = DatabaseIO.getMatchedUsers();
-                    Utility.println("Match count: " + matches.length(), 6);
-                }
-                catch (SQLException e) {
-                    Log.E("Error getting matches: " + e.getMessage());
-                    openMainMenu();
-                }
-
-                if(!matches.isEmpty()) {
-
-                    for (User user : matches.toArray()) {
-                        int uid = user.getId();
-
-                        try {
-                            Profile.display(
-                                    DatabaseIO.getUserFromUid(uid),
-                                    DatabaseIO.getHobbiesFromUID(uid),
-                                    DatabaseIO.getSongsFromUID(uid)
-                            );
-                        } catch (SQLException e) {
-                            Log.E("Error getting user: " + e.getMessage());
-                        }
-
-                    }
-
-                }
-                else
-                    Utility.println("Get to matching and connect with some new people!", 6);
-
-
-                openMainMenu();
-                break;
-
-            }
-            */
-            case "3": {
                 printLines(2);
 
                 UserLinkedList matches = new UserLinkedList();

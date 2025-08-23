@@ -24,13 +24,13 @@ public class Matchmaking {
 
                 HashSet<Integer> myHobbyIds = new HashSet<>();
 
-                for (Hobby h : myHobbiesList.toArray()) {
+                for (Hobby h : myHobbiesList.toArray())
                     myHobbyIds.add(h.getHobbyId());
-                }
+
 
                 // Get all users
-                UserLinkedList users = DatabaseIO.getAllUsers();
-                for (User user : users.toArray()) {
+                for (User user : User.users.toArray()) {
+
                     // Skip self and same gender or inactive
                     if (user.getId() == myId)
                         continue;
@@ -52,26 +52,30 @@ public class Matchmaking {
 
                     // Get hobbies for this user
                     HobbyLinkedList theirHobbies = DatabaseIO.getHobbiesFromUID(user.getId());
+
                     HashSet<Integer> theirHobbyIds = new HashSet<>();
+
                     for (Hobby h : theirHobbies.toArray())
                         theirHobbyIds.add(h.getHobbyId());
 
                     // Calculate number of shared hobbies
                     HashSet<Integer> common = new HashSet<>(myHobbyIds);
                     common.retainAll(theirHobbyIds);
+
                     int shared = common.size();
 
-                    if (shared > 0) {
+                    if (shared > 0)
                         queue.insert(user, shared);
-                    }
 
                 }
+
             }
             catch (Exception e) {
                 Log.E("Error matching by hobby: " + e.getMessage());
             }
 
         return queue;
+
     }
 
 
@@ -79,16 +83,20 @@ public class Matchmaking {
         BST queue = new BST();
 
         try {
+
             int myId = CurrentUser.data.getId();
+
             String myGender = CurrentUser.data.getGender();
+
             SongLinkedList mySongsList = DatabaseIO.getSongsFromUID(myId);
             HashSet<Integer> mySongIds = new HashSet<>();
+
             for (Song s :  mySongsList.toArray())
                 mySongIds.add(s.getSongId());
 
-            // Get all users
-            UserLinkedList users = DatabaseIO.getAllUsers();
-            for (User user : users.toArray()) {
+
+            for (User user : User.users.toArray()) {
+
                 // Skip self and same gender or inactive
                 if (user.getId() == myId)
                     continue;
@@ -96,7 +104,7 @@ public class Matchmaking {
                     continue;
                 if (user.isDeleted())
                     continue;
-                if(user.getGender().equalsIgnoreCase(myGender))
+                if (user.getGender().equalsIgnoreCase(myGender))
                     continue;
                 if (DatabaseIO.amIBlockedBy(user.getId()))
                     continue;
@@ -116,13 +124,16 @@ public class Matchmaking {
                 // Calculate number of shared songs
                 HashSet<Integer> common = new HashSet<>(mySongIds);
                 common.retainAll(theirSongIds);
+
                 int shared = common.size();
 
-                if (shared > 0) {
+                if (shared > 0)
                     queue.insert(user, shared);
-                }
+
             }
-        } catch (Exception e) {
+
+        }
+        catch (Exception e) {
             Log.E("Error matching by song: " + e.getMessage());
         }
 

@@ -358,7 +358,11 @@ public class CurrentUser {
                     }
 
                     try {
-                        DatabaseIO.updateName(name);
+                        if (DatabaseIO.updateName(name))
+                            Utility.println("Name updated Successfully", 1);
+                        else
+                            Utility.println("Name was not updated", 7);
+
                     }
                     catch (SQLException e) {
                         break;
@@ -387,7 +391,11 @@ public class CurrentUser {
                     }
 
                     try {
-                        DatabaseIO.updateBio(bio);
+                        if (DatabaseIO.updateBio(bio))
+                            Utility.println("Bio updated Successfully", 1);
+                        else
+                            Utility.println("Bio was not updated", 7);
+
                     }
                     catch (SQLException e) {
                         break;
@@ -414,7 +422,12 @@ public class CurrentUser {
 
                     }
                     try {
-                        DatabaseIO.updateGender(gender);
+
+                        if (DatabaseIO.updateGender(gender))
+                            Utility.println("Gender updated Successfully", 1);
+                        else
+                            Utility.println("Gender was not updated", 7);
+
                     }
                     catch (SQLException e) {
                         break;
@@ -523,7 +536,11 @@ public class CurrentUser {
                         break;
                     }
                     try {
-                        DatabaseIO.updateCity(city);
+                        if (DatabaseIO.updateCity(city))
+                            Utility.println("City updated Successfully", 1);
+                        else
+                            Utility.println("City was not updated", 7);
+
                     }
                     catch (SQLException e) {
                         break;
@@ -569,7 +586,11 @@ public class CurrentUser {
 
 
                     try {
-                        DatabaseIO.updateEmail(email);
+                        if (DatabaseIO.updateEmail(email))
+                            Utility.println("Email updated Successfully", 1);
+                        else
+                            Utility.println("Email was not updated", 7);
+
                     }
                     catch (SQLException e) {
                         break;

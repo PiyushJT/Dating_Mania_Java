@@ -51,6 +51,8 @@ public class Song {
         return artistName;
     }
 
+    public String getSongUrl(){ return songUrl; }
+
     public static Song fromDB(ResultSet rs) throws SQLException {
 
         int songID = rs.getInt("song_id");

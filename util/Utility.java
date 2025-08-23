@@ -101,23 +101,24 @@ public class Utility {
 
 
         Utility.printLines(2);
-        println("\t\tMenu", 5);
+        Utility.println("\t\t=== 🔐 LOGIN MENU ===", 8);
         Utility.printLines(1);
 
-        Utility.println("1. Login", 5);
-        Utility.println("2. Register (Don't have an account)", 5);
-        Utility.println("3. Exit", 5);
+        Utility.println("1. 🔑 Login", 5);
+        Utility.println("2. 📝 Register (Don't have an account)", 5);
+        Utility.println("3. 🛡️ Admin Access", 5);
+        Utility.println("4. 🚪 Exit", 5);
 
         Utility.print("Enter your choice: ", 4);
 
-        char choice = scanner.next().charAt(0);
-        scanner.nextLine();
+        String choice = scanner.nextLine().trim();
+
 
 
         // Switch statement to handle user input
         switch (choice) {
 
-            case '1':
+            case "1":
                 if (login()) {
 
                     Utility.printLines(2);
@@ -133,7 +134,7 @@ public class Utility {
 
                 break;
 
-            case '2':
+            case "2":
                 if (register()) {
                     Utility.println("Registration successful! Welcome, " + CurrentUser.data.getName() + ".", 3);
                     Log.S("User registered successfully");
@@ -147,7 +148,11 @@ public class Utility {
 
                 break;
 
-            case '3':
+            case "3":
+                adminLogin();
+                break;
+
+            case "4":
                 Utility.printLines(2);
                 Utility.println("Exiting...", 6);
                 Log.S("User exited manually");
@@ -486,6 +491,196 @@ public class Utility {
 
     }
 
+    public static void adminLogin() {
+        Utility.printLines(2);
+        Utility.println("ADMIN LOGIN", 8);
+        Utility.print("Enter admin password: ", 4);
+        String adminPass = scanner.nextLine();
+
+        if (adminPass.equals("ADMIN123")) {
+            Utility.println("Login successful.", 6);
+            openAdminMenu();
+        } else {
+            Utility.println("Incorrect password.", 0);
+            openLoginMenu();
+        }
+    }
+
+    public static void openAdminMenu() {
+        while (true) {
+            Utility.printLines(2);
+            Utility.println("\t\t=== 🛡️ ADMIN MENU ===", 8);
+            Utility.printLines(1);
+
+            Utility.println("1. 👥 Get active user count", 6);
+            Utility.println("2. ⚽ Add new hobby", 6);
+            Utility.println("3. 🎵 Add new song", 6);
+            Utility.println("4. 🔓 Log out", 6);
+
+            Utility.print("Enter choice: ", 4);
+
+            String choice = scanner.nextLine();
+
+            try {
+                switch (choice) {
+                    case "1":
+                        int activeCount = DatabaseIO.getActiveUserCount();
+                        Utility.println("Active users: " + activeCount, 6);
+                        break;
+
+                    case "2":
+                        addNewHobby();
+                        break;
+
+                    case "3":
+                        addNewSong();
+                        break;
+
+                    case "4":
+                        Utility.println("Logging out from admin...", 6);
+                        openLoginMenu();
+                        return;
+
+                    default:
+                        Utility.println("Invalid option. Try again.", 7);
+                }
+            } catch (Exception e) {
+                Utility.println("Error: " + e.getMessage(), 7);
+            }
+        }
+    }
+
+    public static void addNewHobby() {
+        boolean checker = true;
+        while (checker) {
+            Utility.println("Enter new hobby name: ", 4);
+            Utility.println("Enter 0 to abort addition ", 4);
+
+            String hobbyName = scanner.nextLine().trim();
+
+
+            if (hobbyName.isEmpty()) {
+                Utility.println("Hobby name cannot be empty. Try again.", 7);
+                continue;
+            }
+            if(hobbyName.equals("0")) {
+                Utility.println("Hobby addition aborted",0);
+                 checker =false;
+                break;
+            }
+
+            try {
+                // Fetch all existing hobbies (you can cache this as needed)
+                HashMap<Integer, String> existingHobbies = DatabaseIO.getAllHobbies();
+
+                boolean exists = existingHobbies.values().stream()
+                        .anyMatch(h -> h.equalsIgnoreCase(hobbyName));
+
+                if (exists) {
+                    Utility.println("This hobby already exists. Please try again.", 7);
+                    continue;
+                }
+
+                // Add hobby if unique
+                boolean success = DatabaseIO.addNewIntoHobby(hobbyName);
+                if (success) {
+                    Utility.println("Hobby added successfully.", 6);
+                } else {
+                    Utility.println("Failed to add hobby.", 7);
+                }
+                break; // exit loop on success or failure
+            } catch (SQLException e) {
+                Utility.println("Database error: " + e.getMessage(), 7);
+                break; // exit on DB error
+            }
+        }
+    }
+
+public static void addNewSong() {
+    try {
+        Utility.println("Enter song name: ", 4);
+        Utility.println("Enter 0 to abort addition ", 4);
+
+        String songName = scanner.nextLine().trim();
+        if (songName.equals("0")) {
+            Utility.println("Song addition aborted", 0);
+            return;
+        }
+
+        Utility.println("Enter song URL: ", 4);
+        Utility.println("Enter 0 to abort addition ", 4);
+        String songUrl = scanner.nextLine().trim();
+        if (songUrl.equals("0")) {
+            Utility.println("Song addition aborted", 0);
+            return;
+        }
+
+        Utility.println("Enter artist name: ", 4);
+        Utility.println("Enter 0 to abort addition ", 4);
+        String artistName = scanner.nextLine().trim();
+        if (artistName.equals("0")) {
+            Utility.println("Song addition aborted", 0);
+            return;
+        }
+
+        // Check for duplicates ignoring case for song name, artist, and URL
+        SongLinkedList existingSongs = Song.songs; // Cached list of songs
+        for (Song s : existingSongs.toArray()) {
+            if (s.getSongName().equalsIgnoreCase(songName) &&
+                    s.getArtistName().equalsIgnoreCase(artistName)) {
+                Utility.println("This song by this artist already exists. Please try again.", 7);
+                return;
+            }
+            if (s.getSongUrl().equalsIgnoreCase(songUrl)) {
+                Utility.println("This song URL already exists. Please try again.", 7);
+                return;
+            }
+        }
+
+        int songType;
+        boolean checker = true;
+        while (checker) {
+            try {
+                Utility.println("Please select a song type by entering the corresponding number (1 to 10):", 4);
+                Utility.println("1. Bollywood", 4);
+                Utility.println("2. Pop", 4);
+                Utility.println("3. Rock", 4);
+                Utility.println("4. Classical", 4);
+                Utility.println("5. Hip Hop", 4);
+                Utility.println("6. Electronic/EDM", 4);
+                Utility.println("7. Indie", 4);
+                Utility.println("8. Jazz", 4);
+                Utility.println("9. Regional/Folk", 4);
+                Utility.println("10. Devotional", 4);
+                Utility.print("Enter 0 to abort addition ", 4);
+
+                songType = Integer.parseInt(scanner.nextLine());
+                if (songType == 0) {
+                    Utility.println("Song addition aborted", 0);
+                    checker = false;
+                    break;
+                }
+                if (songType < 1 || songType > 10) {
+                    Utility.println("Song type must be between 1 and 10.", 7);
+                    continue;
+                }
+                boolean success = DatabaseIO.addNewIntoSong(songName, songUrl, artistName, songType);
+                if (success) {
+                    Utility.println("Song added successfully.", 6);
+                } else {
+                    Utility.println("Failed to add song.", 7);
+                }
+                checker = false;
+
+            } catch (NumberFormatException e) {
+                Utility.println("Invalid input. Please enter a number between 1 and 10.", 7);
+            }
+        }
+    } catch (SQLException e) {
+        Utility.println("Database error: " + e.getMessage(), 7);
+    }
+}
+
 
     public static void openMainMenu() {
 
@@ -499,7 +694,9 @@ public class Utility {
         }
 
         Utility.printLines(2);
-        println("\t\tMenu", 5);
+       // println("\t\tMenu", 5);
+        Utility.println("\t\t=== MAIN MENU ===", 8);
+
         Utility.printLines(1);
 
         if(CurrentUser.hobbies.isEmpty())
@@ -619,7 +816,7 @@ public class Utility {
                         }
                     }
 
-                    // --- Unmatch Option ---
+                    //  Unmatch Option
                     Utility.printLines(1);
                     Utility.println("🚪 If you wish to unmatch, enter the user ID.", 5);
                     Utility.println("Enter 0 to go back.", 5);
@@ -930,9 +1127,27 @@ public class Utility {
             case "7": {
 
                 Utility.printLines(2);
-                Utility.println("Block / Unblock User", 6);
-
+                Utility.println("🛑 Block / 🔓 Unblock User", 6);
                 Utility.printLines(1);
+
+                // Fetch and display blocked users
+                UserLinkedList blockedUsers;
+                try {
+                    blockedUsers = DatabaseIO.getBlockedUsers(CurrentUser.data.getUserId());
+
+                    if (blockedUsers.isEmpty()) {
+                        Utility.println("You have no blocked users.", 6);
+                    } else {
+                        Utility.println("🛑Blocked Users:", 6);
+                        for (User user : blockedUsers.toArray()) {
+                            Utility.println(" - " + user.getName() + " (User ID: " + user.getUserId() + ")", 6);
+                        }
+                        printLines(1);
+                    }
+                } catch (SQLException e) {
+                    Utility.println("Error fetching blocked users: " + e.getMessage(), 7);
+                }
+
                 Utility.println("1. 🛑 Block", 5);
                 Utility.println("2. 🔓 Unblock", 5);
                 Utility.println("Any other -> Back", 5);
@@ -949,61 +1164,79 @@ public class Utility {
                         Utility.println("🛑 Block User", 6);
 
                         Utility.printLines(1);
-                        Utility.print("Enter user's name to block: ", 4);
+                        Utility.println("Enter user's name to block ", 4);
+                        Utility.println("Enter 0 to abort blocking ", 4);
+
                         String name = scanner.next();
                         scanner.nextLine();
 
-                        UserLinkedList foundUsers = new UserLinkedList();
+                        if(!Objects.equals(name, "0")) {
+
+                            UserLinkedList foundUsers = new UserLinkedList();
+                            boolean looper = true;
 
 
-                        outer: while (true) {
+                            outer:
+                            while (looper) {
 
-                            Utility.printLines(1);
-                            Utility.println("===============================================", 8);
-                            for (User user : User.users.toArray())
-                                if (user.getName().toLowerCase().contains(name)) {
+                                Utility.printLines(1);
+                                Utility.println("===============================================", 8);
+                                for (User user : User.users.toArray())
+                                    if (user.getName().toLowerCase().contains(name)) {
 
-                                    if (user.getUserId() == CurrentUser.data.getUserId())
-                                        continue;
+                                        if (user.getUserId() == CurrentUser.data.getUserId())
+                                            continue;
 
-                                    foundUsers.insert(user);
-                                    Utility.println(user.toString(), 6);
-                                }
-                            Utility.println("===============================================", 8);
-
-                            Utility.printLines(1);
-                            Utility.print("Enter user id to block: ", 4);
-                            String id = scanner.next();
-                            scanner.nextLine();
-
-
-                            try {
-                                int uid = Integer.parseInt(id);
-
-                                for (User users : foundUsers.toArray())
-                                    if (users.getUserId() == uid) {
-                                        if (DatabaseIO.blockUser(uid))
-                                            Utility.println("User blocked successfully.", 1);
-                                        else
-                                            Utility.println("Error blocking user.", 0);
-                                        break outer;
+                                        foundUsers.insert(user);
+                                        Utility.println(user.toString(), 6);
                                     }
+                                Utility.println("===============================================", 8);
 
-                                Utility.println("Invalid user id.", 7);
-                                if (!tryAgain())
-                                    break;
+                                Utility.printLines(1);
+                                Utility.println("Enter user id to block: ", 4);
+                                Utility.println("Enter 0 to abort blocking ", 4);
 
+                                String id = scanner.next();
+                                scanner.nextLine();
+
+                                if(!Objects.equals(id, "0")) {
+                                    try {
+                                        int uid = Integer.parseInt(id);
+
+                                        for (User users : foundUsers.toArray())
+                                            if (users.getUserId() == uid) {
+                                                if (DatabaseIO.blockUser(uid))
+                                                    Utility.println("User blocked successfully.", 1);
+                                                else
+                                                    Utility.println("Error blocking user.", 0);
+                                                break outer;
+                                            }
+
+                                        Utility.println("Invalid user id.", 7);
+                                        if (!tryAgain())
+                                            break;
+
+                                    } catch (NumberFormatException e) {
+                                        Utility.println("Invalid user id.", 7);
+                                        if (!tryAgain())
+                                            break;
+                                    } catch (SQLException e) {
+                                        Log.E("Error blocking user: " + e.getMessage());
+                                        if (!tryAgain())
+                                            break;
+                                    }
+                                }
+                                else
+                                {
+                                    Utility.println("Blocking process aborted!",0);
+                                    looper =false;
+                                }
                             }
-                            catch (NumberFormatException e) {
-                                Utility.println("Invalid user id.", 7);
-                                if (!tryAgain())
-                                    break;
-                            }
-                            catch (SQLException e) {
-                                Log.E("Error blocking user: " + e.getMessage());
-                                if (!tryAgain())
-                                    break;
-                            }
+                        }
+
+                        else
+                        {
+                            Utility.println("Blocking process aborted!",0);
                         }
 
                         break;
@@ -1013,8 +1246,7 @@ public class Utility {
 
                         Utility.printLines(2);
                         Utility.println("🔓 Unblock user", 6);
-
-                        UserLinkedList blockedUsers;
+                        Utility.printLines(1);
 
                         try {
                             blockedUsers = DatabaseIO.getBlockedUsers(CurrentUser.data.getUserId());
@@ -1024,29 +1256,41 @@ public class Utility {
                             break;
                         }
 
-                        if (blockedUsers.isEmpty())
+                        if (blockedUsers.isEmpty()) {
+                            Utility.println("Your block list is empty", 0);
                             break;
+                        }
 
-                        Utility.println("===============================================", 8);
-                        for (User user : blockedUsers.toArray())
-                            Utility.println(user.toString(), 6);
-                        Utility.println("===============================================", 8);
+                        Utility.println("🛑Blocked Users:", 6);
+                        for (User user : blockedUsers.toArray()) {
+                            Utility.println(" - " + user.getName() + " (User ID: " + user.getUserId() + ")", 6);
+                        }
 
                         Utility.printLines(1);
-                        Utility.print("Enter user id to unblock: ", 4);
+                        Utility.println("Enter user id to unblock: ", 4);
+                        Utility.println("Enter 0 to abort unblocking ", 4);
                         String id = scanner.next();
 
-                        try {
-                            int uid = Integer.parseInt(id);
+                        if(!Objects.equals(id, "0")) {
+                            try {
+                                int uid = Integer.parseInt(id);
 
-                            DatabaseIO.unblockUser(uid);
+                                if(DatabaseIO.unblockUser(uid)){
+                                    Utility.println("User unblocked successfully.", 1);
+                                }
+                                else
+                                    Utility.println("Error blocking user.", 0);
+                            } catch (NumberFormatException e) {
+                                Utility.println("Invalid user id.", 7);
+                            } catch (SQLException e) {
+                                Log.E("Error unblocking user: " + e.getMessage());
+                            }
                         }
-                        catch (NumberFormatException e) {
-                            Utility.println("Invalid user id.", 7);
+                        else
+                        {
+                            Utility.println("Blocking process aborted!",0);
                         }
-                        catch (SQLException e) {
-                            Log.E("Error unblocking user: " + e.getMessage());
-                        }
+
 
                         break;
                     }
@@ -1089,56 +1333,73 @@ public class Utility {
 
                         Utility.printLines(2);
                         Utility.println("DELETE ACCOUNT PERMANENTLY ??", 0);
+                        Utility.println("1. Delete Account", 3);
+                        Utility.println("Any other -> Cancel", 3);
 
-                        Utility.print("Enter your password to confirm: ", 4);
-                        String password = scanner.next();
-                        scanner.nextLine();
+                        int confirmation = scanner.nextInt();
+                        if(confirmation==1) {
 
-                        try {
-                            if (DatabaseIO.deleteUser(password)) {
-                                CurrentUser.logOut();
+                            Utility.print("Enter your password to confirm: ", 4);
+                            String password = scanner.next();
+                            scanner.nextLine();
 
-                                Utility.println("Account deleted successfully.", 1);
+                            try {
+                                if (DatabaseIO.deleteUser(password)) {
+                                    CurrentUser.logOut();
+
+                                    Utility.println("Account deleted successfully.", 1);
+                                } else
+                                    Utility.println("Wrong password.", 7);
+                            } catch (Exception e) {
+                                Utility.println("Some error occurred..", 7);
+                                openMainMenu();
+                                return;
                             }
-                            else
-                                Utility.println("Wrong password.", 7);
                         }
-                        catch (Exception e) {
-                            Utility.println("Some error occurred..", 7);
-                            openMainMenu();
-                            return;
+                        else {
+                            printLines(1);
+                            Utility.println("Deletion aborted!",0);
                         }
-
                         break;
                     }
 
                     case "2":  {
 
                         Utility.printLines(2);
-                        Utility.println("Deactivate account", 6);
+                        Utility.println("Are you sure you want to Deactivate your account??", 0);
+                        Utility.println("1. Deactivate Account", 3);
+                        Utility.println("Any other -> Cancel", 3);
 
-                        Utility.println("Enter your password to confirm: ", 4);
-                        String password = scanner.next();
-                        scanner.nextLine();
+                        int confirmation = scanner.nextInt();
+                        if(confirmation==1) {
 
-                        try {
-                            if (DatabaseIO.deactivateUser(password)) {
-                                CurrentUser.logOut();
 
-                                Utility.println("Account deactivated successfully.", 6);
-                                Utility.println("Log in again to activate your account.", 6);
+                            Utility.println("Enter your password to confirm: ", 4);
+                            String password = scanner.next();
+                            scanner.nextLine();
+
+                            try {
+                                if (DatabaseIO.deactivateUser(password)) {
+                                    CurrentUser.logOut();
+
+                                    Utility.println("Account deactivated successfully.", 6);
+                                    Utility.println("Log in again to activate your account.", 6);
+                                } else
+                                    Utility.println("Wrong password.", 6);
+                            } catch (Exception e) {
+                                Utility.println("Some error occurred..", 6);
+                                openMainMenu();
+                                return;
                             }
-                            else
-                                Utility.println("Wrong password.", 6);
                         }
-                        catch (Exception e) {
-                            Utility.println("Some error occurred..", 6);
-                            openMainMenu();
-                            return;
+                        else {
+                            printLines(1);
+                            Utility.println("Deactivation aborted!",0);
                         }
 
                         break;
                     }
+
 
                     default: {
                         openMainMenu();

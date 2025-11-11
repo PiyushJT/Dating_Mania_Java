@@ -18,6 +18,16 @@ public class Project {
         String user = "postgres";
         String password = "";
 
+        // Supabase connection details
+        String host = "db.swjthzmlrxqktynhouga.supabase.co";
+        String database = "postgres";
+        String port = "5432";
+        user = "postgres";
+        password = "dtydhtb";
+
+        // Construct the full JDBC URL
+        url = "jdbc:postgresql://" + host + ":" + port + "/" + database;
+
         // Connect to Database
         try {
 
@@ -31,6 +41,7 @@ public class Project {
 
         }
         catch (ClassNotFoundException e) {
+            e.printStackTrace();
             Utility.println("JDBC Driver not found.", 7);
             Log.E("JDBC Driver not found.");
             return;
@@ -38,6 +49,7 @@ public class Project {
         catch (SQLException e) {
             Utility.println("Connection failed.", 7);
             Log.E("Connection failed.");
+            e.printStackTrace();
             return;
         }
         catch (Exception e) {

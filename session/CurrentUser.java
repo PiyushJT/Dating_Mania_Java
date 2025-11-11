@@ -1,5 +1,7 @@
 package session;
 
+import static util.Utility.print;
+
 import java.io.*;
 import java.sql.*;
 import java.util.*;
@@ -146,7 +148,7 @@ public class CurrentUser {
         Utility.println("Any other. -> Go back", 5);
 
 
-        Utility.print("Enter your choice: ", 4);
+        print("Enter your choice: ", 4);
         String choice1 = scanner.next();
         scanner.nextLine();
 
@@ -154,6 +156,7 @@ public class CurrentUser {
         if (choice1.equals("1")) {
 
             Utility.printLines(2);
+            print("" + Hobby.hobbies.size(), 2);
             for (int i = 1; i <= Hobby.hobbies.size(); i++)
                 Utility.println(i + ". " + Hobby.hobbies.get(i), 6);
 
@@ -178,7 +181,7 @@ public class CurrentUser {
                     try {
                         ind[i] = Integer.parseInt(parts[i].trim());
 
-                        if (ind[i] > 20 || ind[i] < 1) {
+                        if (ind[i] > Hobby.hobbies.size() || ind[i] < 1) {
                             Utility.println("Invalid index. Try again.", 7);
                             continue outer; // <-- This skips current outer loop iteration
                         }
@@ -229,7 +232,7 @@ public class CurrentUser {
         Utility.println("Any other. -> Go back", 5);
 
 
-        Utility.print("Enter your choice: ", 4);
+        print("Enter your choice: ", 4);
         String  choice2 = scanner.next();
         scanner.nextLine();
 
@@ -260,7 +263,7 @@ public class CurrentUser {
                 while (!validInput) {
 
                     Utility.printLines(1);
-                    Utility.print("Swipe choice (r/l/q): ", 4);
+                    print("Swipe choice (r/l/q): ", 4);
                     String choice = scanner.nextLine().trim().toLowerCase();
 
                     switch (choice) {
@@ -334,7 +337,7 @@ public class CurrentUser {
             Utility.println("8. Edit password", 5);
             Utility.println("Any other -> Go back", 5);
 
-            Utility.print("Enter your choice: ", 4);
+            print("Enter your choice: ", 4);
 
             String choice = scanner.nextLine();
 
@@ -344,7 +347,7 @@ public class CurrentUser {
                     String name;
                     while (true) {
 
-                        Utility.print("Enter new name: ", 4);
+                        print("Enter new name: ", 4);
                         name = scanner.nextLine();
                         if (name.length() > 40) {
                             Utility.println("Name too long. Try a shorter name", 7);
@@ -377,7 +380,7 @@ public class CurrentUser {
 
                     while (true) {
 
-                        Utility.print("Enter new bio: ", 4);
+                        print("Enter new bio: ", 4);
                         bio = scanner.nextLine();
                         if (bio.length() > 100) {
                             Utility.println("Bio too long. Try a shorter bio", 7);
@@ -409,7 +412,7 @@ public class CurrentUser {
                     String gender;
                     while (true) {
 
-                        Utility.print("Enter your gender (m/f): ", 4);
+                        print("Enter your gender (m/f): ", 4);
                         gender = scanner.next().toLowerCase();
                         scanner.nextLine();
 
@@ -440,7 +443,7 @@ public class CurrentUser {
                 case "4": {
                     int age;
                     while (true) {
-                        Utility.print("Enter your age: ", 4);
+                        print("Enter your age: ", 4);
 
                         String ageS = scanner.next();
                         scanner.nextLine();
@@ -476,7 +479,7 @@ public class CurrentUser {
 
                     long phone;
                     while (true) {
-                        Utility.print("Enter your phone: ", 4);
+                        print("Enter your phone: ", 4);
                         String phoneS = scanner.next();
                         scanner.nextLine();
 
@@ -523,7 +526,7 @@ public class CurrentUser {
                 case "6": {
                     String city;
                     while (true) {
-                        Utility.print("Enter your city: ", 4);
+                        print("Enter your city: ", 4);
                         city = scanner.nextLine();
                         if (city.length() > 20) {
                             Utility.println("City too long. Try a shorter city", 7);
@@ -554,7 +557,7 @@ public class CurrentUser {
                     String email;
                     while (true) {
 
-                        Utility.print("Enter your email: ", 4);
+                        print("Enter your email: ", 4);
                         email = scanner.nextLine();
 
                         if (email.length() > 30) {
@@ -633,7 +636,7 @@ public class CurrentUser {
                     String newPassword;
 
                     while (true) {
-                        Utility.print("Enter your new password: ", 4);
+                        print("Enter your new password: ", 4);
                         newPassword = scanner.nextLine();
                         if (newPassword.length() > 20) {
                             Utility.println("Password too long. Try a shorter password", 7);
